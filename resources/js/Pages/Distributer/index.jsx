@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdLockClock, MdOutlineAssignmentLate } from "react-icons/md";
-import axios from 'axios';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css'; // Import Notyf styles
 import AdminLayout from '@/Layouts/AdminLayout';
@@ -32,18 +31,29 @@ const DistributerList = ({ data }) => {
         setCurrentPage(1); // Reset to the first page when search query changes
     };
 
+    const { delete: destroy } = useForm();
+
     const handleDelete = (e, id) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete this record?')) {
-            axios.get(`/datas-destroy/${id}`)
-                .then(() => {
-                    notyf.success('Data deleted successfully');
-                    // Optionally refresh the data here or update state
-                })
-                .catch(error => {
-                    console.error(error);
-                    notyf.error('Failed to delete data');
-                });
+            destroy(`/distributers/${id}`,{
+                onSuccess: () => {
+                    // Show success notification on successful submission
+                    notyf.success('Distributor deleted successfully!');
+                },
+                onError: () => {
+                    // Show error notification if there are errors
+                    notyf.error('Failed to delete data.');
+                }
+            })
+                // .then(() => {
+                //     notyf.success('Data deleted successfully');
+                //     // Optionally refresh the data here or update state
+                // })
+                // .catch(error => {
+                //     console.error(error);
+                //     notyf.error('Failed to delete data');
+                // });
         }
     };
 
