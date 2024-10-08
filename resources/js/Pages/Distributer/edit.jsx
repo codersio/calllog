@@ -26,7 +26,7 @@ const EditDistributor = ({ distributor }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(`/distributers/${distributor.id}`, {
+        put(`/distributers/${distributor.user_id}`, {
             onSuccess: () => {
                 notyf.success('Distributor updated successfully!');
             },

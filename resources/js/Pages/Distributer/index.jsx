@@ -104,7 +104,7 @@ const DistributerList = ({ data }) => {
 
                                     <td className='p-3 text-center border'>
                                         <div className='flex justify-center space-x-3'>
-                                            <Link className='p-2 text-white bg-green-500 rounded' href={`distributers/${emp.id}`}>
+                                            <Link className='p-2 text-white bg-green-500 rounded' href={`distributers/${emp.id}/edit`}>
                                                 <CiEdit />
                                             </Link>
                                             <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>

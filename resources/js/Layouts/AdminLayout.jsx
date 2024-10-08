@@ -12,7 +12,7 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div class="fixed w-full h-full left-0 top-0 flex">
+        <div className="fixed w-full h-full left-0 top-0 flex">
             <aside className='w-64 h-full border-r border-gray-300'>
                 <div className='flex justify-center'>
                     <img width={80} src="https://png.pngtree.com/png-clipart/20230330/original/pngtree-modern-demo-logo-vector-file-png-image_9012000.png" alt="" />

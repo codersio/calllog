@@ -241,7 +241,7 @@ const Employee = ({ user, employee, user_type, projects, query, usrrr, projectss
                 </div>
                 <div className='w-1/3 p-2'>
                     <div className='border border-gray-300 rounded flex justify-between items-center p-4'>
-                        <div className='p-3 bg-indigo-500 rounded-full text-white'>
+                        <div className='p-3 bg-orange-500 rounded-full text-white'>
                             <FaRegHandshake size={30} />
                         </div>
                         <div className='text-end space-y-2'>

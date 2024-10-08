@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('d_istributers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('user_id');
             $table->string('address');
             $table->string('pin');
             $table->string('con1');

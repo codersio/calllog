@@ -78,12 +78,11 @@ class DIstributerController extends Controller
         $employee->pan = $request->pan;
         $employee->email = $request->email;
         $employee->con2 = $request->con2;
-        // $employee->password = $request->con2;
-
+        $employee->password = $request->password;
         $employee->save();
 
         // Redirect with a success message
-        return redirect()->route('distributers')->with('success', 'Employee created successfully.');
+        return redirect()->route('distributers.index')->with('success', 'Employee created successfully.');
     }
 
     /**
@@ -97,18 +96,21 @@ class DIstributerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DIstributer $dIstributer)
+    public function edit($dIstributer)
     {
         $distributor = User::join('d_istributers', 'd_istributers.user_id', '=', 'users.id')
             ->select(
                 'users.name',
                 'users.email',
+                'd_istributers.user_id',
                 'd_istributers.con1',
                 'd_istributers.address',
                 'd_istributers.con1',
                 'd_istributers.pan',
                 'd_istributers.gstn',
-                'd_istributers.con2'
+                'd_istributers.con2',
+                'd_istributers.pin',
+                'd_istributers.name as username',
             )->where('users.id', $dIstributer)
             ->first();
 
@@ -118,9 +120,33 @@ class DIstributerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DIstributer $dIstributer)
+    public function update(Request $request,$dIstributer)
     {
-        //
+        $validatedData = $request->validate([
+            'email' => 'required|email', // Ensure the email is valid and unique in the 'users' table
+            'phone' => 'nullable|string|max:10', // Optional field; adjust validation as needed
+        ]);
+
+        // Create and save the new user
+        $user = User::findOrFail($dIstributer);
+        $user->name = $request['name'];
+        $user->email = $validatedData['email'];
+        $user->save();
+
+
+        $employee = DIstributer::where('user_id',$dIstributer)->first();
+        $employee->name = $request->username;
+        $employee->address = $request->address;
+        $employee->pin = $request->pin;
+        $employee->con1 = $request->con1;
+        $employee->gstn = $request->gstn;
+        $employee->pan = $request->pan;
+        $employee->email = $request->email;
+        $employee->con2 = $request->con2;
+        $employee->save();
+
+        // Redirect with a success message
+        return redirect()->route('distributers.index')->with('success', 'Employee updated successfully.');
     }
 
     /**
