@@ -13,6 +13,7 @@ use App\Http\Controllers\RolsAndPermission;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TimesheetController;
 use App\Http\Controllers\DailyStatusController;
+use App\Http\Controllers\DelarController;
 use App\Http\Controllers\DIstributerController;
 use App\Http\Controllers\HolidayWorkController;
 use App\Http\Controllers\LeaveManagementController;
@@ -187,3 +188,4 @@ Route::post('/rejectapprovetime/{id}', [EmployeeController::class, 'RejectStatus
 
 
 Route::resource('/distributers', DIstributerController::class);
+Route::resource('/delars', DelarController::class);

@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DIstributer;
+use App\Models\Delar;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
-class DIstributerController extends Controller
+class DelarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $data = User::join('d_istributers', 'd_istributers.user_id', '=', 'users.id')
-            ->select('users.name', 'users.email', 'd_istributers.con1', 'd_istributers.address', 'users.id')
+        $data = User::join('delars', 'delars.user_id', '=', 'users.id')
+            ->select('users.name', 'users.email', 'delars.con1', 'delars.address', 'users.id')
             ->get();
-        return Inertia::render('Distributer/index', compact('data'));
+        // dd($data);
+        return Inertia::render('Delars/index', compact('data'));
     }
 
     /**
@@ -36,7 +34,7 @@ class DIstributerController extends Controller
         }
         $roles = Role::all();
         $notif = Auth::user()->notifications;
-        return Inertia::render('Distributer/create', compact('user', 'user_type', 'roles', 'notif'));
+        return Inertia::render('Delars/create', compact('user', 'user_type', 'roles', 'notif'));
     }
 
     /**
@@ -68,7 +66,7 @@ class DIstributerController extends Controller
         $user->assignRole($request['roledsitributer']);
 
 
-        $employee = new DIstributer();
+        $employee = new Delar();
         $employee->user_id = $user->id;
         $employee->name = $user->name;
         $employee->address = $request->address;
@@ -78,17 +76,17 @@ class DIstributerController extends Controller
         $employee->pan = $request->pan;
         $employee->email = $request->email;
         $employee->con2 = $request->con2;
-        $employee->password = $request->password;
+        // $employee->password = $request->password;
         $employee->save();
 
         // Redirect with a success message
-        return redirect()->route('distributers.index')->with('success', 'Employee created successfully.');
+        return back()->with('success', 'Employee created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(DIstributer $dIstributer)
+    public function show(Delar $Delar)
     {
         //
     }
@@ -96,63 +94,67 @@ class DIstributerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($dIstributer)
+    public function edit($Delar)
     {
-        $distributor = User::join('d_istributers', 'd_istributers.user_id', '=', 'users.id')
+
+        $distributor = User::join('delars', 'delars.user_id', '=', 'users.id')
             ->select(
                 'users.name',
                 'users.email',
-                'd_istributers.user_id',
-                'd_istributers.con1',
-                'd_istributers.address',
-                'd_istributers.con1',
-                'd_istributers.pan',
-                'd_istributers.gstn',
-                'd_istributers.con2',
-                'd_istributers.pin',
-                'd_istributers.name as username',
-            )->where('users.id', $dIstributer)
+                'delars.user_id',
+                'delars.con1',
+                'delars.address',
+                'delars.con1',
+                'delars.pan',
+                'delars.gstn',
+                'delars.con2',
+                'delars.pin',
+                'delars.name as username',
+                'users.id',
+            )->where('users.id', $Delar)
             ->first();
-
-        return Inertia::render('Distributer/edit', compact('distributor'));
+        // dd($distributor);
+        return Inertia::render('Delars/edit', compact('distributor'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $dIstributer)
+    public function update(Request $request, $Delar)
     {
+        // dd($Delar);
         $validatedData = $request->validate([
             'email' => 'required|email', // Ensure the email is valid and unique in the 'users' table
             'phone' => 'nullable|string|max:10', // Optional field; adjust validation as needed
         ]);
 
         // Create and save the new user
-        $user = User::findOrFail($dIstributer);
+        $user = User::findOrFail($Delar);
         $user->name = $request['name'];
         $user->email = $validatedData['email'];
         $user->save();
 
 
-        $employee = DIstributer::where('user_id', $dIstributer)->first();
-        $employee->name = $request->username;
+        $employee = Delar::where('user_id', $Delar)->first();
+        // dd($employee);
+        $employee->name = $user->name;
         $employee->address = $request->address;
         $employee->pin = $request->pin;
         $employee->con1 = $request->con1;
         $employee->gstn = $request->gstn;
         $employee->pan = $request->pan;
-        $employee->email = $request->email;
+        $employee->email = $user->email;
         $employee->con2 = $request->con2;
         $employee->save();
 
         // Redirect with a success message
-        return redirect()->route('distributers.index')->with('success', 'Employee updated successfully.');
+        return redirect('delars')->with('success', 'Employee updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DIstributer $dIstributer)
+    public function destroy(Delar $Delar)
     {
         //
     }
