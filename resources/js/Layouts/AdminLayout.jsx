@@ -68,7 +68,7 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                     </li>
                 </ul>
             </aside>
-            <div className='flex-1'>
+            <div className='flex-1 flex flex-col'>
                 <nav className='w-full p-3 border-b border-gray-300 px-6 flex justify-between items-center'>
                     <div>
 
@@ -81,7 +81,7 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         </button>
                     </div>
                 </nav>
-                <div className='p-4'>
+                <div className='p-4 flex-1 h-full overflow-y-auto'>
                 {children}
                 </div>
             </div>
