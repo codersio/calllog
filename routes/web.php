@@ -18,6 +18,7 @@ use App\Http\Controllers\DIstributerController;
 use App\Http\Controllers\HolidayWorkController;
 use App\Http\Controllers\LeaveManagementController;
 use App\Http\Controllers\NotificationAllController;
+use App\Http\Controllers\ServiceCenterController;
 use Flasher\Prime\Test\Constraint\NotificationCount;
 
 // Route::get('/', function () {
@@ -189,3 +190,4 @@ Route::post('/rejectapprovetime/{id}', [EmployeeController::class, 'RejectStatus
 
 Route::resource('/distributers', DIstributerController::class);
 Route::resource('/delars', DelarController::class);
+Route::resource('/service-centers', ServiceCenterController::class);
