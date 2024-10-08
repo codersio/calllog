@@ -13,6 +13,7 @@ use App\Http\Controllers\RolsAndPermission;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TimesheetController;
 use App\Http\Controllers\DailyStatusController;
+use App\Http\Controllers\DIstributerController;
 use App\Http\Controllers\HolidayWorkController;
 use App\Http\Controllers\LeaveManagementController;
 use App\Http\Controllers\NotificationAllController;
@@ -183,3 +184,6 @@ Route::get('/assign-employee', [ReportController::class, 'AssignEmployee']);
 Route::get('/assign-employeeproject', [ProjectController::class, 'proassignemployess']);
 Route::post('/approvetime/{id}', [EmployeeController::class, 'ApproveStatuschange']);
 Route::post('/rejectapprovetime/{id}', [EmployeeController::class, 'RejectStatuschange']);
+
+
+Route::resource('/distributers', DIstributerController::class);
