@@ -19,5 +19,6 @@ export default function Authenticated({  header, children,user,usrrr,notif,user_
             <main className='grid ml-[7rem] place-items-center'>{children}</main>
         </div>
         </div>
+    
     );
 }

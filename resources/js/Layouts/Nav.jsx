@@ -25,7 +25,7 @@ const Nav = ({ user_type }) => {
 
 
     return (
-        <nav className='grid p-5 place-items-center '>
+        <nav className='grid p-5 w-full place-items-center '>
             {/* <ul className=''>
 r
                 <li className={url === '' ? 'active bg-[#0A1B3F] p-2    text-[0.9rem] text-black' : ' p-2 cursor-pointer tex0.9hite text-[0.7rem]'} onClick={(e)=>SetToggle(!toggle)}>
