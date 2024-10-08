@@ -82,7 +82,7 @@ class DIstributerController extends Controller
         $employee->save();
 
         // Redirect with a success message
-        return redirect()->route('distributers.index')->with('success', 'Employee created successfully.');
+        return redirect()->route('distributers.index');
     }
 
     /**
@@ -120,7 +120,7 @@ class DIstributerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $dIstributer)
+    public function update(Request $request,$dIstributer)
     {
         $validatedData = $request->validate([
             'email' => 'required|email', // Ensure the email is valid and unique in the 'users' table
@@ -134,7 +134,7 @@ class DIstributerController extends Controller
         $user->save();
 
 
-        $employee = DIstributer::where('user_id', $dIstributer)->first();
+        $employee = DIstributer::where('user_id',$dIstributer)->first();
         $employee->name = $request->username;
         $employee->address = $request->address;
         $employee->pin = $request->pin;
@@ -146,14 +146,16 @@ class DIstributerController extends Controller
         $employee->save();
 
         // Redirect with a success message
-        return redirect()->route('distributers.index')->with('success', 'Employee updated successfully.');
+        return redirect()->route('distributers.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DIstributer $dIstributer)
+    public function destroy($dIstributer)
     {
-        //
+        DIstributer::where('user_id',$dIstributer)->get();
+        User::findOrFail($dIstributer)->delete();
+        return redirect()->route('distributers.index')->with('success', 'Employee deleted successfully.');
     }
 }
