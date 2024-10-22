@@ -33,7 +33,7 @@ const index = ({ data }) => {
     const handleDelete = (e, id) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete this record?')) {
-            destroy(`/product/${id}`,{
+            destroy(`/products/${id}`,{
                 onSuccess: () => {
                     // Show success notification on successful submission
                     notyf.success('Product  deleted successfully!');
@@ -97,7 +97,7 @@ const index = ({ data }) => {
                                     
                                     <td className='p-3 text-center border'>
                                         <div className='flex justify-center space-x-3'>
-                                            <Link className='p-2 text-white bg-green-500 rounded' href={`products-category/${emp.id}/edit`}>
+                                            <Link className='p-2 text-white bg-green-500 rounded' href={`products/${emp.id}/edit`}>
                                                 <CiEdit />
                                             </Link>
                                             <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>

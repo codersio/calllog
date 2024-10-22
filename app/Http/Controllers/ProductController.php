@@ -71,10 +71,15 @@ class ProductController extends Controller
     public function edit($id)
     {
 
-            $post = DB::table('products_category')->where('id', $id)->first();
+        $product = DB::table('product')
+        ->join('products_category', 'product.category_id', '=', 'products_category.id')
+        ->select('product.*', 'products_category.name as category_name') // Select all product columns and the category name
+        ->where('product.id', $id) // Replace $productId with the actual product ID variable
+        ->first(); // Use first() to get a single result
+    
+            $categories = DB::table('products_category')->get();
 
-
-        return Inertia::render('Product/edit', compact('post'));
+        return Inertia::render('Product/product_edit', compact('product','categories'));
     }
 
     /**
@@ -82,19 +87,26 @@ class ProductController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:products_category,name', // 'unique product category name
-            
+        
+        DB::table('product')
+        ->where('id', $id) // Replace $productId with the actual product ID you want to update
+        ->update([
+            'category_id' => $request->category_id,
+            'model' => $request->model,
+            'source' => $request->source,
+            'qty' => $request->qty,
+            'purchase_date' => $request->purchase,
+            'invoice_no' => $request->invoice,
+            'bardcodeno' => 1, // This field will be updated as well
+            'updated_at' => now(), // Automatically set the updated timestamp
         ]);
-        DB::table('products_category')->where('id', $id)->update([
-            'name' => $request->name,
-            'updated_at' => now(),
-        ]);
+    
+        
      
 
 
         // Redirect with a success message
-        return redirect()->route('products-category.index');
+        return redirect()->route('products.index');
     }
 
     /**
@@ -102,8 +114,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('products_category')->where('id', $id)->delete();
-        return redirect()->route('products-category.index');
+        DB::table('product')->where('id', $id)->delete();
+        return redirect()->route('products.index');
     }
 
     
