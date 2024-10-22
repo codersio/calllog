@@ -133,13 +133,13 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         </div>
                     </li>
                     <li>
-                        <Link className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                        <Link href='/spare-part' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoBuildOutline size={15} />
                             <span className='text-sm'>Spare & Parts</span>
                         </Link>
                     </li>
                     <li>
-                        <Link className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                        <Link href='/Call-Allocation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoCallOutline size={15} />
                             <span className='text-sm'>Call Allocation</span>
                         </Link>

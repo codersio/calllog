@@ -23,6 +23,10 @@ use Flasher\Prime\Test\Constraint\NotificationCount;
 
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SparePartController;
+use App\Http\Controllers\CallAllocationController;
+
+
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -196,3 +200,6 @@ Route::resource('/delars', DelarController::class);
 Route::resource('/service-centers', ServiceCenterController::class);
 Route::resource('/products-category', ProductCategoryController::class);
 Route::resource('/products', ProductController::class);
+Route::resource('/spare-part',SparePartController::class);
+Route::resource('/Call-Allocation',CallAllocationController::class);
+
