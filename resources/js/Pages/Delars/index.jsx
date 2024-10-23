@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link,useForm } from '@inertiajs/react';
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdLockClock, MdOutlineAssignmentLate } from "react-icons/md";
@@ -31,21 +31,23 @@ const Delars = ({ data }) => {
         setQuery(event.target.value);
         setCurrentPage(1); // Reset to the first page when search query changes
     };
+const { delete: destroy } = useForm();
+ const handleDelete = (e, id) => {
+    e.preventDefault();
+    if (confirm('Are you sure you want to delete this record?')) {
+        destroy(`/delars/${id}`)
+            .then(() => {
+                notyf.success('Data deleted successfully');
+                // Assuming you have a state variable that holds your data
+                setDistributors(prev => prev.filter(distributor => distributor.id !== id));
+            })
+            .catch(error => {
+                console.error('Delete error:', error.response ? error.response.data : error.message);
+                notyf.error('Failed to delete data: ' + (error.response?.data.message || 'Unknown error'));
+            });
+    }
+};
 
-    const handleDelete = (e, id) => {
-        e.preventDefault();
-        if (confirm('Are you sure you want to delete this record?')) {
-            axios.delete(`/delars/${id}`)
-                .then(() => {
-                    notyf.success('Data deleted successfully');
-                    // Optionally refresh the data here or update state
-                })
-                .catch(error => {
-                    console.error(error);
-                    notyf.error('Failed to delete data');
-                });
-        }
-    };
 
     // Pagination logic
     const indexOfLastData = currentPage * itemsPerPage;

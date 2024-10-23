@@ -154,8 +154,10 @@ class DelarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Delar $Delar)
+    public function destroy($dIstributer)
     {
-        //
+        Delar::where('user_id', $dIstributer)->get();
+        User::findOrFail($dIstributer)->delete();
+        return redirect('delars')->with('success', 'Employee deleted successfully.');
     }
 }
