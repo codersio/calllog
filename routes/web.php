@@ -21,6 +21,13 @@ use App\Http\Controllers\NotificationAllController;
 use App\Http\Controllers\ServiceCenterController;
 use Flasher\Prime\Test\Constraint\NotificationCount;
 
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SparePartController;
+use App\Http\Controllers\CallAllocationController;
+
+
+
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),
@@ -191,3 +198,9 @@ Route::post('/rejectapprovetime/{id}', [EmployeeController::class, 'RejectStatus
 Route::resource('/distributers', DIstributerController::class);
 Route::resource('/delars', DelarController::class);
 Route::resource('/service-centers', ServiceCenterController::class);
+Route::resource('/products-category', ProductCategoryController::class);
+Route::resource('/products', ProductController::class);
+Route::resource('/spare-part',SparePartController::class);
+Route::resource('/Call-Allocation',CallAllocationController::class);
+Route::get('/Get-Service/{id}', [CallAllocationController::class, 'getDetails']);
+
