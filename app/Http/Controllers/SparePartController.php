@@ -33,7 +33,7 @@ class SparePartController extends Controller
     {
         $categories = DB::table('products_category')->get();
         $service_centers = DB::table('service_centers')->get();
-        // $data="rsm÷";
+   
         return Inertia::render('sparepart/create',compact('categories','service_centers'));
     }
 
@@ -43,28 +43,42 @@ class SparePartController extends Controller
     public function store(Request $request)
     {
         
-       
+        $validatedData = $request->validate([
+            'call_allocation' => 'required|string|max:255',
+            'customer_name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+           'phone_number' => 'required|digits:10',  // You can customize phone validation as per your need
+            'service_partner' => 'required|string|max:255',
+            'spare_part_type' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',  // Assuming product name refers to a category
+            'qty' => 'required|integer|min:1',
+            'model' => 'required|string|max:255',
+            'spare_part_Serial' => 'required',
+            'invoice' => 'required',
+            'dispatch_model' => 'required|string|max:255',
+            'dispatch_type' => 'required|string|max:255',
+            'date' => 'required|date',
+        ]);
+    
         // Insert the validated data into the database
         DB::table('spare_part')->insert([
-            'call_allocation' => $request->call_allocation,
-            'customer_name' => $request->customer_name,
-            'address' => $request->address,
-            'phone'=>$request->phone_number,
-            'service_partner_id' => $request->service_partner,
-            'spare_part_type' => $request->spare_part_type,
-            'category_id' => $request->product_name,
-            'qty'=>$request->qty,
-            'model'=>$request->model,
-            'spare_part_ser_no'=>$request->spare_part_Serial,
-            'invoice_no'=>$request->invoice,
-            'dispatch_module'=>$request->dispatch_model,
-            'dispatch_type'=>$request->dispatch_type,
-            'date'=>$request->date,
+            'call_allocation' => $validatedData['call_allocation'],
+            'customer_name' => $validatedData['customer_name'],
+            'address' => $validatedData['address'],
+            'phone' => $validatedData['phone_number'],
+            'service_partner_id' => $validatedData['service_partner'],
+            'spare_part_type' => $validatedData['spare_part_type'],
+            'category_id' => $validatedData['product_name'],
+            'qty' => $validatedData['qty'],
+            'model' => $validatedData['model'],
+            'spare_part_ser_no' => $validatedData['spare_part_Serial'],
+            'invoice_no' => $validatedData['invoice'],
+            'dispatch_module' => $validatedData['dispatch_model'],
+            'dispatch_type' => $validatedData['dispatch_type'],
+            'date' => $validatedData['date'],
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-
         // Redirect with a success message
         return redirect()->route('spare-part.index');
     }
@@ -96,28 +110,44 @@ class SparePartController extends Controller
     {
         
     
-        DB::table('spare_part')
-        ->where('id',$id)
+         // Validate the request data
+    $validatedData = $request->validate([
+        'call_allocation' => 'required|string|max:255',
+        'customer_name' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+        'phone_number' => 'required|digits:10',  // Adjust phone validation as needed
+        'service_partner' => 'required|integer',  // Ensure the service partner exists
+        'spare_part_type' => 'required|string|max:255',
+        'product_name' => 'required|integer',  // Ensure the product name refers to a category
+        'qty' => 'required|integer|min:1',
+        'model' => 'required|string|max:255',
+        'spare_part_Serial' => 'required',
+        'invoice' => 'required|string|max:255',
+        'dispatch_model' => 'required|string|max:255',
+        'dispatch_type' => 'required|string|max:255',
+        'date' => 'required|date',
+    ]);
+
+    // Update the existing record in the database
+    DB::table('spare_part')
+        ->where('id', $id)
         ->update([
-            'call_allocation' => $request->call_allocation,
-            'customer_name' => $request->customer_name,
-            'address' => $request->address,
-            'phone'=>$request->phone_number,
-            'service_partner_id' => $request->service_partner,
-            'spare_part_type' => $request->spare_part_type,
-            'category_id' => $request->product_name,
-            'qty'=>$request->qty,
-            'model'=>$request->model,
-            'spare_part_ser_no'=>$request->spare_part_Serial,
-            'invoice_no'=>$request->invoice,
-            'dispatch_module'=>$request->dispatch_model,
-            'dispatch_type'=>$request->dispatch_type,
-            'date'=>$request->date,
+            'call_allocation' => $validatedData['call_allocation'],
+            'customer_name' => $validatedData['customer_name'],
+            'address' => $validatedData['address'],
+            'phone' => $validatedData['phone_number'],
+            'service_partner_id' => $validatedData['service_partner'],
+            'spare_part_type' => $validatedData['spare_part_type'],
+            'category_id' => $validatedData['product_name'],
+            'qty' => $validatedData['qty'],
+            'model' => $validatedData['model'],
+            'spare_part_ser_no' => $validatedData['spare_part_Serial'],
+            'invoice_no' => $validatedData['invoice'],
+            'dispatch_module' => $validatedData['dispatch_model'],
+            'dispatch_type' => $validatedData['dispatch_type'],
+            'date' => $validatedData['date'],
             'updated_at' => now(),
         ]);
-        
-     
-
 
         // Redirect with a success message
         return redirect()->route('spare-part.index');

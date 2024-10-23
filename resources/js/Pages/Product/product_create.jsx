@@ -117,7 +117,7 @@ const CreateCategory = ({ categories }) => {
                     <div>
                     <label className="block mb-1 text-sm font-medium text-gray-700">Invoice Number</label>
                     <input
-                        type="number"
+                        type="text"
                         name="invoice"
                         value={data.invoice}
                         onChange={handleChange}

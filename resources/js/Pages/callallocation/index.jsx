@@ -39,21 +39,14 @@ const index = ({ data }) => {
             destroy(`/service-centers/${id}`,{
                 onSuccess: () => {
                     // Show success notification on successful submission
-                    notyf.success('Service center deleted successfully!');
+                    notyf.success('Call Allocation  deleted successfully!');
                 },
                 onError: () => {
                     // Show error notification if there are errors
                     notyf.error('Failed to delete data.');
                 }
             })
-                // .then(() => {
-                //     notyf.success('Data deleted successfully');
-                //     // Optionally refresh the data here or update state
-                // })
-                // .catch(error => {
-                //     console.error(error);
-                //     notyf.error('Failed to delete data');
-                // });
+                
         }
     };
 
@@ -77,20 +70,28 @@ const index = ({ data }) => {
                         placeholder="Search data..."
                         className='w-[60%] p-2 border border-gray-300 rounded-md'
                     />
-                    <Link href='service-centers/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
-                        Create New Data
+                    <Link href='Call-Allocation/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                        Create Call Allocation
                     </Link>
                 </div>
 
                 <table className="w-full border border-collapse table-auto">
                     <thead className='text-white bg-gray-700'>
                         <tr>
-                            <th className='p-3 text-left border'>Name</th>
-                            <th className='p-3 text-left border'>Email</th>
-                            {/* <th className='p-3 text-left border'>Roles</th> */}
-                            <th className='p-3 text-left border'>Phone</th>
-                            {/* <th className='p-3 text-center border'>Holiday Work Assign</th> */}
-                            <th className='p-3 text-center border'>Actions</th>
+                            <th className='p-3 text-left border'>SL</th>
+                            <th className='p-3 text-left border'>Call No</th>
+                            <th className='p-3 text-left border'>Customer Name</th>
+                            <th className='p-3 text-left border'>Address</th>
+                            <th className='p-3 text-center border'>Contact No</th>
+                            <th className='p-3 text-center border'>Pin</th>
+                            <th className='p-3 text-left border'>Service Partner Name</th>
+                            <th className='p-3 text-left border'>Call Status</th>
+                            <th className='p-3 text-left border'>Reason</th>
+                            <th className='p-3 text-center border'>Call Starting Date</th>
+                            <th className='p-3 text-center border'>Call Ending Date</th>
+                            <th className='p-3 text-left border'>Total Time</th>
+                            <th className='p-3 text-left border'>Action</th>
+
                             {/* <th className='p-3 text-center border'>Unlock Timesheet</th> */}
                         </tr>
                     </thead>

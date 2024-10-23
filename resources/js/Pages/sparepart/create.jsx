@@ -110,12 +110,19 @@ const CreateCategory = ({ categories,service_centers }) => {
                     <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700">Phone Number</label>
                         <input
-                            type="number"
+                            type="text" // changed from "number" to "text" to handle validation properly
                             name="phone_number"
                             value={data.phone_number}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                const { value } = e.target;
+                                // Allow only digits and ensure it's 10 digits long
+                                if (value === '' || (/^\d{0,10}$/.test(value))) {
+                                    handleChange(e);
+                                }
+                            }}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                            placeholder={"Enter Phone Number"}
+                            placeholder="Enter Phone Number"
+                            maxLength={10} // limits the input length to 10 digits
                         />
                         {errors.phone_number && <p className="mt-1 text-xs text-red-500">{errors.phone_number}</p>}
                     </div>
@@ -200,7 +207,7 @@ const CreateCategory = ({ categories,service_centers }) => {
                  <div>
                     <label className="block mb-1 text-sm font-medium text-gray-700">Spare Parts Serial Number</label>
                     <input
-                        type="text"
+                        type="number"
                         name="spare_part_Serial"
                         value={data.spare_part_Serial}
                         onChange={handleChange}

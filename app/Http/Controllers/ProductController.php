@@ -40,23 +40,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        
-        // $request->validate([
-        //     'cateogry_id' => 'required', // 'unique product category name
-        // ]);
+         // Validate the request data
+    $validatedData = $request->validate([
+        'category_id' => 'required|integer', // Ensure category exists
+        'model' => 'required|string|max:255',
+        'source' => 'required|string|max:255',
+        'qty' => 'required|integer|min:1',
+        'purchase' => 'required|date', // Validate purchase date format
+        'invoice' => 'required|string|max:255',
+    ]);
 
-        // Insert the validated data into the database
-        DB::table('product')->insert([
-            'category_id' => $request->category_id,
-            'model' => $request->model,
-            'source' => $request->source,
-            'qty' => $request->qty,
-            'purchase_date' => $request->purchase,
-            'invoice_no' => $request->invoice,
-            'bardcodeno'=>1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+    // Insert the validated data into the database
+    DB::table('product')->insert([
+        'category_id' => $validatedData['category_id'],
+        'model' => $validatedData['model'],
+        'source' => $validatedData['source'],
+        'qty' => $validatedData['qty'],
+        'purchase_date' => $validatedData['purchase'],
+        'invoice_no' => $validatedData['invoice'],
+        'bardcodeno' => 1, // Assuming this is auto-generated or default
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
 
 
         // Redirect with a success message
@@ -88,22 +94,29 @@ class ProductController extends Controller
     public function update(Request $request,$id)
     {
         
-        DB::table('product')
-        ->where('id', $id) // Replace $productId with the actual product ID you want to update
+         // Validate the request data
+    $validatedData = $request->validate([
+        'category_id' => 'required|integer', // Ensure category exists
+        'model' => 'required|string|max:255',
+        'source' => 'required|string|max:255',
+        'qty' => 'required|integer|min:1',
+        'purchase' => 'required|date', // Validate purchase date
+        'invoice' => 'required|string|max:255',
+    ]);
+
+    // Update the existing record in the database
+    DB::table('product')
+        ->where('id', $id)
         ->update([
-            'category_id' => $request->category_id,
-            'model' => $request->model,
-            'source' => $request->source,
-            'qty' => $request->qty,
-            'purchase_date' => $request->purchase,
-            'invoice_no' => $request->invoice,
-            'bardcodeno' => 1, // This field will be updated as well
+            'category_id' => $validatedData['category_id'],
+            'model' => $validatedData['model'],
+            'source' => $validatedData['source'],
+            'qty' => $validatedData['qty'],
+            'purchase_date' => $validatedData['purchase'],
+            'invoice_no' => $validatedData['invoice'],
+            'bardcodeno' => 1, // Assuming barcode number is auto-generated or default
             'updated_at' => now(), // Automatically set the updated timestamp
         ]);
-    
-        
-     
-
 
         // Redirect with a success message
         return redirect()->route('products.index');

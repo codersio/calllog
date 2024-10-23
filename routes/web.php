@@ -202,4 +202,5 @@ Route::resource('/products-category', ProductCategoryController::class);
 Route::resource('/products', ProductController::class);
 Route::resource('/spare-part',SparePartController::class);
 Route::resource('/Call-Allocation',CallAllocationController::class);
+Route::get('/Get-Service/{id}', [CallAllocationController::class, 'getDetails']);
 
