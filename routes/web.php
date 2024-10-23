@@ -25,6 +25,8 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\CallAllocationController;
+use App\Http\Controllers\WarrantyExtendController;
+
 
 
 
@@ -204,4 +206,4 @@ Route::resource('/spare-part',SparePartController::class);
 Route::resource('/Call-Allocation',CallAllocationController::class);
 Route::get('/Get-Service/{id}', [CallAllocationController::class, 'getDetails']);
 Route::get('/Get-Distributer/{id}', [CallAllocationController::class, 'getDetails2']);
-
+Route::resource('/Warranty-Extend',WarrantyExtendController::class);

@@ -8,9 +8,9 @@ import AdminLayout from '@/Layouts/AdminLayout';
 // Create an instance of Notyf
 const notyf = new Notyf();
 
-const create = ({ nextcallno2, service_centers,distribter }) => {
+const create = ({ warranty_no, service_centers,distribter }) => {
     const { data, setData, post, processing, errors } = useForm({
-        call_no: nextcallno2.value,
+        warranty_no: warranty_no.value,
         customer_name: '',
         address: '',
         phone: '',
@@ -20,7 +20,9 @@ const create = ({ nextcallno2, service_centers,distribter }) => {
         source_material: '',
         model: '',
         purchase: '',
-        reason: '',
+        sl_no: '',
+        invoice_no:'',
+        invoice_date:'',
         service_partner_address: '',
         service_partner_pin: '',
         service_partner_contact1: '', // Initialize with an empty string
@@ -83,7 +85,7 @@ const create = ({ nextcallno2, service_centers,distribter }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/Call-Allocation', {
+        post('/Warranty-Extend', {
             onSuccess: () => {
                 notyf.success('Call Allocation added successfully!');
             },
@@ -96,16 +98,16 @@ const create = ({ nextcallno2, service_centers,distribter }) => {
     return (
         <AdminLayout>
             <div className="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-md">
-                <h2 className="mb-6 text-2xl font-bold text-gray-800">Call Allocation</h2>
+                <h2 className="mb-6 text-2xl font-bold text-gray-800">Warranty Extend Registration</h2>
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {/* Call No */}
                     <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700">Call No</label>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Warranty No</label>
                         <input
                             type="text"
-                            name="call_no"
+                            name="warranty_no"
                             readOnly={true}
-                            value={data.call_no}
+                            value={data.warranty_no}
                             onChange={handleChange}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Enter service center's name"
@@ -406,6 +408,32 @@ const create = ({ nextcallno2, service_centers,distribter }) => {
                         />
                         {errors.model && <p className="mt-1 text-xs text-red-500">{errors.model}</p>}
                     </div>
+                    {/* Sl No */}
+                    <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">SL Number</label>
+                        <input
+                            type="text"
+                            name="sl_no"
+                            value={data.sl_no}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter Model Number"
+                        />
+                        {errors.sl_no && <p className="mt-1 text-xs text-red-500">{errors.sl_no}</p>}
+                    </div>
+                    {/* Sl No */}
+                    <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Invoice Number</label>
+                        <input
+                            type="text"
+                            name="invoice_no"
+                            value={data.invoice_no}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter Model Number"
+                        />
+                        {errors.invoice_no && <p className="mt-1 text-xs text-red-500">{errors.invoice_no}</p>}
+                    </div>
 
                     {/* Date Of Purchase */}
                     <div>
@@ -422,16 +450,16 @@ const create = ({ nextcallno2, service_centers,distribter }) => {
                     </div>
                     {/* Reason */}
                     <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700">Reason</label>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Date Of Invoice</label>
                         <input
-                            type="text"
-                            name="reason"
-                            value={data.reason}
+                            type="date"
+                            name="invoice_date"
+                            value={data.invoice_date}
                             onChange={handleChange}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Enter Reason"
                         />
-                        {errors.reason && <p className="mt-1 text-xs text-red-500">{errors.reason}</p>}
+                        {errors.invoice_date && <p className="mt-1 text-xs text-red-500">{errors.invoice_date}</p>}
                     </div>
                     {/* Submit Button */}
                     <div className="col-span-1 md:col-span-2">
@@ -440,7 +468,7 @@ const create = ({ nextcallno2, service_centers,distribter }) => {
                             disabled={processing}
                             className="px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
                         >
-                            {processing ? 'Processing...' : 'Submit'}
+                            {processing ? 'Processing...' : 'Register'}
                         </button>
                     </div>
                 </form>
