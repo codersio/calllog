@@ -35,15 +35,25 @@ class CallAllocationController extends Controller
     {
         $categories = DB::table('products_category')->get();
         $service_centers = DB::table('service_centers')->get();
+        $distribter =DB::table('d_istributers')->get();
         // $data="rsm÷";
-        $lastId = DB::table('call_log')->orderBy('id', 'desc')->value('id');
+        // $lastId = DB::table('call_log')->orderBy('id', 'desc')->value('id');
+        $lastInsert = DB::table('call_allocation')
+                    ->latest('id') // Order by ID, assuming the ID is auto-incrementing
+                    ->first();
+        $lst=0;
+        if ($lastInsert) {
+            $lst= $lastInsert->id;
+        } else {
+            $lst= 0;
+        }
         $currentDate = Carbon::now()->format('dmY');
-        $nextcallno=$currentDate.'/'.$lastId+1; 
+        $nextcallno=$currentDate.'/'.$lst+1; 
         $nextcallno2 = (object)[
             'value' => $nextcallno,
             
         ];
-        return Inertia::render('callallocation/create',compact('nextcallno2','service_centers','categories'));
+        return Inertia::render('callallocation/create',compact('nextcallno2','service_centers','distribter'));
     }
 
     public function getDetails($id)
@@ -59,6 +69,19 @@ class CallAllocationController extends Controller
     // Return the service partner details as JSON
     return response()->json($servicePartner);
 }
+public function getDetails2($id)
+{
+    // Fetch the service partner directly from the database
+    $distributer = DB::table('d_istributers')->where('id', $id)->first();
+
+    // Check if the service partner exists
+    if (!$distributer) {
+        return response()->json(['message' => 'Service Partner not found'], 404);
+    }
+
+    // Return the service partner details as JSON
+    return response()->json($distributer);
+}
     /**
      * Store a newly created resource in storage.
      */
@@ -66,29 +89,42 @@ class CallAllocationController extends Controller
     {
         
        
-        // Insert the validated data into the database
-        DB::table('spare_part')->insert([
-            'call_allocation' => $request->call_allocation,
-            'customer_name' => $request->customer_name,
-            'address' => $request->address,
-            'phone'=>$request->phone_number,
-            'service_partner_id' => $request->service_partner,
-            'spare_part_type' => $request->spare_part_type,
-            'category_id' => $request->product_name,
-            'qty'=>$request->qty,
-            'model'=>$request->model,
-            'spare_part_ser_no'=>$request->spare_part_Serial,
-            'invoice_no'=>$request->invoice,
-            'dispatch_module'=>$request->dispatch_model,
-            'dispatch_type'=>$request->dispatch_type,
-            'date'=>$request->date,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+       // Validate the incoming request data
+    $validatedData = $request->validate([
+        'call_no' => 'required|string|max:255',
+        'customer_name' => 'required|string|max:255',
+        'address' => 'required|string|max:500',
+        'phone' => 'required|numeric|digits:10', // Assumes phone numbers should be between 10 to 15 digits
+        'service_partner' => 'required|string|max:255',
+        'pin' => 'required', // Assuming PIN is 6 digits
+        'distributer_name1' => 'required|string|max:255',
+        'source_material' => 'required|string|max:255',
+        'model' => 'required|string|max:255',
+        'purchase' => 'required|date', // Assuming purchase is a date
+        'reason' => 'required|string|max:500',
+    ]);
 
+    // Insert the validated data into the database
+    DB::table('call_allocation')->insert([
+        'call_no' => $validatedData['call_no'],
+        'customer_name' => $validatedData['customer_name'],
+        'address' => $validatedData['address'],
+        'phone' => $validatedData['phone'],
+        'service_partner' => $validatedData['service_partner'],
+        'pin' => $validatedData['pin'],
+        'distributer' => $validatedData['distributer_name1'],
+        'source_material' => $validatedData['source_material'],
+        'model' => $validatedData['model'],
+        'purchase' => $validatedData['purchase'],
+        'reason' => $validatedData['reason'],
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+     
 
         // Redirect with a success message
-        return redirect()->route('spare-part.index');
+        return redirect()->route('Call-Allocation.index');
     }
 
 
@@ -150,8 +186,8 @@ class CallAllocationController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('spare_part')->where('id', $id)->delete();
-        return redirect()->route('spare-part.index');
+        DB::table('call_allocation')->where('id', $id)->delete();
+        return redirect()->route('Call-Allocation.index');
     }
 
     

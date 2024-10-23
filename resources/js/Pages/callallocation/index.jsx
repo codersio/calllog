@@ -17,13 +17,7 @@ const index = ({ data }) => {
 
     useEffect(() => {
         // Filter data based on the search query
-        const filtered = data.filter(emp =>
-            emp.name.toLowerCase().includes(query.toLowerCase()) ||
-            emp.email.toLowerCase().includes(query.toLowerCase()) ||
-            emp.roles.some(role => role.name.toLowerCase().includes(query.toLowerCase())) ||
-            emp.datas.some(empDetail => empDetail.phone.toLowerCase().includes(query.toLowerCase()))
-        );
-        setFilteredData(filtered);
+        
     }, [query, data]);
 
     const handleSearch = (event) => {
@@ -36,7 +30,7 @@ const index = ({ data }) => {
     const handleDelete = (e, id) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete this record?')) {
-            destroy(`/service-centers/${id}`,{
+            destroy(`/Call-Allocation/${id}`,{
                 onSuccess: () => {
                     // Show success notification on successful submission
                     notyf.success('Call Allocation  deleted successfully!');
@@ -99,20 +93,19 @@ const index = ({ data }) => {
                         {currentData.length > 0 ? (
                             currentData.map(emp => (
                                 <tr key={emp.id} className="odd:bg-white even:bg-gray-100">
-                                    <td className='p-3 border'>{emp.name}</td>
-                                    <td className='p-3 border'>{emp.email}</td>
-                                    <td className='p-3 border'>{emp.con1}</td>
-                                    {/* <td className='p-3 border'>
-                                        {emp.roles.map(role => (
-                                            <span key={role.id} className='block'>{role.name}</span>
-                                        ))}
-                                    </td> */}
-                                    {/* <td className='p-3 border'>
-                                        {emp.datas.map(empDetail => (
-                                            <span key={empDetail.id} className='block'>{empDetail.phone}</span>
-                                        ))}
-                                    </td> */}
-
+                                    <td className='p-3 border'>1</td>
+                                    <td className='p-3 border'>{emp.call_no}</td>
+                                    <td className='p-3 border'>{emp.customer_name}</td>
+                                    <td className='p-3 border'>{emp.address}</td>
+                                    <td className='p-3 border'>{emp.phone}</td>
+                                    <td className='p-3 border'>{emp.pin}</td>
+                                    <td className='p-3 border'>{emp.service_partner}</td>
+                                    <td className='p-3 border'></td>
+                                    <td className='p-3 border'>{emp.reason}</td>
+                                    <td className='p-3 border'></td>
+                                    <td className='p-3 border'></td>
+                                    <td className='p-3 border'></td>
+                                    
                                     <td className='p-3 text-center border'>
                                         <div className='flex justify-center space-x-3'>
                                             <Link className='p-2 text-white bg-green-500 rounded' href={`service-centers/${emp.id}/edit`}>
