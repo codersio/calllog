@@ -32,6 +32,7 @@ const index = ({ data }) => {
         if (confirm('Are you sure you want to delete this record?')) {
             destroy(`/Call-Allocation/${id}`,{
                 onSuccess: () => {
+                    location.reload()
                     // Show success notification on successful submission
                     notyf.success('Call Allocation  deleted successfully!');
                 },
