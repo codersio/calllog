@@ -145,9 +145,15 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         </Link>
                     </li>
                     <li>
-                        <Link className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                        <Link href='/Warranty-Extend' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoDocumentTextOutline size={15} />
                             <span className='text-sm'>Extened Warrenty</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href='/Client' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoPeopleOutline size={15} />
+                            <span className='text-sm'>Client</span>
                         </Link>
                     </li>
                 </ul>

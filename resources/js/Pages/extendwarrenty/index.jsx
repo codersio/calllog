@@ -30,11 +30,11 @@ const index = ({ data }) => {
     const handleDelete = (e, id) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete this record?')) {
-            destroy(`/Call-Allocation/${id}`,{
+            destroy(`/Warranty-Extend/${id}`,{
                 onSuccess: () => {
                     location.reload()
                     // Show success notification on successful submission
-                    notyf.success('Call Allocation  deleted successfully!');
+                    notyf.success('Warranty deleted successfully!');
                 },
                 onError: () => {
                     // Show error notification if there are errors
@@ -65,8 +65,8 @@ const index = ({ data }) => {
                         placeholder="Search data..."
                         className='w-[60%] p-2 border border-gray-300 rounded-md'
                     />
-                    <Link href='Call-Allocation/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
-                        Create Call Allocation
+                    <Link href='Warranty-Extend/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                        Register Extend Warranty
                     </Link>
                 </div>
 
@@ -74,17 +74,22 @@ const index = ({ data }) => {
                     <thead className='text-white bg-gray-700'>
                         <tr>
                             <th className='p-3 text-left border'>SL</th>
-                            <th className='p-3 text-left border'>Call No</th>
+                            <th className='p-3 text-left border'>Warranty No</th>
+                            <th className='p-3 text-left border'>Warranty Date </th>
                             <th className='p-3 text-left border'>Customer Name</th>
-                            <th className='p-3 text-left border'>Address</th>
+                            <th className='p-3 text-center border'>Address</th>
                             <th className='p-3 text-center border'>Contact No</th>
-                            <th className='p-3 text-center border'>Pin</th>
-                            <th className='p-3 text-left border'>Service Partner Name</th>
-                            <th className='p-3 text-left border'>Call Status</th>
-                            <th className='p-3 text-left border'>Reason</th>
-                            <th className='p-3 text-center border'>Call Starting Date</th>
-                            <th className='p-3 text-center border'>Call Ending Date</th>
-                            <th className='p-3 text-left border'>Total Time</th>
+                            <th className='p-3 text-left border'>Pin</th>
+                            <th className='p-3 text-left border'>Service Partner UID</th>
+                            <th className='p-3 text-left border'>Distributor UID</th>
+                            <th className='p-3 text-center border'>Source Of Material</th>
+                            <th className='p-3 text-center border'>Model</th>
+                            <th className='p-3 text-left border'>Date Of Purchase</th>
+                            <th className='p-3 text-left border'>Invoice Date</th>
+                            <th className='p-3 text-left border'>Invoice No</th>
+                            <th className='p-3 text-left border'>SL No</th>
+                            <th className='p-3 text-left border'>SL No 2</th>
+                            <th className='p-3 text-left border'>SL No 3</th>
                             <th className='p-3 text-left border'>Action</th>
 
                             {/* <th className='p-3 text-center border'>Unlock Timesheet</th> */}
@@ -95,17 +100,22 @@ const index = ({ data }) => {
     currentData.map((emp, index) => (
       <tr key={emp.id} className="odd:bg-white even:bg-gray-100">
         <td className="p-3 border">{indexOfFirstData + index + 1}</td>
-        <td className="p-3 border">{emp.call_no}</td>
+        <td className="p-3 border">{emp.warranty_no}</td>
+        <td className="p-3 border">{new Date(emp.created_at).toLocaleDateString('en-GB')}</td>
         <td className="p-3 border">{emp.customer_name}</td>
         <td className="p-3 border">{emp.address}</td>
         <td className="p-3 border">{emp.phone}</td>
         <td className="p-3 border">{emp.pin}</td>
         <td className="p-3 border">{emp.service_partner}</td>
-        <td className="p-3 border"></td>
-        <td className="p-3 border">{emp.reason}</td>
-        <td className="p-3 border"></td>
-        <td className="p-3 border"></td>
-        <td className="p-3 border"></td>
+        <td className="p-3 border">{emp.source_material}</td>
+        <td className="p-3 border">{emp.model}</td>
+        <td className="p-3 border">{emp.purchase}</td>
+        <td className="p-3 border">{emp.invoice_date}</td>
+        <td className="p-3 border">{emp.invoice_no}</td>
+        <td className="p-3 border">{emp.sl_no}</td>
+        <td className="p-3 border">{emp.sl_no}</td>
+        <td className="p-3 border">{emp.sl_no}</td>
+        <td className="p-3 border">{emp.sl_no}</td>
         <td className="p-3 text-center border">
           <div className="flex justify-center space-x-3">
             <Link className="p-2 text-white bg-green-500 rounded" href={`service-centers/${emp.id}/edit`}>
@@ -120,7 +130,7 @@ const index = ({ data }) => {
     ))
   ) : (
     <tr>
-      <td colSpan="12" className="p-3 text-center">No data found</td>
+      <td colSpan="18" className="p-3 text-center">No data found</td> {/* Adjust colSpan to match the total number of columns */}
     </tr>
   )}
 </tbody>

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class CallAllocationController extends Controller
+class WarrantyExtendController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +18,12 @@ class CallAllocationController extends Controller
     public function index()
     {
       
-        $data = DB::table('call_allocation')
-    ->join('d_istributers', 'call_allocation.distributer', '=', 'd_istributers.id')
-    ->join('service_centers', 'call_allocation.service_partner', '=', 'service_centers.id')
-    ->select('call_allocation.*', 'd_istributers.name as distributer_name','service_centers.name as service_partner') // Select all product columns and the category name
+        $data = DB::table('warranty_extend')
+    ->join('d_istributers', 'warranty_extend.distributer_name1', '=', 'd_istributers.id')
+    ->join('service_centers', 'warranty_extend.service_partner', '=', 'service_centers.id')
+    ->select('warranty_extend.*', 'd_istributers.name as distributer_name','service_centers.name as service_partner') // Select all product columns and the category name
     ->get();
-        return Inertia::render('callallocation/index', compact('data'));
+        return Inertia::render('extendwarrenty/index', compact('data'));
     }
 
     /**
@@ -38,7 +38,7 @@ class CallAllocationController extends Controller
         $distribter =DB::table('d_istributers')->get();
         // $data="rsm÷";
         // $lastId = DB::table('call_log')->orderBy('id', 'desc')->value('id');
-        $lastInsert = DB::table('call_allocation')
+        $lastInsert = DB::table('warranty_extend')
                     ->latest('id') // Order by ID, assuming the ID is auto-incrementing
                     ->first();
         $lst=0;
@@ -48,12 +48,12 @@ class CallAllocationController extends Controller
             $lst= 0;
         }
         $currentDate = Carbon::now()->format('dmY');
-        $nextcallno=$currentDate.'/'.$lst+1; 
-        $nextcallno2 = (object)[
+        $nextcallno='W'.$currentDate.'/'.$lst+1; 
+        $warranty_no = (object)[
             'value' => $nextcallno,
             
         ];
-        return Inertia::render('callallocation/create',compact('nextcallno2','service_centers','distribter'));
+        return Inertia::render('extendwarrenty/create',compact('warranty_no','service_centers','distribter'));
     }
 
     public function getDetails($id)
@@ -91,7 +91,7 @@ public function getDetails2($id)
        
        // Validate the incoming request data
     $validatedData = $request->validate([
-        'call_no' => 'required|string|max:255',
+        'warranty_no' => 'required|string|max:255',
         'customer_name' => 'required|string|max:255',
         'address' => 'required|string|max:500',
         'phone' => 'required|numeric|digits:10', // Assumes phone numbers should be between 10 to 15 digits
@@ -101,22 +101,26 @@ public function getDetails2($id)
         'source_material' => 'required|string|max:255',
         'model' => 'required|string|max:255',
         'purchase' => 'required|date', // Assuming purchase is a date
-        'reason' => 'required|string|max:500',
+        'sl_no' => 'required|string|max:500',
+        'invoice_no'=>'required|string|max:500',
+        'invoice_date'=>'required|date',
     ]);
 
     // Insert the validated data into the database
-    DB::table('call_allocation')->insert([
-        'call_no' => $validatedData['call_no'],
+    DB::table('warranty_extend')->insert([
+        'warranty_no' => $validatedData['warranty_no'],
         'customer_name' => $validatedData['customer_name'],
         'address' => $validatedData['address'],
         'phone' => $validatedData['phone'],
         'service_partner' => $validatedData['service_partner'],
         'pin' => $validatedData['pin'],
-        'distributer' => $validatedData['distributer_name1'],
+        'distributer_name1' => $validatedData['distributer_name1'],
         'source_material' => $validatedData['source_material'],
         'model' => $validatedData['model'],
         'purchase' => $validatedData['purchase'],
-        'reason' => $validatedData['reason'],
+        'sl_no' => $validatedData['sl_no'],
+        'invoice_no' => $validatedData['invoice_no'],
+        'invoice_date' => $validatedData['invoice_date'],
         'created_at' => now(),
         'updated_at' => now(),
     ]);
@@ -124,7 +128,7 @@ public function getDetails2($id)
      
 
         // Redirect with a success message
-        return redirect()->route('Call-Allocation.index');
+        return redirect()->route('Warranty-Extend.index');
     }
 
 
@@ -186,8 +190,8 @@ public function getDetails2($id)
      */
     public function destroy($id)
     {
-        DB::table('call_allocation')->where('id', $id)->delete();
-        return redirect()->route('Call-Allocation.index');
+        DB::table('warranty_extend')->where('id', $id)->delete();
+        return redirect()->route('Warranty-Extend.index');
     }
 
     
