@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class ClientController extends Controller
+class EmployeesController extends Controller
 {
     protected $user_image;
     
@@ -22,35 +22,35 @@ class ClientController extends Controller
     {
         
             $data = DB::table('tbl_user')
-                ->where('role', 'client')
+                ->where('role', 'employee')
                 ->where('is_archive', 0)
                 ->get();
 
-        return Inertia::render('client/index', compact('data'));
+        return Inertia::render('employees/index', compact('data'));
     }
 
     // Fetch archived clients
-    public function archiveclient()
+    public function archiveemployee()
     {
         $data = DB::table('tbl_user')
-            ->where('role', 'client')
+            ->where('role', 'employee')
             ->where('is_archive', 1)
             ->get();
-        return Inertia::render('client/archiveclient', compact('data'));
+        return Inertia::render('employees/archiveclient', compact('data'));
     }
 
     // Delete client
     public function destroy($id)
     {
         DB::table('tbl_user')->where('user_id', $id)->delete();
-        session()->flash('success', 'Client Record Deleted Successfully');
-        return redirect()->route('Client.index');
+        session()->flash('success', 'Employee Record Deleted Successfully');
+        return redirect()->route('Employee.index');
     }
     public function addarchive($id)
     {
         DB::table('tbl_user')->where('user_id', $id)->update(['is_archive' => 1]); // 1 for active status
-        session()->flash('success', 'Client is now archive Successfully');
-        return redirect()->route('Client.index');
+        session()->flash('success', 'Employee is now archive Successfully');
+        return redirect()->route('Employee.index');
     }
 
     // Check email for updates
@@ -129,7 +129,7 @@ class ClientController extends Controller
     public function create(Request $request)
     {
         $last_record = DB::table('tbl_user')->orderBy('user_id', 'desc')->first();
-        $client_idf = 'C' . $last_record->user_id . rand(11, 99) . date('mY');
+        $client_idf = 'E' . $last_record->user_id . rand(11, 99) . date('mY');
         $client_idf2 = (object)[
             'value' => $client_idf,
             
@@ -169,7 +169,7 @@ class ClientController extends Controller
             return redirect()->route('client.clientlist');
         }
 
-        return Inertia::render('client/create', compact('client_idf2'));
+        return Inertia::render('employees/create', compact('client_idf2'));
     }
     public function store(Request $request)
     {
@@ -181,19 +181,9 @@ class ClientController extends Controller
             'last_name' => 'required|string|max:255',
             'gender' => 'required|in:male,female,other',
             'dob' => 'nullable|date',
-            'company_name' => 'nullable|string|max:255',
-            'position' => 'nullable|string|max:255',
-            'account_number' => 'nullable|string|max:255',
-            'ifsc_code' => 'nullable|string|max:255',
-            'branch_name' => 'nullable|string|max:255',
-            'tin_no' => 'nullable|string|max:255',
-            'cst_no' => 'nullable|string|max:255',
-            'pan_no' => 'nullable|string|max:10',
-            'contact_person.*.name' => 'nullable|string|max:255',
-            'contact_person.*.mobile' => 'nullable|string|max:15', // Adjust as per your requirements
-            'contact_person.*.designation' => 'nullable|string|max:255',
+            'phone'=>'required',
             'mobile_no' => 'nullable|string|max:15', // Adjust as per your requirements
-            'addresses.*.address' => 'nullable|string|max:255',
+            'addresses' => 'required|string|max:255',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'pin' => 'nullable|string|max:10', // Adjust as per your requirements
@@ -207,11 +197,12 @@ class ClientController extends Controller
          if ($request->hasFile('image')) {
              $image = $request->file('image');
              $filename = time() . '.' . $image->getClientOriginalExtension();
-            //  $imagePath = $image->storeAs('client_img', $filename, 'public');
-            //  // Uncomment this line if you want to move it to a specific directory within public
-            // $image->move(public_path('public/client_img1'), $filename);
-            $image->move(public_path('client_img'), $filename);
-            $imagePath = 'client_img/' . $filename;
+            //  $imagePath = $image->storeAs('employee_img', $filename, 'public');
+             // Uncomment this line if you want to move it to a specific directory within public
+            // $image->move(public_path('public/clent'), $filename);
+            $image->move(public_path('Employee_img'), $filename);
+            $imagePath = 'Employee_img/' . $filename;
+
          }
  
          $userId = DB::table('tbl_user')->insertGetId([
@@ -219,49 +210,104 @@ class ClientController extends Controller
             'first_name' => $validatedData['first_name'],
             'middle_name' => $validatedData['middle_name'],
             'last_name' => $validatedData['last_name'],
-            'company_name' => $validatedData['company_name'],
+            'company_name' =>'',
             'dob' => $validatedData['dob'],
             'gender' => $validatedData['gender'],
-            'address' => json_encode($validatedData['addresses']), // Store addresses as JSON
+            'address' => $validatedData['addresses'], // Store addresses as JSON
             'username' => '', // Assuming you want to set it later or leave it empty
             'city' => $validatedData['city'], // Make sure these fields are properly set
             'state' => $validatedData['state'],
             'photo' => $imagePath,
-            'role' => 'client',
+            'role' => 'employee',
             'marital_status' => '', // Assuming you have no marital status data yet
             'email' => $validatedData['email'],
             'password' => $validatedData['password'], // Ensure this is hashed if required
             'mobile_no' => $validatedData['mobile_no'],
             'alt_mobile' => $validatedData['alt_mobile'],
             'pincode' => $validatedData['pin'], // Ensure these fields are properly set
-            'phone' => '',
+            'phone' => $validatedData['phone'],
             'last_send_mail_Date' => now(),
             'create_date' => now(),
         ]);
-        if (!empty($validatedData['contact_person'])) {
-        foreach ($validatedData['contact_person'] as $contact) {
-            DB::table('tbl_client_history')->insert([
-                'client_id' => $userId, // Assuming you have a user ID to link it to the user
-                'contact_name' => $contact['name'],
-                'mobile' => $contact['mobile'],
-                'designation' => $contact['designation'],
-            ]);
-        }}
-        DB::table('tbl_company_detail')->insert([
-            'client_id' => $userId,    // Example placeholder for client ID
-            'main_person' => $validatedData['position'], // Example placeholder for main person
-            'account_number' => $validatedData['account_number'],
-            'ifs_code' => $validatedData['ifsc_code'],
-            'branch_name' => $validatedData['branch_name'],
-            'tin_no' => $validatedData['tin_no'],
-            'cst_no' => $validatedData['cst_no'],
-            'pan_no' => $validatedData['pan_no'],
-           
-        ]);
+       
 
         // Redirect with a success message
-        return redirect()->route('Client.index');
+        return redirect()->route('Employee.index');
     }
+
+    public function update(Request $request, $id)
+{
+    // Find the existing user by ID
+    $user = DB::table('tbl_user')->where('user_id', $id)->first();
+
+    // Check if user exists
+    if (!$user) {
+        return redirect()->route('Employee.index')->with('error', 'User not found.');
+    }
+
+    // Validate the incoming request data
+    $validatedData = $request->validate([
+        'client_id' => 'required|string|max:255',
+        'first_name' => 'required|string|max:255',
+        'middle_name' => 'nullable|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'gender' => 'required|in:male,female,other',
+        'dob' => 'nullable|date',
+        'phone' => 'required',
+        'mobile_no' => 'nullable|string|max:15',
+        'addresses' => 'required|string|max:255',
+        'city' => 'nullable|string|max:255',
+        'state' => 'nullable|string|max:255',
+        'pin' => 'nullable|string|max:10',
+        'alt_mobile' => 'nullable|string|max:15',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'email' => 'required|email|max:255',
+        'password' => 'nullable|string|min:6', // Ensure a minimum length if provided
+    ]);
+
+    // Handle the image upload if provided
+    $imagePath = $user->photo; // Keep the existing image path by default
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $filename = time() . '.' . $image->getClientOriginalExtension();
+        // $imagePath = $image->storeAs('employee_img', $filename, 'public');
+        $image->move(public_path('Employee_img'), $filename);
+            $imagePath = 'Employee_img/' . $filename;
+    }
+
+    // Prepare data for updating
+    $updateData = [
+        'client_id' => $validatedData['client_id'],
+        'first_name' => $validatedData['first_name'],
+        'middle_name' => $validatedData['middle_name'],
+        'last_name' => $validatedData['last_name'],
+        'dob' => $validatedData['dob'],
+        'gender' => $validatedData['gender'],
+        'address' => $validatedData['addresses'],
+        'city' => $validatedData['city'],
+        'state' => $validatedData['state'],
+        'photo' => $imagePath, // Use the updated image path
+        'email' => $validatedData['email'],
+        'mobile_no' => $validatedData['mobile_no'],
+        'alt_mobile' => $validatedData['alt_mobile'],
+        'pincode' => $validatedData['pin'],
+        'phone' => $validatedData['phone'],
+        'last_send_mail_Date' => now(),
+        // 'update÷_date' => now(), // Update date for tracking
+    ];
+
+    // Hash the password if it's provided
+    if (!empty($validatedData['password'])) {
+        $updateData['password'] = bcrypt($validatedData['password']); // Hash the password
+    }
+
+    // Update the user record in the database
+    DB::table('tbl_user')->where('user_id', $id)->update($updateData);
+
+    // Redirect with a success message
+    return redirect()->route('Employee.index')->with('success', 'User updated successfully.');
+}
+
     // View client details
     public function viewclient($id)
     {
@@ -280,5 +326,16 @@ class ClientController extends Controller
             $email_count = DB::table('tbl_user')->where('email', $request->email_text)->count();
             return response()->json($email_count);
         }
+    }
+
+    public function edit($id)
+    {
+
+        $client = DB::table('tbl_user')
+            ->where('tbl_user.user_id', $id) // Add where clause for id
+            ->first();
+ 
+
+        return Inertia::render('employees/edit', compact('client'));
     }
 }

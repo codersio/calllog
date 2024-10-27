@@ -30,11 +30,11 @@ const index = ({ data }) => {
     const handleDelete = (e, id) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete this record?')) {
-            destroy(`/Client/${id}`,{
+            destroy(`/Employee/${id}`,{
                 onSuccess: () => {
                    
                     // Show success notification on successful submission
-                    notyf.success('Client deleted successfully!');
+                    notyf.success('Employee deleted successfully!');
                     location.reload()
                 },
                 onError: () => {
@@ -67,11 +67,11 @@ const index = ({ data }) => {
                         className='w-[60%] p-2 border border-gray-300 rounded-md'
                     />
                    
-                    <Link href='Client/addclient' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
-                        Add Client
+                    <Link href='Employee/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                        Add Employee
                     </Link>
-                    <Link href='Client/' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
-                     Client List
+                    <Link href='Employee' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                    Employee List
                     </Link>
                 </div>
 
@@ -80,7 +80,7 @@ const index = ({ data }) => {
                         <tr>
                         <th className='p-3 text-left border'>SL No</th> 
                             <th className='p-3 text-left border'>Image</th>
-                            <th className='p-3 text-left border'>Client Name</th>
+                            <th className='p-3 text-left border'>Employee Name</th>
                             <th className='p-3 text-left border'>Address </th>
                             <th className='p-3 text-left border'>Mobile Number</th>
                             <th className='p-3 text-center border'>Eamil</th>
@@ -102,25 +102,10 @@ const index = ({ data }) => {
                                 style={{ maxWidth: '100px', maxHeight: '100px' }} 
                             />
                         </td>
-        
 
         <td className="p-3 border">{emp.first_name+' '+emp.last_name}</td>
-        <td className="p-3 border">
-  {typeof emp.address === 'string' && emp.address.trim() !== ''
-    ? (() => {
-        try {
-          const parsedAddresses = JSON.parse(emp.address); // Parse the JSON string
-          return Array.isArray(parsedAddresses) 
-            ? parsedAddresses.map(addr => addr.address).join(', ') // Join the addresses
-            : 'Invalid Address Format'; // Handle case if not an array
-        } catch (error) {
-          return 'Invalid Address Format'; // Handle JSON parse error
-        }
-      })() // Immediately Invoked Function Expression (IIFE)
-    : Array.isArray(emp.address) 
-    ? emp.address.map(addr => addr.address).join(', ') // Handle array case if it's already an array
-    : 'No Address'}
-</td><td className="p-3 border">{emp.mobile_no}</td>
+        <td className="p-3 border">{emp.address.replace(/[\[\]"]/g, '')}</td>
+        <td className="p-3 border">{emp.mobile_no}</td>
         <td className="p-3 border">{emp.email}</td>
         
         <td className="p-3 text-center border">

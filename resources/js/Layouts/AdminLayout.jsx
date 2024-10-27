@@ -156,6 +156,18 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             <span className='text-sm'>Client</span>
                         </Link>
                     </li>
+                    <li>
+                        <Link href='/Employee' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoPeopleOutline size={15} />
+                            <span className='text-sm'>Employees</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href='/Product-List' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoPeopleOutline size={15} />
+                            <span className='text-sm'>Products</span>
+                        </Link>
+                    </li>
                 </ul>
             </aside>
 
