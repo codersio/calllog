@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AmcController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\EmployeesController;
 use App\http\Controllers\MasterController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UnitController;
 // Route::get('/', function () {
@@ -238,3 +240,5 @@ Route::post('/sales/store',[SaleController::class,'store'])->name('sales.store')
 Route::get('/sales/{id}/edit',[SaleController::class,'edit'])->name('sales.edit');
 Route::put('/sales/{id}/edit',[SaleController::class,'update']);
 Route::delete('/sales/{id}/delete',[SaleController::class,'destroy'])->name('sales.delete');
+Route::resource('/amc',AmcController::class);
+Route::resource('/complaint',ComplaintController::class);
