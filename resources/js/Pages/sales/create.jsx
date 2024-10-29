@@ -3,7 +3,10 @@ import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { FaTrash } from 'react-icons/fa'
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 
+const notyf = new Notyf();
 function create({ customers, products }) {
 
     const [rows, setRows] = useState([
@@ -24,19 +27,15 @@ function create({ customers, products }) {
         email: '',
         discount: '',
         billing_address: '',
+        account_tax: [],
         sales_details: [],
-        account_tax: []
     })
-
-    useEffect(() => {
-        console.log(rows)
-        setData('sales_details', rows);
-    }, [rows]);
 
     // Sync taxs with form data
     useEffect(() => {
         setData('account_tax', taxs);
-    }, [taxs]);
+        setData('sales_details', rows);
+    }, [taxs,rows]);
 
     const handleAddRow = () => {
         setRows([...rows, { product: '', quantity: 0, price: 0, amount: 0 }]);
