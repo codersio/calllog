@@ -27,9 +27,11 @@ use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\CallAllocationController;
 use App\Http\Controllers\WarrantyExtendController;
 use App\Http\Controllers\ClientController;
-
-
-
+use App\Http\Controllers\EmployeesController;
+use App\http\Controllers\MasterController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UnitController;
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),
@@ -209,3 +211,23 @@ Route::get('/Get-Distributer/{id}', [CallAllocationController::class, 'getDetail
 Route::resource('/Warranty-Extend',WarrantyExtendController::class);
 Route::resource('/Client',ClientController::class);
 Route::get('/archiveclient',[ClientController::class,'archiveclient']);
+Route::resource('/Employee',EmployeesController::class);
+
+Route::get('/archiveemployee',[EmployeesController::class,'archiveemployee']);
+Route::get('/Employee-Archive/{id}',[EmployeesController::class,'addarchive']);
+Route::get('/Archive/{id}',[ClientController::class,'addarchive']);
+Route::resource('/Product-List',MasterController::class);
+Route::get('/archiveproduct',[MasterController::class,'archiveproduct']);
+Route::get('/Archive-Product/{id}',[MasterController::class,'addarchive']);
+
+Route::get('/brands', [BrandController::class, 'index']);      // Get all brands
+Route::post('/brands', [BrandController::class, 'store']);
+Route::delete('/brands/{id}', [BrandController::class, 'destroy']);
+
+Route::get('/categories', [CategoryController::class, 'index']);      // Get all brands
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+Route::get('/unit', [UnitController::class, 'index']);      // Get all brands
+Route::post('/unit', [UnitController::class, 'store']);
+Route::delete('/unit/{id}', [UnitController::class, 'destroy']);
