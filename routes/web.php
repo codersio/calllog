@@ -32,6 +32,8 @@ use App\http\Controllers\MasterController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\UnitController;
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -205,21 +207,21 @@ Route::resource('/delars', DelarController::class);
 Route::resource('/service-centers', ServiceCenterController::class);
 Route::resource('/products-category', ProductCategoryController::class);
 Route::resource('/products', ProductController::class);
-Route::resource('/spare-part',SparePartController::class);
-Route::resource('/Call-Allocation',CallAllocationController::class);
+Route::resource('/spare-part', SparePartController::class);
+Route::resource('/Call-Allocation', CallAllocationController::class);
 Route::get('/Get-Service/{id}', [CallAllocationController::class, 'getDetails']);
 Route::get('/Get-Distributer/{id}', [CallAllocationController::class, 'getDetails2']);
-Route::resource('/Warranty-Extend',WarrantyExtendController::class);
-Route::resource('/Client',ClientController::class);
-Route::get('/archiveclient',[ClientController::class,'archiveclient']);
-Route::resource('/Employee',EmployeesController::class);
+Route::resource('/Warranty-Extend', WarrantyExtendController::class);
+Route::resource('/Client', ClientController::class);
+Route::get('/archiveclient', [ClientController::class, 'archiveclient']);
+Route::resource('/Employee', EmployeesController::class);
 
-Route::get('/archiveemployee',[EmployeesController::class,'archiveemployee']);
-Route::get('/Employee-Archive/{id}',[EmployeesController::class,'addarchive']);
-Route::get('/Archive/{id}',[ClientController::class,'addarchive']);
-Route::resource('/Product-List',MasterController::class);
-Route::get('/archiveproduct',[MasterController::class,'archiveproduct']);
-Route::get('/Archive-Product/{id}',[MasterController::class,'addarchive']);
+Route::get('/archiveemployee', [EmployeesController::class, 'archiveemployee']);
+Route::get('/Employee-Archive/{id}', [EmployeesController::class, 'addarchive']);
+Route::get('/Archive/{id}', [ClientController::class, 'addarchive']);
+Route::resource('/Product-List', MasterController::class);
+Route::get('/archiveproduct', [MasterController::class, 'archiveproduct']);
+Route::get('/Archive-Product/{id}', [MasterController::class, 'addarchive']);
 
 Route::get('/brands', [BrandController::class, 'index']);      // Get all brands
 Route::post('/brands', [BrandController::class, 'store']);
@@ -232,9 +234,13 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 Route::get('/unit', [UnitController::class, 'index']);      // Get all brands
 Route::post('/unit', [UnitController::class, 'store']);
 Route::delete('/unit/{id}', [UnitController::class, 'destroy']);
-Route::get('/sales',[SaleController::class,'index'])->name('sales.index');
-Route::get('/sales/add',[SaleController::class,'create'])->name('sales.create');
-Route::post('/sales/store',[SaleController::class,'store'])->name('sales.store');
-Route::get('/sales/{id}/edit',[SaleController::class,'edit'])->name('sales.edit');
-Route::put('/sales/{id}/edit',[SaleController::class,'update']);
-Route::delete('/sales/{id}/delete',[SaleController::class,'destroy'])->name('sales.delete');
+Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+Route::get('/sales/add', [SaleController::class, 'create'])->name('sales.create');
+Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
+Route::get('/sales/{id}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+Route::put('/sales/{id}/edit', [SaleController::class, 'update']);
+Route::delete('/sales/{id}/delete', [SaleController::class, 'destroy'])->name('sales.delete');
+
+Route::resource('services', ServiceController::class);
+
+Route::get('senssend', [SmsController::class, 'sendWhatsAppMessage']);
