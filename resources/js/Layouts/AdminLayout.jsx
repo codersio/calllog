@@ -75,11 +75,11 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                 </div>
             </div>
 
-            <aside className='w-64 h-full border-r border-gray-300'>
+            <aside className='w-64 h-full flex flex-col border-r border-gray-300'>
                 <div className='flex justify-center'>
                     <img width={80} src="https://png.pngtree.com/png-clipart/20230330/original/pngtree-modern-demo-logo-vector-file-png-image_9012000.png" alt="" />
                 </div>
-                <ul className='p-4 space-y-2'>
+                <ul className='p-4 flex-1 overflow-y-auto custom-scrollbar space-y-2'>
                     <li>
                         <Link href='/dashboard' className='flex items-center p-3 text-white rounded gap-x-1 bg-rose-500'>
                             <IoGridOutline size={15} />
@@ -166,6 +166,24 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         <Link href='/Product-List' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoPeopleOutline size={15} />
                             <span className='text-sm'>Products</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoCallOutline size={15} />
+                            <span className='text-sm'>Sales</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoCallOutline size={15} />
+                            <span className='text-sm'>AMC</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoCallOutline size={15} />
+                            <span className='text-sm'>Complaint</span>
                         </Link>
                     </li>
                 </ul>

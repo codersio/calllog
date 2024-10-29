@@ -31,6 +31,7 @@ use App\Http\Controllers\EmployeesController;
 use App\http\Controllers\MasterController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UnitController;
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -231,3 +232,9 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 Route::get('/unit', [UnitController::class, 'index']);      // Get all brands
 Route::post('/unit', [UnitController::class, 'store']);
 Route::delete('/unit/{id}', [UnitController::class, 'destroy']);
+Route::get('/sales',[SaleController::class,'index'])->name('sales.index');
+Route::get('/sales/add',[SaleController::class,'create'])->name('sales.create');
+Route::post('/sales/store',[SaleController::class,'store'])->name('sales.store');
+Route::get('/sales/{id}/edit',[SaleController::class,'edit'])->name('sales.edit');
+Route::put('/sales/{id}/edit',[SaleController::class,'update']);
+Route::delete('/sales/{id}/delete',[SaleController::class,'destroy'])->name('sales.delete');
