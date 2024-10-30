@@ -244,3 +244,4 @@ Route::put('/sales/{id}/edit', [SaleController::class, 'update']);
 Route::delete('/sales/{id}/delete', [SaleController::class, 'destroy'])->name('sales.destroy');
 Route::resource('/amc', AmcController::class);
 Route::resource('/complaint', ComplaintController::class);
+Route::resource('/services', ServiceController::class);

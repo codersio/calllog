@@ -23,9 +23,9 @@ class SaleController extends Controller
     public function create()
     {
         $customers = DB::table('tbl_user')->get();
-<<<<<<< HEAD
         $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
-        return Inertia::render('sales/create', \compact('customers', 'products'));
+        $taxs = Tax::all();
+        return Inertia::render('sales/create', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs]);
     }
 
     // public function store(Request $request)
@@ -106,72 +106,62 @@ class SaleController extends Controller
         $response = $whatsAppService->sendMessage($recipient, $message);
 
         return redirect()->route('sales.index');
-=======
-        $products = DB::table('product')->join('products_category','products_category.id','=','product.category_id')->select('products_category.name','product.id')->get();
+        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
         $taxs = Tax::all();
-        return Inertia::render('sales/create',['customers'=>$customers,'products'=>$products,'taxes'=>$taxs]);
+        return Inertia::render('sales/create', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs]);
     }
 
-    public function store(Request $request) {
-        // \dd($request->all());
-        $request->validate([
-            'bill_no'=>'required',
-            'customer_id'=>'required',
-            'date'=>'required',
-            'billing_address'=>'required',
-            'status'=>'required',
-            'amc_type'=>'required',
-            'mobile_no'=>'required',
-            'email'=>'required',
-        ]);
+    // public function store(Request $request) {
+    //     // \dd($request->all());
+    //     $request->validate([
+    //         'bill_no'=>'required',
+    //         'customer_id'=>'required',
+    //         'date'=>'required',
+    //         'billing_address'=>'required',
+    //         'status'=>'required',
+    //         'amc_type'=>'required',
+    //         'mobile_no'=>'required',
+    //         'email'=>'required',
+    //     ]);
 
-        Sale::create($request->all());
-        // foreach($request->sales_details as $product){
-        //     //code here
-        // }
-        return \redirect()->to(\route('sales.index'));
->>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
-    }
+    //     Sale::create($request->all());
+    //     // foreach($request->sales_details as $product){
+    //     //     //code here
+    //     // }
+    //     return \redirect()->to(\route('sales.index'));
+    // }
 
 
     public function edit($id)
     {
         $sale = Sale::join('tbl_user', 'tbl_user.user_id', '=', 'sales.customer_id')->where('sales.id', $id)->first();
         $customers = DB::table('tbl_user')->get();
-<<<<<<< HEAD
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
-        return Inertia::render('sales/edit', \compact('customers', 'products', 'sale'));
-    }
-
-    public function update($id, Request $request) {}
-
-    public function destroy($id) {}
-=======
         $taxs = Tax::all();
-        $products = DB::table('product')->join('products_category','products_category.id','=','product.category_id')->select('products_category.name','product.id')->get();
-        return Inertia::render('sales/edit',['customers'=>$customers,'products'=>$products,'taxes'=>$taxs,'sale'=>$sale]);
+        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
+        return Inertia::render('sales/edit', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs, 'sale' => $sale]);
     }
 
-    public function update($id, Request $request) {
+    public function update($id, Request $request)
+    {
         // dd($request->all());
         $request->validate([
-            'bill_no'=>'required',
-            'customer_id'=>'required',
-            'date'=>'required',
-            'billing_address'=>'required',
-            'status'=>'required',
-            'amc_type'=>'required',
-            'mobile_no'=>'required',
-            'email'=>'required',
+            'bill_no' => 'required',
+            'customer_id' => 'required',
+            'date' => 'required',
+            'billing_address' => 'required',
+            'status' => 'required',
+            'amc_type' => 'required',
+            'mobile_no' => 'required',
+            'email' => 'required',
         ]);
 
         Sale::findOrFail($id)->update($request->all());
         return \redirect()->to(\route('sales.index'));
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         Sale::findOrFail($id)->delete();
         return \redirect()->to(\route('sales.index'));
     }
->>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
 }

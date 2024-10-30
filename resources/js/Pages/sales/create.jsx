@@ -107,19 +107,10 @@ function create({ customers, products, taxes }) {
         e.preventDefault();
         post(route('sales.store'), {
             onSuccess: () => {
-<<<<<<< HEAD
-                // Show success notification on successful submission
-                // notyf.success('sales added successfully!');
-            },
-            onError: () => {
-                // Show error notification if there are errors
-                // notyf.error('Failed to add sales. Please check your inputs.');
-=======
                 notyf.success('sales added successfully!');
             },
             onError: () => {
                 notyf.error('Failed to add sales. Please check your inputs.');
->>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
             }
         })
     }
@@ -196,20 +187,12 @@ function create({ customers, products, taxes }) {
                         <table className='w-full'>
                             <thead>
                                 <tr>
-<<<<<<< HEAD
                                     <th className='p-2 border border-gray-300'>Product</th>
                                     <th className='p-2 border border-gray-300'>Quantity</th>
                                     <th className='p-2 border border-gray-300'>Price (Af)</th>
+                                    <th className='p-2 border border-gray-300'>Tax</th>
                                     <th className='p-2 border border-gray-300'>Amount (Af)</th>
                                     <th className='p-2 border border-gray-300'>Action</th>
-=======
-                                    <th className='border border-gray-300 p-2'>Product</th>
-                                    <th className='border border-gray-300 p-2'>Quantity</th>
-                                    <th className='border border-gray-300 p-2'>Price (Af)</th>
-                                    <th className='border border-gray-300 p-2'>Tax</th>
-                                    <th className='border border-gray-300 p-2'>Amount (Af)</th>
-                                    <th className='border border-gray-300 p-2'>Action</th>
->>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
                                 </tr>
                             </thead>
                             <tbody>
@@ -263,13 +246,8 @@ function create({ customers, products, taxes }) {
                                         <td className='p-2'>
                                             <input
                                                 type="number"
-<<<<<<< HEAD
                                                 className='w-full rounded form-input'
-                                                value={row.amount}
-=======
-                                                className='form-input rounded w-full'
                                                 value={row.amountWithTax.toFixed(2)}
->>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
                                                 readOnly
                                             />
                                         </td>
@@ -294,69 +272,6 @@ function create({ customers, products, taxes }) {
                             Add Row
                         </button>
                     </div>
-<<<<<<< HEAD
-                    <hr />
-                    <div className='w-full py-2'>
-                        <h1 className='text-xl font-semibold text-gray-600'>Account Tax</h1>
-                    </div>
-                    <div className='w-full py-2'>
-                        <table className='w-full'>
-                            <thead>
-                                <tr>
-                                    <th className='p-2 border border-gray-300'>Select Tax</th>
-                                    <th className='p-2 border border-gray-300'>Tax</th>
-                                    <th className='p-2 border border-gray-300'>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {taxs.map((t, index) => (
-                                    <tr key={index}>
-                                        <td className='p-2'>
-                                            <select
-                                                className="w-full rounded form-select"
-                                                value={t.tax}
-                                                onChange={(e) =>
-                                                    handleTaxChange(index, 'tax', e.target.value)
-                                                }
-                                            >
-                                                <option value="">-- Select Tax --</option>
-                                                <option value="0">ACE Tax Consultants</option>
-                                                <option value="1">Elite Tax Consultants</option>
-                                            </select>
-                                        </td>
-                                        <td className='p-2'>
-                                            <input
-                                                type="number"
-                                                className='w-full rounded form-input'
-                                                value={t.amount}
-                                                onChange={(e) =>
-                                                    handleTaxChange(index, 'amount', e.target.value)
-                                                }
-                                            />
-                                        </td>
-                                        <td className='p-2'>
-                                            {index !== 0 &&
-                                                <button type='button'
-                                                    className='flex items-center gap-1 text-sm font-medium text-red-500'
-                                                    onClick={() => handleDeleteTax(index)}
-                                                >
-                                                    <FaTrash size={15} /><span>Delete</span>
-                                                </button>
-                                            }
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <button type='button'
-                            className="px-4 py-2 mt-4 text-white bg-blue-500 rounded"
-                            onClick={handleAddTax}
-                        >
-                            Add Row
-                        </button>
-                    </div>
-=======
->>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
                     <div className='w-full py-5'>
                         <button className='px-6 py-2 text-sm font-medium text-white rounded bg-rose-600'>Add Sale</button>
                     </div>
