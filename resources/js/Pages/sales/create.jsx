@@ -3,16 +3,82 @@ import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { FaTrash } from 'react-icons/fa'
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
+import Multiselect from 'multiselect-react-dropdown';
 
-function create({ customers, products }) {
+const notyf = new Notyf();
+function create({ customers, products, taxes }) {
 
     const [rows, setRows] = useState([
-        { product: '', quantity: 0, price: 0, amount: 0 }
+        { product: '', quantity: 0, price: 0, amount: 0, amountWithTax: 0, selectedTaxes: [] } // Removed selected field
     ]);
 
-    const [taxs, setTax] = useState([
-        { tax: '', amount: 0 }
-    ]);
+    const [totalTax, setTotalTax] = useState(0);
+
+    const handleAddRow = () => {
+        setRows([...rows, { product: '', quantity: 0, price: 0, amount: 0, amountWithTax: 0, selectedTaxes: [] }]);
+    };
+
+    const handleDeleteRow = (index) => {
+        const updatedRows = rows.filter((_, i) => i !== index);
+        setRows(updatedRows);
+    };
+
+    const handleChange = (index, field, value) => {
+        const updatedRows = rows.map((row, i) => {
+            if (i === index) {
+                const updatedRow = { ...row, [field]: field === 'product' ? value : Number(value) };
+
+                // Calculate base amount based on quantity and price
+                if (field === 'quantity' || field === 'price') {
+                    updatedRow.amount = updatedRow.quantity * updatedRow.price;
+                }
+
+                return updatedRow;
+            }
+            return row;
+        });
+
+        setRows(updatedRows);
+        calculateTotalTax(updatedRows); // Recalculate tax with updated rows
+    };
+
+    const handleTaxSelect = (index, selectedList) => {
+        const updatedRows = rows.map((row, i) => {
+            if (i === index) {
+                return { ...row, selectedTaxes: selectedList }; // Update the selected taxes for the specific row
+            }
+            return row;
+        });
+
+        setRows(updatedRows); // Update rows
+        calculateTotalTax(updatedRows); // Recalculate total tax based on updated rows
+    };
+
+    // Calculate total tax based on selected taxes for each row
+    const calculateTotalTax = (rows) => {
+        console.log(rows)
+        const updatedRows = rows.map(row => {
+            // Calculate total tax for this row based on selected taxes
+            const totalTaxForRow = row.selectedTaxes.reduce((taxSum, tax) => {
+                return taxSum + (row.amount * (tax.percent / 100));
+            }, 0);
+
+            row.amountWithTax = row.amount + totalTaxForRow; // Add tax to the base amount
+            return row; // Return updated row
+        });
+
+        // Calculate the total tax amount for all rows
+        const totalTax = updatedRows.reduce((sum, row) => {
+            return sum + (row.amountWithTax - row.amount); // Total tax calculated across all rows
+        }, 0);
+
+        setTotalTax(totalTax); // Update total tax state
+        setRows(updatedRows); // Update rows to reflect amountWithTax
+    };
+
+
 
     const { post, data, setData, errors, processing } = useForm({
         bill_no: '',
@@ -25,65 +91,35 @@ function create({ customers, products }) {
         discount: '',
         billing_address: '',
         sales_details: [],
-        account_tax: []
     })
 
-    useEffect(() => {
-        console.log(rows)
-        setData('sales_details', rows);
-    }, [rows]);
 
     // Sync taxs with form data
     useEffect(() => {
-        setData('account_tax', taxs);
-    }, [taxs]);
-
-    const handleAddRow = () => {
-        setRows([...rows, { product: '', quantity: 0, price: 0, amount: 0 }]);
-    };
-
-    const handleAddTax = () => {
-        setTax([...taxs, { tax: '', amount: 0 }]);
-    };
-
-    const handleDeleteRow = (index) => {
-        const updatedRows = rows.filter((_, i) => i !== index);
-        setRows(updatedRows);
-    };
-
-    const handleDeleteTax = (index) => {
-        const updatedTax = taxs.filter((_, i) => i !== index);
-        setTax(updatedTax);
-    };
-
-    const handleChange = (index, field, value) => {
-        const updatedRows = rows.map((row, i) =>
-            i === index ? { ...row, [field]: value } : row
-        );
-        setRows(updatedRows);
-    };
-
-    const handleTaxChange = (index, field, value) => {
-        const updatedTax = taxs.map((tax, i) =>
-            i === index ? { ...tax, [field]: value } : tax
-        );
-        setTax(updatedTax);
-    };
-
-
-
+        setData(prevData => ({
+            ...prevData,
+            sales_details: rows || []
+        }));
+    }, [rows]);
 
 
     function handleSubmit(e) {
         e.preventDefault();
         post(route('sales.store'), {
             onSuccess: () => {
+<<<<<<< HEAD
                 // Show success notification on successful submission
                 // notyf.success('sales added successfully!');
             },
             onError: () => {
                 // Show error notification if there are errors
                 // notyf.error('Failed to add sales. Please check your inputs.');
+=======
+                notyf.success('sales added successfully!');
+            },
+            onError: () => {
+                notyf.error('Failed to add sales. Please check your inputs.');
+>>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
             }
         })
     }
@@ -118,7 +154,7 @@ function create({ customers, products }) {
                             <option value="">-- Select Customer --</option>
                             {
                                 customers && customers.map((cust, i) => (
-                                    <option value={cust.user_id}>{cust.first_name + ' ' + cust.middle_name + ' ' + cust.last_name}</option>
+                                    <option key={i} value={cust.user_id}>{cust.first_name + ' ' + cust.middle_name + ' ' + cust.last_name}</option>
                                 ))
                             }
                         </select>
@@ -160,11 +196,20 @@ function create({ customers, products }) {
                         <table className='w-full'>
                             <thead>
                                 <tr>
+<<<<<<< HEAD
                                     <th className='p-2 border border-gray-300'>Product</th>
                                     <th className='p-2 border border-gray-300'>Quantity</th>
                                     <th className='p-2 border border-gray-300'>Price (Af)</th>
                                     <th className='p-2 border border-gray-300'>Amount (Af)</th>
                                     <th className='p-2 border border-gray-300'>Action</th>
+=======
+                                    <th className='border border-gray-300 p-2'>Product</th>
+                                    <th className='border border-gray-300 p-2'>Quantity</th>
+                                    <th className='border border-gray-300 p-2'>Price (Af)</th>
+                                    <th className='border border-gray-300 p-2'>Tax</th>
+                                    <th className='border border-gray-300 p-2'>Amount (Af)</th>
+                                    <th className='border border-gray-300 p-2'>Action</th>
+>>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
                                 </tr>
                             </thead>
                             <tbody>
@@ -205,10 +250,26 @@ function create({ customers, products }) {
                                             />
                                         </td>
                                         <td className='p-2'>
+                                            <Multiselect
+                                                options={taxes.map(tax => ({
+                                                    name: `${tax.name} (${tax.percent}%)`, // Display format
+                                                    percent: tax.percent, // Keeping percent for calculations if needed
+                                                }))}
+                                                onSelect={(selectedList) => handleTaxSelect(index, selectedList)}
+                                                onRemove={(selectedList) => handleTaxSelect(index, selectedList)}
+                                                displayValue="name"
+                                            />
+                                        </td>
+                                        <td className='p-2'>
                                             <input
                                                 type="number"
+<<<<<<< HEAD
                                                 className='w-full rounded form-input'
                                                 value={row.amount}
+=======
+                                                className='form-input rounded w-full'
+                                                value={row.amountWithTax.toFixed(2)}
+>>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
                                                 readOnly
                                             />
                                         </td>
@@ -233,6 +294,7 @@ function create({ customers, products }) {
                             Add Row
                         </button>
                     </div>
+<<<<<<< HEAD
                     <hr />
                     <div className='w-full py-2'>
                         <h1 className='text-xl font-semibold text-gray-600'>Account Tax</h1>
@@ -293,6 +355,8 @@ function create({ customers, products }) {
                             Add Row
                         </button>
                     </div>
+=======
+>>>>>>> 818bd103be7e9cac267a6dc441d6e75d3de16fbe
                     <div className='w-full py-5'>
                         <button className='px-6 py-2 text-sm font-medium text-white rounded bg-rose-600'>Add Sale</button>
                     </div>
