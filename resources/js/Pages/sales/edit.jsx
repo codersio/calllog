@@ -3,17 +3,16 @@ import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { FaTrash } from 'react-icons/fa'
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 
+const notyf = new Notyf();
 function edit({ customers, products, sale }) {
-    const [rows, setRows] = useState([
-        { product: '', quantity: 0, price: 0, amount: 0 }
-    ]);
+    const [rows, setRows] = useState(sale.sales_details);
 
-    const [taxs, setTax] = useState([
-        { tax: '', amount: 0 }
-    ]);
+    const [taxs, setTax] = useState(sale.account_tax);
 
-    
+
     useEffect(() => {
         if (sale?.sales_details) {
             console.log(sale.tax_details)
@@ -43,9 +42,20 @@ function edit({ customers, products, sale }) {
     };
 
     const handleChange = (index, field, value) => {
-        const updatedRows = rows.map((row, i) =>
-            i === index ? { ...row, [field]: value } : row
-        );
+        const updatedRows = rows.map((row, i) => {
+            if (i === index) {
+                const updatedRow = { ...row, [field]: field === 'product' ? value : Number(value) };
+
+                // Calculate amount based on quantity and price
+                if (field === 'quantity' || field === 'price') {
+                    updatedRow.amount = updatedRow.quantity * updatedRow.price; // Calculate amount
+                }
+
+                return updatedRow;
+            }
+            return row; // Return unchanged row
+        });
+
         setRows(updatedRows);
     };
 
@@ -56,23 +66,31 @@ function edit({ customers, products, sale }) {
         setTax(updatedTax);
     };
 
-    const { put,data,setData,errors,processing } = useForm({
+    const { put, data, setData, errors, processing } = useForm({
         bill_no: sale.bill_no,
         status: sale.status,
-        date:sale.date,
+        date: sale.date,
         customer_id: sale.customer_id,
-        mobile_no:sale.mobile_no,
-        amc_type:sale.amc_type,
-        email:sale.email,
-        discount:sale.discount,
-        billing_address:sale.billing_address,
-        sales_details:rows,
-        account_tax:taxs
+        mobile_no: sale.mobile_no,
+        amc_type: sale.amc_type,
+        email: sale.email,
+        discount: sale.discount,
+        billing_address: sale.billing_address,
+        sales_details: rows,
+        account_tax: taxs
     })
 
-    function handleSubmit(e){
+    useEffect(() => {
+        setData(prevData => ({
+            ...prevData,
+            account_tax: taxs || [],   // Ensure taxs is an array
+            sales_details: rows || []    // Ensure rows is an array
+        }));
+    }, [taxs, rows]);
+    
+    function handleSubmit(e) {
         e.preventDefault();
-        put(route('sales.edit'),{
+        put(route('sales.edit',sale.id),{
             onSuccess: () => {
                 // Show success notification on successful submission
                 notyf.success('sales updated successfully!');
@@ -90,12 +108,12 @@ function edit({ customers, products, sale }) {
                 <form onSubmit={handleSubmit} className="flex flex-wrap">
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">Bill No.</label>
-                        <input onChange={(e)=>setData('bill_no',e.target.value)} value={data.bill_no} type="text" className="form-input w-full rounded" placeholder='Enter bill no' />
+                        <input onChange={(e) => setData('bill_no', e.target.value)} value={data.bill_no} type="text" className="form-input w-full rounded" placeholder='Enter bill no' />
                         {errors.bill_no && <p className="mt-1 text-xs text-red-500">{errors.bill_no}</p>}
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">Status</label>
-                        <select name="status" onChange={(e)=>setData('status',e.target.value)} value={data.status} className='form-select w-full rounded' id="">
+                        <select name="status" onChange={(e) => setData('status', e.target.value)} value={data.status} className='form-select w-full rounded' id="">
                             <option value="">-- Select Status --</option>
                             <option value="unpaid">Unpaid</option>
                             <option value="full_paid">Full Paid</option>
@@ -105,16 +123,16 @@ function edit({ customers, products, sale }) {
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">Sales Date</label>
-                        <input type="date" name='date' onChange={(e)=>setData('date',e.target.value)} value={data.date} className="form-input w-full rounded" placeholder='Enter bill no' />
+                        <input type="date" name='date' onChange={(e) => setData('date', e.target.value)} value={data.date} className="form-input w-full rounded" placeholder='Enter bill no' />
                         {errors.date && <p className="mt-1 text-xs text-red-500">{errors.date}</p>}
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">Customer Name</label>
-                        <select name="" onChange={(e)=>setData('customer_id',e.target.value)} value={data.customer_id} className='form-select w-full rounded' id="">
+                        <select name="" onChange={(e) => setData('customer_id', e.target.value)} value={data.customer_id} className='form-select w-full rounded' id="">
                             <option value="">-- Select Customer --</option>
                             {
                                 customers && customers.map((cust, i) => (
-                                    <option value={cust.user_id}>{cust.first_name+' ' + cust.middle_name+' '+cust.last_name}</option>
+                                    <option value={cust.user_id}>{cust.first_name + ' ' + cust.middle_name + ' ' + cust.last_name}</option>
                                 ))
                             }
                         </select>
@@ -122,12 +140,12 @@ function edit({ customers, products, sale }) {
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">Mobile No</label>
-                        <input type="tel" onChange={(e)=>setData('mobile_no',e.target.value)} value={data.mobile_no} className="form-input w-full rounded" placeholder='Enter mobile no' />
+                        <input type="tel" onChange={(e) => setData('mobile_no', e.target.value)} value={data.mobile_no} className="form-input w-full rounded" placeholder='Enter mobile no' />
                         {errors.mobile_no && <p className="mt-1 text-xs text-red-500">{errors.mobile_no}</p>}
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">AMC Type</label>
-                        <select name="" onChange={(e)=>setData('amc_type',e.target.value)} value={data.amc_type} className='form-select w-full rounded' id="">
+                        <select name="" onChange={(e) => setData('amc_type', e.target.value)} value={data.amc_type} className='form-select w-full rounded' id="">
                             <option value="no_amc">No AMC</option>
                             <option value="amc">AMC</option>
                         </select>
@@ -135,17 +153,17 @@ function edit({ customers, products, sale }) {
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">Email</label>
-                        <input type="email" onChange={(e)=>setData('email',e.target.value)} value={data.email} className="form-input w-full rounded" placeholder='Enter email' />
+                        <input type="email" onChange={(e) => setData('email', e.target.value)} value={data.email} className="form-input w-full rounded" placeholder='Enter email' />
                         {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">Discount</label>
-                        <input type="number" onChange={(e)=>setData('discount',e.target.value)} value={data.discount} className="form-input w-full rounded" placeholder='Enter discount' />
+                        <input type="number" onChange={(e) => setData('discount', e.target.value)} value={data.discount} className="form-input w-full rounded" placeholder='Enter discount' />
                         {errors.discount && <p className="mt-1 text-xs text-red-500">{errors.discount}</p>}
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-full'>
                         <label htmlFor="">Billing Address</label>
-                        <textarea name="" onChange={(e)=>setData('billing_address',e.target.value)} value={data.billing_address} id="" rows={2} className='form-textarea resize-none w-full rounded'></textarea>
+                        <textarea name="" onChange={(e) => setData('billing_address', e.target.value)} value={data.billing_address} id="" rows={2} className='form-textarea resize-none w-full rounded'></textarea>
                         {errors.billing_address && <p className="mt-1 text-xs text-red-500">{errors.billing_address}</p>}
                     </div>
                     <hr />
@@ -176,7 +194,7 @@ function edit({ customers, products, sale }) {
                                             >
                                                 <option value="">-- Select Product --</option>
                                                 {products && products.map((pr, i) => (
-                                                    <option key={i} value={pr.id}>{pr.name}</option>
+                                                    <option key={i} value={pr.name}>{pr.name}</option>
                                                 ))}
                                             </select>
                                         </td>
@@ -209,7 +227,7 @@ function edit({ customers, products, sale }) {
                                             />
                                         </td>
                                         <td className='p-2'>
-                                            { index !== 0 &&
+                                            {index !== 0 &&
                                                 <button type='button'
                                                     className='flex gap-1 items-center text-sm font-medium text-red-500'
                                                     onClick={() => handleDeleteRow(index)}
@@ -269,13 +287,13 @@ function edit({ customers, products, sale }) {
                                             />
                                         </td>
                                         <td className='p-2'>
-                                        { index !== 0 &&
-                                            <button type='button'
-                                                className='flex gap-1 items-center text-sm font-medium text-red-500'
-                                                onClick={() => handleDeleteTax(index)}
-                                            >
-                                                <FaTrash size={15} /><span>Delete</span>
-                                            </button>
+                                            {index !== 0 &&
+                                                <button type='button'
+                                                    className='flex gap-1 items-center text-sm font-medium text-red-500'
+                                                    onClick={() => handleDeleteTax(index)}
+                                                >
+                                                    <FaTrash size={15} /><span>Delete</span>
+                                                </button>
                                             }
                                         </td>
                                     </tr>

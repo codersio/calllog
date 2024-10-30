@@ -175,13 +175,13 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         </Link>
                     </li>
                     <li>
-                        <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                        <Link href='/amc' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoCallOutline size={15} />
                             <span className='text-sm'>AMC</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                        <Link href='/complaint' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoCallOutline size={15} />
                             <span className='text-sm'>Complaint</span>
                         </Link>

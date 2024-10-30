@@ -26,7 +26,7 @@ class SaleController extends Controller
     }
 
     public function store(Request $request) {
-        \dd($request->all());
+        // \dd($request->all());
         $request->validate([
             'bill_no'=>'required',
             'customer_id'=>'required',
@@ -39,6 +39,9 @@ class SaleController extends Controller
         ]);
 
         Sale::create($request->all());
+        // foreach($request->sales_details as $product){
+        //     //code here
+        // }
         return \redirect()->to(\route('sales.index'));
     }
 
@@ -51,10 +54,24 @@ class SaleController extends Controller
     }
 
     public function update($id, Request $request) {
+        // dd($request->all());
+        $request->validate([
+            'bill_no'=>'required',
+            'customer_id'=>'required',
+            'date'=>'required',
+            'billing_address'=>'required',
+            'status'=>'required',
+            'amc_type'=>'required',
+            'mobile_no'=>'required',
+            'email'=>'required',
+        ]);
 
+        Sale::findOrFail($id)->update($request->all());
+        return \redirect()->to(\route('sales.index'));
     }
 
     public function destroy($id) {
-
+        Sale::findOrFail($id)->delete();
+        return \redirect()->to(\route('sales.index'));
     }
 }

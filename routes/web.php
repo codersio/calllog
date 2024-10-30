@@ -239,6 +239,6 @@ Route::get('/sales/add',[SaleController::class,'create'])->name('sales.create');
 Route::post('/sales/store',[SaleController::class,'store'])->name('sales.store');
 Route::get('/sales/{id}/edit',[SaleController::class,'edit'])->name('sales.edit');
 Route::put('/sales/{id}/edit',[SaleController::class,'update']);
-Route::delete('/sales/{id}/delete',[SaleController::class,'destroy'])->name('sales.delete');
+Route::delete('/sales/{id}/delete',[SaleController::class,'destroy'])->name('sales.destroy');
 Route::resource('/amc',AmcController::class);
 Route::resource('/complaint',ComplaintController::class);
