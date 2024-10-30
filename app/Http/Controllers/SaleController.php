@@ -140,6 +140,7 @@ class SaleController extends Controller
         $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
         return Inertia::render('sales/edit', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs, 'sale' => $sale]);
     }
+    
 
     public function update($id, Request $request)
     {
