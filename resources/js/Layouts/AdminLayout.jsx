@@ -188,7 +188,6 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                     </li>
                 </ul>
             </aside>
-
             <div className='flex flex-col flex-1'>
                 <nav className='flex items-center justify-between w-full p-3 px-6 border-b border-gray-300'>
                     <div></div>
