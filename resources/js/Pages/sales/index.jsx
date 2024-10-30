@@ -86,7 +86,7 @@ export default function index({sales}) {
                                         { formatLabel(sale.status) }
                                     </td>
                                     <td className='p-3 flex gap-1'>
-                                        <button className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-emerald-500 text-white rounded'><span>View</span></button>
+                                        {/* <button className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-emerald-500 text-white rounded'><span>View</span></button> */}
                                         <Link href={`/sales/${sale.id}/edit`} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-blue-500 text-white rounded'><span>Edit</span></Link>
                                         <button type='button' onClick={() => handleDelete(sale.id)} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-red-500 text-white rounded'><span>Delete</span></button>
                                     </td>

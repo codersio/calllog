@@ -8,14 +8,16 @@ import 'notyf/notyf.min.css';
 import Multiselect from 'multiselect-react-dropdown';
 
 const notyf = new Notyf();
-function create({ customers, products }) {
+function create({ customers, products, taxes }) {
 
     const [rows, setRows] = useState([
-        { product: '', quantity: 0, price: 0, amount: 0, taxs: [] }
+        { product: '', quantity: 0, price: 0, amount: 0, amountWithTax: 0, selectedTaxes: [] } // Removed selected field
     ]);
 
+    const [totalTax, setTotalTax] = useState(0);
+
     const handleAddRow = () => {
-        setRows([...rows, { product: '', quantity: 0, price: 0, amount: 0, taxs: [] }]);
+        setRows([...rows, { product: '', quantity: 0, price: 0, amount: 0, amountWithTax: 0, selectedTaxes: [] }]);
     };
 
     const handleDeleteRow = (index) => {
@@ -28,18 +30,55 @@ function create({ customers, products }) {
             if (i === index) {
                 const updatedRow = { ...row, [field]: field === 'product' ? value : Number(value) };
 
-                // Calculate amount based on quantity and price
+                // Calculate base amount based on quantity and price
                 if (field === 'quantity' || field === 'price') {
-                    updatedRow.amount = updatedRow.quantity * updatedRow.price; // Calculate amount
+                    updatedRow.amount = updatedRow.quantity * updatedRow.price;
                 }
 
                 return updatedRow;
             }
-            return row; // Return unchanged row
+            return row;
         });
 
         setRows(updatedRows);
+        calculateTotalTax(updatedRows); // Recalculate tax with updated rows
     };
+
+    const handleTaxSelect = (index, selectedList) => {
+        const updatedRows = rows.map((row, i) => {
+            if (i === index) {
+                return { ...row, selectedTaxes: selectedList }; // Update the selected taxes for the specific row
+            }
+            return row;
+        });
+
+        setRows(updatedRows); // Update rows
+        calculateTotalTax(updatedRows); // Recalculate total tax based on updated rows
+    };
+
+    // Calculate total tax based on selected taxes for each row
+    const calculateTotalTax = (rows) => {
+        console.log(rows)
+        const updatedRows = rows.map(row => {
+            // Calculate total tax for this row based on selected taxes
+            const totalTaxForRow = row.selectedTaxes.reduce((taxSum, tax) => {
+                return taxSum + (row.amount * (tax.percent / 100));
+            }, 0);
+
+            row.amountWithTax = row.amount + totalTaxForRow; // Add tax to the base amount
+            return row; // Return updated row
+        });
+
+        // Calculate the total tax amount for all rows
+        const totalTax = updatedRows.reduce((sum, row) => {
+            return sum + (row.amountWithTax - row.amount); // Total tax calculated across all rows
+        }, 0);
+
+        setTotalTax(totalTax); // Update total tax state
+        setRows(updatedRows); // Update rows to reflect amountWithTax
+    };
+
+
 
     const { post, data, setData, errors, processing } = useForm({
         bill_no: '',
@@ -53,6 +92,7 @@ function create({ customers, products }) {
         billing_address: '',
         sales_details: [],
     })
+
 
     // Sync taxs with form data
     useEffect(() => {
@@ -105,7 +145,7 @@ function create({ customers, products }) {
                             <option value="">-- Select Customer --</option>
                             {
                                 customers && customers.map((cust, i) => (
-                                    <option value={cust.user_id}>{cust.first_name + ' ' + cust.middle_name + ' ' + cust.last_name}</option>
+                                    <option key={i} value={cust.user_id}>{cust.first_name + ' ' + cust.middle_name + ' ' + cust.last_name}</option>
                                 ))
                             }
                         </select>
@@ -150,8 +190,8 @@ function create({ customers, products }) {
                                     <th className='border border-gray-300 p-2'>Product</th>
                                     <th className='border border-gray-300 p-2'>Quantity</th>
                                     <th className='border border-gray-300 p-2'>Price (Af)</th>
-                                    <th className='border border-gray-300 p-2'>Amount (Af)</th>
                                     <th className='border border-gray-300 p-2'>Tax</th>
+                                    <th className='border border-gray-300 p-2'>Amount (Af)</th>
                                     <th className='border border-gray-300 p-2'>Action</th>
                                 </tr>
                             </thead>
@@ -193,17 +233,22 @@ function create({ customers, products }) {
                                             />
                                         </td>
                                         <td className='p-2'>
-                                            <input
-                                                type="number"
-                                                className='form-input rounded w-full'
-                                                value={row.amount}
-                                                readOnly
+                                            <Multiselect
+                                                options={taxes.map(tax => ({
+                                                    name: `${tax.name} (${tax.percent}%)`, // Display format
+                                                    percent: tax.percent, // Keeping percent for calculations if needed
+                                                }))}
+                                                onSelect={(selectedList) => handleTaxSelect(index, selectedList)}
+                                                onRemove={(selectedList) => handleTaxSelect(index, selectedList)}
+                                                displayValue="name"
                                             />
                                         </td>
                                         <td className='p-2'>
-                                            <Multiselect
-                                                options={[{name: 'Tax 1', id: 1},{name: 'Tax 2', id: 2}]} 
-                                                displayValue="name" 
+                                            <input
+                                                type="number"
+                                                className='form-input rounded w-full'
+                                                value={row.amountWithTax.toFixed(2)}
+                                                readOnly
                                             />
                                         </td>
                                         <td className='p-2'>

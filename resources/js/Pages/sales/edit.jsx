@@ -5,30 +5,16 @@ import { useEffect } from 'react';
 import { FaTrash } from 'react-icons/fa'
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
+import Multiselect from 'multiselect-react-dropdown';
 
 const notyf = new Notyf();
-function edit({ customers, products, sale }) {
+function edit({ customers, products, sale, taxes }) {
     const [rows, setRows] = useState(sale.sales_details);
-
-    const [taxs, setTax] = useState(sale.account_tax);
-
-
-    useEffect(() => {
-        if (sale?.sales_details) {
-            console.log(sale.tax_details)
-            setRows(sale.sales_details);
-        }
-        if (sale?.account_tax) { // Assuming sale.account_tax holds tax information
-            setTax(sale.account_tax);
-        }
-    }, [sale]);
+    console.log(sale.sales_details)
+    const [totalTax, setTotalTax] = useState(0);
 
     const handleAddRow = () => {
-        setRows([...rows, { product: '', quantity: 0, price: 0, amount: 0 }]);
-    };
-
-    const handleAddTax = () => {
-        setTax([...taxs, { tax: '', amount: 0 }]);
+        setRows([...rows, { product: '', quantity: 0, price: 0, amount: 0, amountWithTax: 0, selectedTaxes: [] }]);
     };
 
     const handleDeleteRow = (index) => {
@@ -36,34 +22,57 @@ function edit({ customers, products, sale }) {
         setRows(updatedRows);
     };
 
-    const handleDeleteTax = (index) => {
-        const updatedTax = taxs.filter((_, i) => i !== index);
-        setTax(updatedTax);
-    };
-
     const handleChange = (index, field, value) => {
         const updatedRows = rows.map((row, i) => {
             if (i === index) {
                 const updatedRow = { ...row, [field]: field === 'product' ? value : Number(value) };
 
-                // Calculate amount based on quantity and price
+                // Calculate base amount based on quantity and price
                 if (field === 'quantity' || field === 'price') {
-                    updatedRow.amount = updatedRow.quantity * updatedRow.price; // Calculate amount
+                    updatedRow.amount = updatedRow.quantity * updatedRow.price;
                 }
 
                 return updatedRow;
             }
-            return row; // Return unchanged row
+            return row;
         });
 
         setRows(updatedRows);
+        calculateTotalTax(updatedRows); // Recalculate tax with updated rows
     };
 
-    const handleTaxChange = (index, field, value) => {
-        const updatedTax = taxs.map((tax, i) =>
-            i === index ? { ...tax, [field]: value } : tax
-        );
-        setTax(updatedTax);
+    const handleTaxSelect = (index, selectedList) => {
+        const updatedRows = rows.map((row, i) => {
+            if (i === index) {
+                return { ...row, selectedTaxes: selectedList }; // Update the selected taxes for the specific row
+            }
+            return row;
+        });
+
+        setRows(updatedRows); // Update rows
+        calculateTotalTax(updatedRows); // Recalculate total tax based on updated rows
+    };
+
+    // Calculate total tax based on selected taxes for each row
+    const calculateTotalTax = (rows) => {
+        console.log(rows)
+        const updatedRows = rows.map(row => {
+            // Calculate total tax for this row based on selected taxes
+            const totalTaxForRow = row.selectedTaxes.reduce((taxSum, tax) => {
+                return taxSum + (row.amount * (tax.percent / 100));
+            }, 0);
+
+            row.amountWithTax = row.amount + totalTaxForRow; // Add tax to the base amount
+            return row; // Return updated row
+        });
+
+        // Calculate the total tax amount for all rows
+        const totalTax = updatedRows.reduce((sum, row) => {
+            return sum + (row.amountWithTax - row.amount); // Total tax calculated across all rows
+        }, 0);
+
+        setTotalTax(totalTax); // Update total tax state
+        setRows(updatedRows); // Update rows to reflect amountWithTax
     };
 
     const { put, data, setData, errors, processing } = useForm({
@@ -77,16 +86,14 @@ function edit({ customers, products, sale }) {
         discount: sale.discount,
         billing_address: sale.billing_address,
         sales_details: rows,
-        account_tax: taxs
     })
 
     useEffect(() => {
         setData(prevData => ({
             ...prevData,
-            account_tax: taxs || [],   // Ensure taxs is an array
             sales_details: rows || []    // Ensure rows is an array
         }));
-    }, [taxs, rows]);
+    }, [rows]);
     
     function handleSubmit(e) {
         e.preventDefault();
@@ -132,7 +139,7 @@ function edit({ customers, products, sale }) {
                             <option value="">-- Select Customer --</option>
                             {
                                 customers && customers.map((cust, i) => (
-                                    <option value={cust.user_id}>{cust.first_name + ' ' + cust.middle_name + ' ' + cust.last_name}</option>
+                                    <option key={i} value={cust.user_id}>{cust.first_name + ' ' + cust.middle_name + ' ' + cust.last_name}</option>
                                 ))
                             }
                         </select>
@@ -177,6 +184,7 @@ function edit({ customers, products, sale }) {
                                     <th className='border border-gray-300 p-2'>Product</th>
                                     <th className='border border-gray-300 p-2'>Quantity</th>
                                     <th className='border border-gray-300 p-2'>Price (Af)</th>
+                                    <th className='border border-gray-300 p-2'>Tax</th>
                                     <th className='border border-gray-300 p-2'>Amount (Af)</th>
                                     <th className='border border-gray-300 p-2'>Action</th>
                                 </tr>
@@ -219,10 +227,22 @@ function edit({ customers, products, sale }) {
                                             />
                                         </td>
                                         <td className='p-2'>
+                                            <Multiselect
+                                                options={taxes.map(tax => ({
+                                                    name: `${tax.name} (${tax.percent}%)`, // Display format
+                                                    percent: tax.percent, // Keeping percent for calculations if needed
+                                                }))}
+                                                selectedValues={row.selectedTaxes}
+                                                onSelect={(selectedList) => handleTaxSelect(index, selectedList)}
+                                                onRemove={(selectedList) => handleTaxSelect(index, selectedList)}
+                                                displayValue="name"
+                                            />
+                                        </td>
+                                        <td className='p-2'>
                                             <input
                                                 type="number"
                                                 className='form-input rounded w-full'
-                                                value={row.amount}
+                                                value={row.amountWithTax.toFixed(2)}
                                                 readOnly
                                             />
                                         </td>
@@ -243,66 +263,6 @@ function edit({ customers, products, sale }) {
                         <button type='button'
                             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
                             onClick={handleAddRow}
-                        >
-                            Add Row
-                        </button>
-                    </div>
-                    <hr />
-                    <div className='w-full py-2'>
-                        <h1 className='text-xl font-semibold text-gray-600'>Account Tax</h1>
-                    </div>
-                    <div className='w-full py-2'>
-                        <table className='w-full'>
-                            <thead>
-                                <tr>
-                                    <th className='border border-gray-300 p-2'>Select Tax</th>
-                                    <th className='border border-gray-300 p-2'>Tax</th>
-                                    <th className='border border-gray-300 p-2'>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {taxs.map((t, index) => (
-                                    <tr key={index}>
-                                        <td className='p-2'>
-                                            <select
-                                                className="form-select rounded w-full"
-                                                value={t.tax}
-                                                onChange={(e) =>
-                                                    handleTaxChange(index, 'tax', e.target.value)
-                                                }
-                                            >
-                                                <option value="">-- Select Tax --</option>
-                                                <option value="0">ACE Tax Consultants</option>
-                                                <option value="1">Elite Tax Consultants</option>
-                                            </select>
-                                        </td>
-                                        <td className='p-2'>
-                                            <input
-                                                type="number"
-                                                className='form-input rounded w-full'
-                                                value={t.amount}
-                                                onChange={(e) =>
-                                                    handleTaxChange(index, 'amount', e.target.value)
-                                                }
-                                            />
-                                        </td>
-                                        <td className='p-2'>
-                                            {index !== 0 &&
-                                                <button type='button'
-                                                    className='flex gap-1 items-center text-sm font-medium text-red-500'
-                                                    onClick={() => handleDeleteTax(index)}
-                                                >
-                                                    <FaTrash size={15} /><span>Delete</span>
-                                                </button>
-                                            }
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <button type='button'
-                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                            onClick={handleAddTax}
                         >
                             Add Row
                         </button>

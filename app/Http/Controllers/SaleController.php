@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
+use App\Models\Tax;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -22,7 +23,8 @@ class SaleController extends Controller
     {
         $customers = DB::table('tbl_user')->get();
         $products = DB::table('product')->join('products_category','products_category.id','=','product.category_id')->select('products_category.name','product.id')->get();
-        return Inertia::render('sales/create',\compact('customers','products'));
+        $taxs = Tax::all();
+        return Inertia::render('sales/create',['customers'=>$customers,'products'=>$products,'taxes'=>$taxs]);
     }
 
     public function store(Request $request) {
@@ -49,8 +51,9 @@ class SaleController extends Controller
     {
         $sale = Sale::join('tbl_user','tbl_user.user_id','=','sales.customer_id')->where('sales.id',$id)->first();
         $customers = DB::table('tbl_user')->get();
+        $taxs = Tax::all();
         $products = DB::table('product')->join('products_category','products_category.id','=','product.category_id')->select('products_category.name','product.id')->get();
-        return Inertia::render('sales/edit',\compact('customers','products','sale'));
+        return Inertia::render('sales/edit',['customers'=>$customers,'products'=>$products,'taxes'=>$taxs,'sale'=>$sale]);
     }
 
     public function update($id, Request $request) {
