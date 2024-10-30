@@ -185,7 +185,7 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             {showProductSubMenu && (
                                 <ul className='ml-4 space-y-2'>
                                     <li>
-                                        <Link href='/products-category' className='flex items-center p-2 hover:bg-gray-100'>
+                                        <Link href='/sales' className='flex items-center p-2 hover:bg-gray-100'>
                                             <span className='text-sm'>Bill</span>
                                         </Link>
                                     </li>
@@ -216,7 +216,7 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         </Link>
                     </li>
                     <li>
-                        <Link href='/complaint' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                        <Link href='/tasks' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <FaTasks size={15} />
                             <span className='text-sm'>Tasks</span>
                         </Link>
