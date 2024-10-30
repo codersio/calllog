@@ -13,6 +13,7 @@ import {
 } from 'react-icons/io5';
 import { FaX } from 'react-icons/fa6';
 import { IoIosNotificationsOutline } from 'react-icons/io';
+import { FaTasks } from 'react-icons/fa';
 
 export default function AdminLayout({ header, children, user, usrrr, notif, user_type }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -168,11 +169,39 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             <span className='text-sm'>Products</span>
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoCallOutline size={15} />
                             <span className='text-sm'>Sales</span>
                         </Link>
+                    </li> */}
+                    <li>
+                        {/* Products with Submenu */}
+                        <div>
+                            <button onClick={() => setShowProductSubMenu(!showProductSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
+                                <IoCallOutline size={15} />
+                                <span className='text-sm'>Sales</span>
+                            </button>
+                            {showProductSubMenu && (
+                                <ul className='ml-4 space-y-2'>
+                                    <li>
+                                        <Link href='/products-category' className='flex items-center p-2 hover:bg-gray-100'>
+                                            <span className='text-sm'>Bill</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/products' className='flex items-center p-2 hover:bg-gray-100'>
+                                            <span className='text-sm'>Expense</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/products' className='flex items-center p-2 hover:bg-gray-100'>
+                                            <span className='text-sm'>Income</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
                     </li>
                     <li>
                         <Link href='/amc' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
@@ -184,6 +213,12 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         <Link href='/complaint' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoCallOutline size={15} />
                             <span className='text-sm'>Complaint</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href='/complaint' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <FaTasks size={15} />
+                            <span className='text-sm'>Tasks</span>
                         </Link>
                     </li>
                 </ul>
