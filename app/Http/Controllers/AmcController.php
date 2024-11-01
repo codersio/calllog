@@ -6,6 +6,7 @@ use App\Models\Amc;
 use App\Models\Sale;
 use Inertia\Inertia;
 use App\Models\Employee;
+use App\Models\Interval;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,12 +24,14 @@ class AmcController extends Controller
     public function create()
     {
         $customers = DB::table('tbl_user')->get();
+        $intvls = Interval::where('status',1)->get();
         $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->get();
         $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')->get();
         return Inertia::render('amc/create', [
             'customers' => $customers,
             'products' => $products,
-            'employees' => $employees
+            'employees' => $employees,
+            'intvls'=>$intvls
         ]);
     }
 
@@ -49,6 +52,7 @@ class AmcController extends Controller
             'attachments' => 'required',
             'no_of_service' => 'required',
             'billing_address' => 'required',
+            'service_details'=>'nullable',
             'amc_details' => 'required',
         ]);
 
@@ -107,9 +111,11 @@ class AmcController extends Controller
             'attachments' => 'nullable|file', // Attachments are optional during update
             'no_of_service' => 'required',
             'billing_address' => 'required',
+            'service_details'=>'nullable',
             'amc_details' => 'required|array',
         ]);
 
+        // dd($validatedData);
         // Find the existing AMC record
         $amc = Amc::findOrFail($id);
 

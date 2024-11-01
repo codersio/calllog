@@ -6,10 +6,10 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import Header from './Header';
 import Nav from './Nav';
-import { 
-    IoArchiveOutline, IoBuildOutline, IoCallOutline, IoConstructOutline, 
-    IoCubeOutline, IoDocumentTextOutline, IoGridOutline, IoMailOutline, 
-    IoNotificationsOutline, IoPeopleOutline 
+import {
+    IoArchiveOutline, IoBuildOutline, IoCallOutline, IoChevronForward, IoCog, IoConstructOutline,
+    IoCubeOutline, IoDocumentTextOutline, IoGridOutline, IoMailOutline,
+    IoNotificationsOutline, IoPeopleOutline
 } from 'react-icons/io5';
 import { FaX } from 'react-icons/fa6';
 import { IoIosNotificationsOutline } from 'react-icons/io';
@@ -18,6 +18,8 @@ import { FaTasks } from 'react-icons/fa';
 export default function AdminLayout({ header, children, user, usrrr, notif, user_type }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [showProductSubMenu, setShowProductSubMenu] = useState(false); // New state for toggling product submenu
+    const [showSalesSubMenu, setShowSalesSubMenu] = useState(false); // New state for toggling product submenu
+    const [showGeneralSetupSubMenu, setShowGeneralSetupSubMenu] = useState(false); // New state for toggling product submenu
     const toggleNotification = (e) => {
         e.stopPropagation();
         setNotifyModal(prev => !prev);
@@ -26,7 +28,7 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
 
     const notificationRef = useRef(null);
     const [notifyModal, setNotifyModal] = useState(false);
-    
+
     const handleNotificationClick = async (notificationId) => {
         try {
             await axios.post(`readta/${notificationId}`);
@@ -77,8 +79,9 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
             </div>
 
             <aside className='w-64 h-full flex flex-col border-r border-gray-300'>
-                <div className='flex justify-center'>
-                    <img width={80} src="https://png.pngtree.com/png-clipart/20230330/original/pngtree-modern-demo-logo-vector-file-png-image_9012000.png" alt="" />
+                <div className='flex justify-center pt-2'>
+                    <img width={130} src="/logo/logo2.jpg" alt="" />
+                    {/* <img width={80} src="https://png.pngtree.com/png-clipart/20230330/original/pngtree-modern-demo-logo-vector-file-png-image_9012000.png" alt="" /> */}
                 </div>
                 <ul className='p-4 flex-1 overflow-y-auto custom-scrollbar space-y-2'>
                     <li>
@@ -88,14 +91,63 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         </Link>
                     </li>
                     <li>
+                        {/* Products with Submenu */}
+                        <div>
+                            <button onClick={() => setShowGeneralSetupSubMenu(!showGeneralSetupSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
+                                <IoCog size={15} />
+                                <span className='text-sm'>Master</span>
+                            </button>
+                            {showGeneralSetupSubMenu && (
+                                <ul className='ml-4 space-y-2'>
+                                    <li>
+                                        <Link href='/tasktype' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Task Type</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/interval' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Interval</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/tax' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Tax</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/purchase' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Purchase</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/stocks' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Stock</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/distributers' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Distributor</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
+                    </li>
+                    {/* <li>
                         <Link href='/distributers' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoPeopleOutline size={15} />
                             <span className='text-sm'>Distributor</span>
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link href='/delars' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoArchiveOutline size={15}/>
+                            <IoArchiveOutline size={15} />
                             <span className='text-sm'>Dealer</span>
                         </Link>
                     </li>
@@ -115,12 +167,15 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             {showProductSubMenu && (
                                 <ul className='ml-4 space-y-2'>
                                     <li>
-                                        <Link href='/products-category' className='flex items-center p-2 hover:bg-gray-100'>
+                                        <Link href='/products-category' className='flex items-center gap-x-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
                                             <span className='text-sm'>Add Category </span>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href='/products' className='flex items-center p-2 hover:bg-gray-100'>
+                                        <Link href='/products' className='flex items-center gap-x-1
+                                         p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
                                             <span className='text-sm'>Create Product</span>
                                         </Link>
                                     </li>
@@ -169,6 +224,12 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             <span className='text-sm'>Products</span>
                         </Link>
                     </li>
+                    <li>
+                        <Link href='/Quotation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoPeopleOutline size={15} />
+                            <span className='text-sm'>Quotation</span>
+                        </Link>
+                    </li>
                     {/* <li>
                         <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoCallOutline size={15} />
@@ -190,12 +251,12 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href='/products' className='flex items-center p-2 hover:bg-gray-100'>
+                                        <Link href='' className='flex items-center p-2 hover:bg-gray-100'>
                                             <span className='text-sm'>Expense</span>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href='/products' className='flex items-center p-2 hover:bg-gray-100'>
+                                        <Link href='' className='flex items-center p-2 hover:bg-gray-100'>
                                             <span className='text-sm'>Income</span>
                                         </Link>
                                     </li>
@@ -205,13 +266,13 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                     </li>
                     <li>
                         <Link href='/amc' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoCallOutline size={15} />
+                            <IoBuildOutline size={15} />
                             <span className='text-sm'>AMC</span>
                         </Link>
                     </li>
                     <li>
                         <Link href='/complaint' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoCallOutline size={15} />
+                            <IoDocumentTextOutline size={15} />
                             <span className='text-sm'>Complaint</span>
                         </Link>
                     </li>

@@ -1,12 +1,39 @@
 import AdminLayout from '@/Layouts/AdminLayout'
 import { Link, useForm } from '@inertiajs/react'
-import React from 'react'
+import React,{ useState,useEffect }  from 'react'
 import { FaPencil } from 'react-icons/fa6';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
 const notyf = new Notyf();
 export default function index({ complaints }) {
+    const [query, setQuery] = useState('');
+    const [filteredData, setFilteredData] = useState(complaints);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10);
+
+    useEffect(() => {
+        // Filter data based on the search query
+        const filtered = complaints.filter(cmp =>
+            cmp.complaint_no.includes(query)
+        );
+        setFilteredData(filtered);
+    }, [query, complaints]);
+
+    const handleSearch = (event) => {
+        setQuery(event.target.value);
+        setCurrentPage(1); // Reset to the first page when search query changes
+    };
+
+     // Pagination logic
+     const indexOfLastData = currentPage * itemsPerPage;
+     const indexOfFirstData = indexOfLastData - itemsPerPage;
+     const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
+ 
+     // Page numbers
+     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+
     const { delete: destroy } = useForm()
     function handleDelete(id) {
         event.preventDefault();
@@ -26,8 +53,9 @@ export default function index({ complaints }) {
             <div className='p-6 bg-white rounded-lg shadow'>
                 <div className='flex justify-between mb-4'>
                     <input
-                        type="text"
-
+                        type="search"
+                        value={query}
+                        onChange={handleSearch}
                         placeholder="Search data..."
                         className='w-[60%] p-2 border border-gray-300 rounded-md'
                     />
@@ -51,7 +79,7 @@ export default function index({ complaints }) {
                     </thead>
                     <tbody>
                         {
-                            complaints && complaints.map((cmpl, index) => (
+                            currentData && currentData.map((cmpl, index) => (
                                 <tr key={index}>
                                     <td className="p-3">
                                         {cmpl.complaint_no}
@@ -87,6 +115,18 @@ export default function index({ complaints }) {
                         }
                     </tbody>
                 </table>
+
+                <div className='flex justify-center mt-4'>
+                    {pageNumbers.map(number => (
+                        <button
+                            key={number}
+                            onClick={() => setCurrentPage(number)}
+                            className={`px-4 py-2 mx-1 rounded ${currentPage === number ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                        >
+                            {number}
+                        </button>
+                    ))}
+                </div>
             </div>
         </AdminLayout>
     )

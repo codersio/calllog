@@ -17,7 +17,7 @@ const index = ({ data }) => {
 
     useEffect(() => {
         // Filter data based on the search query
-        
+
     }, [query, data]);
 
     const handleSearch = (event) => {
@@ -30,7 +30,7 @@ const index = ({ data }) => {
     const handleDelete = (e, id) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete this record?')) {
-            destroy(`/Call-Allocation/${id}`,{
+            destroy(`/Call-Allocation/${id}`, {
                 onSuccess: () => {
                     location.reload()
                     // Show success notification on successful submission
@@ -41,7 +41,7 @@ const index = ({ data }) => {
                     notyf.error('Failed to delete data.');
                 }
             })
-                
+
         }
     };
 
@@ -70,62 +70,64 @@ const index = ({ data }) => {
                     </Link>
                 </div>
 
-                <table className="w-full border border-collapse table-auto">
-                    <thead className='text-white bg-gray-700'>
-                        <tr>
-                            <th className='p-3 text-left border'>SL</th>
-                            <th className='p-3 text-left border'>Call No</th>
-                            <th className='p-3 text-left border'>Customer Name</th>
-                            <th className='p-3 text-left border'>Address</th>
-                            <th className='p-3 text-center border'>Contact No</th>
-                            <th className='p-3 text-center border'>Pin</th>
-                            <th className='p-3 text-left border'>Service Partner Name</th>
-                            <th className='p-3 text-left border'>Call Status</th>
-                            <th className='p-3 text-left border'>Reason</th>
-                            <th className='p-3 text-center border'>Call Starting Date</th>
-                            <th className='p-3 text-center border'>Call Ending Date</th>
-                            <th className='p-3 text-left border'>Total Time</th>
-                            <th className='p-3 text-left border'>Action</th>
+                <div className='max-w-5xl overflow-auto'>
+                    <table className="w-full text-nowrap border border-collapse table-auto">
+                        <thead className='text-white bg-gray-700'>
+                            <tr>
+                                <th className='p-3 text-left border'>SL</th>
+                                <th className='p-3 text-left border'>Call No</th>
+                                <th className='p-3 text-left border'>Customer Name</th>
+                                <th className='p-3 text-left border'>Address</th>
+                                <th className='p-3 text-center border'>Contact No</th>
+                                <th className='p-3 text-center border'>Pin</th>
+                                <th className='p-3 text-left border'>Service Partner Name</th>
+                                <th className='p-3 text-left border'>Call Status</th>
+                                <th className='p-3 text-left border'>Reason</th>
+                                <th className='p-3 text-center border'>Call Starting Date</th>
+                                <th className='p-3 text-center border'>Call Ending Date</th>
+                                <th className='p-3 text-left border'>Total Time</th>
+                                <th className='p-3 text-left border'>Action</th>
 
-                            {/* <th className='p-3 text-center border'>Unlock Timesheet</th> */}
-                        </tr>
-                    </thead>
-                    <tbody>
-  {currentData.length > 0 ? (
-    currentData.map((emp, index) => (
-      <tr key={emp.id} className="odd:bg-white even:bg-gray-100">
-        <td className="p-3 border">{indexOfFirstData + index + 1}</td>
-        <td className="p-3 border">{emp.call_no}</td>
-        <td className="p-3 border">{emp.customer_name}</td>
-        <td className="p-3 border">{emp.address}</td>
-        <td className="p-3 border">{emp.phone}</td>
-        <td className="p-3 border">{emp.pin}</td>
-        <td className="p-3 border">{emp.service_partner}</td>
-        <td className="p-3 border"></td>
-        <td className="p-3 border">{emp.reason}</td>
-        <td className="p-3 border"></td>
-        <td className="p-3 border"></td>
-        <td className="p-3 border"></td>
-        <td className="p-3 text-center border">
-          <div className="flex justify-center space-x-3">
-            <Link className="p-2 text-white bg-green-500 rounded" href={`service-centers/${emp.id}/edit`}>
-              <CiEdit />
-            </Link>
-            <button className="p-2 text-white bg-red-500 rounded" onClick={(e) => handleDelete(e, emp.id)}>
-              <RiDeleteBinLine />
-            </button>
-          </div>
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="12" className="p-3 text-center">No data found</td>
-    </tr>
-  )}
-</tbody>
+                                {/* <th className='p-3 text-center border'>Unlock Timesheet</th> */}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentData.length > 0 ? (
+                                currentData.map((emp, index) => (
+                                    <tr key={emp.id} className="odd:bg-white even:bg-gray-100">
+                                        <td className="p-3 border">{indexOfFirstData + index + 1}</td>
+                                        <td className="p-3 border">{emp.call_no}</td>
+                                        <td className="p-3 border">{emp.customer_name}</td>
+                                        <td className="p-3 border">{emp.address}</td>
+                                        <td className="p-3 border">{emp.phone}</td>
+                                        <td className="p-3 border">{emp.pin}</td>
+                                        <td className="p-3 border">{emp.service_partner}</td>
+                                        <td className="p-3 border"></td>
+                                        <td className="p-3 border">{emp.reason}</td>
+                                        <td className="p-3 border"></td>
+                                        <td className="p-3 border"></td>
+                                        <td className="p-3 border"></td>
+                                        <td className="p-3 text-center border">
+                                            <div className="flex justify-center space-x-3">
+                                                <Link className="p-2 text-white bg-green-500 rounded" href={`service-centers/${emp.id}/edit`}>
+                                                    <CiEdit />
+                                                </Link>
+                                                <button className="p-2 text-white bg-red-500 rounded" onClick={(e) => handleDelete(e, emp.id)}>
+                                                    <RiDeleteBinLine />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="12" className="p-3 text-center">No data found</td>
+                                </tr>
+                            )}
+                        </tbody>
 
-                </table>
+                    </table>
+                </div>
 
                 <div className='flex justify-center mt-4'>
                     {pageNumbers.map(number => (

@@ -18,7 +18,7 @@ const index = ({ data }) => {
     useEffect(() => {
         // Filter data based on the search query
         const filtered = data.filter(emp =>
-            emp.model.toLowerCase().includes(query.toLowerCase()) 
+            emp.model.toLowerCase().includes(query.toLowerCase())
         );
         setFilteredData(filtered);
     }, [query, data]);
@@ -33,7 +33,7 @@ const index = ({ data }) => {
     const handleDelete = (e, id) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete this record?')) {
-            destroy(`/spare-part/${id}`,{
+            destroy(`/spare-part/${id}`, {
                 onSuccess: () => {
                     // Show success notification on successful submission
                     notyf.success('Product Category deleted successfully!');
@@ -43,7 +43,7 @@ const index = ({ data }) => {
                     notyf.error('Failed to delete data.');
                 }
             })
-                
+
         }
     };
 
@@ -72,65 +72,68 @@ const index = ({ data }) => {
                     </Link>
                 </div>
 
-                <table className="w-full border border-collapse table-auto">
-                    <thead className='text-white bg-gray-700'>
-                        <tr>
-                            <th className='p-3 text-left border'>Call Allocation</th>
-                            <th className='p-3 text-left border'>Customer Name</th>
-                            <th className='p-3 text-left border'>Address</th>
-                            <th className='p-3 text-left border'>Phone</th>
-                            <th className='p-3 text-center border'>Service Partner</th>
-                            <th className='p-3 text-left border'>Spare Parts Type</th>
-                            <th className='p-3 text-left border'>Product Name</th>
-                            <th className='p-3 text-left border'>Qty</th>
-                            <th className='p-3 text-left border'>Spare Parts Serial No</th>
-                            <th className='p-3 text-left border'>Date</th>
-                            <th className='p-3 text-left border'>Invoice No</th>
-                            <th className='p-3 text-left border'>Dispatch</th>
-                            <th className='p-3 text-left border'>Details</th>
-                            <th className='p-3 text-left border'>Service Partner</th>
-                            <th className='p-3 text-center border'>Actions</th>
-                            {/* <th className='p-3 text-center border'>Unlock Timesheet</th> */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentData.length > 0 ? (
-                            currentData.map(emp => (
-                                <tr key={emp.id} className="odd:bg-white even:bg-gray-100">
-                                    <td className='p-3 border'>{emp.call_allocation}</td>
-                                    <td className='p-3 border'>{emp.customer_name}</td>
-                                    <td className='p-3 border'>{emp.address}</td>
-                                    <td className='p-3 border'>{emp.phone}</td>
-                                    <td className='p-3 border'>{emp.service_partner}</td>
-                                    <td className='p-3 border'>{emp.spare_part_type}</td>
-                                    <td className='p-3 border'>{emp.category_name}</td>
-                                    <td className='p-3 border'>{emp.qty}</td>
-                                    <td className='p-3 border'>{emp.spare_part_ser_no}</td>
-                                    <td className='p-3 border'>{emp.date}</td>
-                                    <td className='p-3 border'>{emp.invoice_no}</td>
-                                    <td className='p-3 border'>{emp.dispatch_module}</td>
-                                    <td className='p-3 border'>{emp.dispatch_type}</td>
-                                    <td className='p-3 border'>{emp.category_name}</td>
-                                    <td className='p-3 text-center border'>
-                                        <div className='flex justify-center space-x-3'>
-                                            <Link className='p-2 text-white bg-green-500 rounded' href={`spare-part/${emp.id}/edit`}>
-                                                <CiEdit />
-                                            </Link>
-                                            <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>
-                                                <RiDeleteBinLine />
-                                            </button>
-                                        </div>
-                                    </td>
+                <div className='max-w-5xl overflow-auto'>
 
-                                </tr>
-                            ))
-                        ) : (
+                    <table className="w-full border text-nowrap border-collapse table-auto">
+                        <thead className='text-white bg-gray-700'>
                             <tr>
-                                <td colSpan="7" className='p-3 text-center'>No data found</td>
+                                <th className='p-3 text-left border'>Call Allocation</th>
+                                <th className='p-3 text-left border'>Customer Name</th>
+                                <th className='p-3 text-left border'>Address</th>
+                                <th className='p-3 text-left border'>Phone</th>
+                                <th className='p-3 text-center border'>Service Partner</th>
+                                <th className='p-3 text-left border'>Spare Parts Type</th>
+                                <th className='p-3 text-left border'>Product Name</th>
+                                <th className='p-3 text-left border'>Qty</th>
+                                <th className='p-3 text-left border'>Spare Parts Serial No</th>
+                                <th className='p-3 text-left border'>Date</th>
+                                <th className='p-3 text-left border'>Invoice No</th>
+                                <th className='p-3 text-left border'>Dispatch</th>
+                                <th className='p-3 text-left border'>Details</th>
+                                <th className='p-3 text-left border'>Service Partner</th>
+                                <th className='p-3 text-center border'>Actions</th>
+                                {/* <th className='p-3 text-center border'>Unlock Timesheet</th> */}
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {currentData.length > 0 ? (
+                                currentData.map(emp => (
+                                    <tr key={emp.id} className="odd:bg-white even:bg-gray-100">
+                                        <td className='p-3 border'>{emp.call_allocation}</td>
+                                        <td className='p-3 border'>{emp.customer_name}</td>
+                                        <td className='p-3 border'>{emp.address}</td>
+                                        <td className='p-3 border'>{emp.phone}</td>
+                                        <td className='p-3 border'>{emp.service_partner}</td>
+                                        <td className='p-3 border'>{emp.spare_part_type}</td>
+                                        <td className='p-3 border'>{emp.category_name}</td>
+                                        <td className='p-3 border'>{emp.qty}</td>
+                                        <td className='p-3 border'>{emp.spare_part_ser_no}</td>
+                                        <td className='p-3 border'>{emp.date}</td>
+                                        <td className='p-3 border'>{emp.invoice_no}</td>
+                                        <td className='p-3 border'>{emp.dispatch_module}</td>
+                                        <td className='p-3 border'>{emp.dispatch_type}</td>
+                                        <td className='p-3 border'>{emp.category_name}</td>
+                                        <td className='p-3 text-center border'>
+                                            <div className='flex justify-center space-x-3'>
+                                                <Link className='p-2 text-white bg-green-500 rounded' href={`spare-part/${emp.id}/edit`}>
+                                                    <CiEdit />
+                                                </Link>
+                                                <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>
+                                                    <RiDeleteBinLine />
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="7" className='p-3 text-center'>No data found</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
 
                 <div className='flex justify-center mt-4'>
                     {pageNumbers.map(number => (

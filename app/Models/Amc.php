@@ -22,11 +22,13 @@ class Amc extends Model
         'no_of_service',
         'billing_address',
         'services',
+        'service_details',
         'amc_details',
     ];
 
     protected $casts = [
         'services'=>'json',
+        'service_details'=>'json',
         'amc_details'=>'json'
     ];
 }

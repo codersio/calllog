@@ -12,6 +12,10 @@ function edit({ customers, products, employees,amc }) {
         { product: '', note: '' }
     ]);
 
+    const [intervalss, setIntervalss] = useState(amc.interval); // interval in months
+    const [numOfServices, setNumOfServices] = useState(amc.no_of_service); // default number of services
+    const [services, setServices] = useState(amc.service_details || []);
+
     const { put, data, setData, errors, processing } = useForm({
         amc_no: amc.amc_no,
         contact_person: amc.contact_person,
@@ -21,17 +25,60 @@ function edit({ customers, products, employees,amc }) {
         assigned_to: amc.assigned_to,
         email: amc.email,
         status: amc.status,
-        interval: amc.interval,
+        interval: '',
         details: amc.details,
         attachments: '',
-        no_of_service: amc.no_of_service,
+        no_of_service: '',
         billing_address: amc.billing_address,
+        service_details: [],
         amc_details: [],
     })
 
     useEffect(() => {
-        setData('amc_details', rows);
-    }, [rows]);
+        // Only calculate services if interval or number of services change
+        if ((intervalss !== amc.interval || numOfServices !== amc.no_of_service) && intervalss && numOfServices) {
+            const startDate = new Date(data.date || new Date()); // Use `data.date` or today’s date as the start
+            const newServices = Array.from({ length: numOfServices }, (_, i) => {
+                const date = new Date(startDate);
+                date.setMonth(startDate.getMonth() + i * intervalss); // Add interval in months
+                return {
+                    id: i + 1,
+                    date: date.toISOString().split('T')[0],
+                    service: `${i + 1} Service`
+                };
+            });
+            setServices(newServices);
+        }
+    }, [intervalss, numOfServices, data.date]);
+    
+
+    // Handle "No of Services" selection
+    function handleNumOfServicesChange (e){
+        if (!intervalss) {
+            alert('Please select interval first');
+            setNumOfServices('')
+            return; // Exit function if interval is not selected
+        }
+        setNumOfServices(Number(e.target.value));
+    };
+
+    const handleServiceChange = (id, field, value) => {
+        setServices((prevServices) =>
+            prevServices.map((service) =>
+                service.id === id ? { ...service, [field]: value } : service
+            )
+        );
+    };
+
+    useEffect(() => {
+        setData((prevState) => ({
+            ...prevState,
+            amc_details: rows,
+            no_of_service: numOfServices,
+            interval: intervalss,
+            service_details: services
+        }));
+    }, [rows, numOfServices, intervalss, services]);
 
     const handleAddRow = () => {
         setRows([...rows, { product: '', note: '' }]);
@@ -150,7 +197,8 @@ function edit({ customers, products, employees,amc }) {
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">Interval</label>
-                        <select name="" onChange={(e) => setData('interval', e.target.value)} value={data.interval} className='form-select w-full rounded' id="">
+                        <select name="" value={intervalss}
+                            onChange={(e) => setIntervalss(Number(e.target.value))} className='form-select w-full rounded' id="">
                             <option value="">-- No Of Interval --</option>
                             <option value="1">1 Month</option>
                             <option value="2">2 Month</option>
@@ -160,7 +208,8 @@ function edit({ customers, products, employees,amc }) {
                     </div>
                     <div className='flex flex-col gap-2 p-2 w-1/2'>
                         <label htmlFor="">No Of Service</label>
-                        <select name="" onChange={(e) => setData('no_of_service', e.target.value)} value={data.no_of_service} className='form-select w-full rounded' id="">
+                        <select name="" value={numOfServices}
+                            onChange={handleNumOfServicesChange} className='form-select w-full rounded' id="">
                             <option value="">-- No Of Service --</option>
                             {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
                                 <option key={month} value={month}>
@@ -169,6 +218,25 @@ function edit({ customers, products, employees,amc }) {
                             ))}
                         </select>
                         {errors.no_of_service && <p className="mt-1 text-xs text-red-500">{errors.no_of_service}</p>}
+                    </div>
+                    <div className='w-full py-3'>
+                        {services.map((service) => (
+                            <div key={service.id} className="flex items-center space-x-4 border-b pb-4">
+                                <div className="w-10 text-center">{service.id}</div>
+                                <input
+                                    type="date"
+                                    value={service.date}
+                                    onChange={(e) => handleServiceChange(service.id, 'date', e.target.value)}
+                                    className="border border-gray-300 rounded px-2 py-1 bg-gray-100 w-1/3"
+                                />
+                                <input
+                                    type="text"
+                                    value={service.service}
+                                    onChange={(e) => handleServiceChange(service.id, 'service', e.target.value)}
+                                    className="border border-gray-300 rounded px-2 py-1 bg-gray-100 w-1/3"
+                                />
+                            </div>
+                        ))}
                     </div>
                     <hr />
                     <div className='w-full py-2'>

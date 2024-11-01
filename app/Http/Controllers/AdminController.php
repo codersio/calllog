@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Amc;
+use App\Models\Complaint;
 use App\Models\Task;
 use App\Models\User;
 use Inertia\Inertia;
@@ -10,9 +12,9 @@ use App\Models\Holiday;
 use App\Models\Project;
 use App\Models\Employee;
 use App\Models\Timesheet;
+use App\Models\TaskAssign;
 use Illuminate\Http\Request;
 use App\Models\LeaveManagement;
-use App\Models\TaskAssign;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -29,155 +31,163 @@ class AdminController extends Controller
 
     public function Dashboard()
     {
-        if (Auth::user()->can('view_assign')) {
-            // If the user has permission to view all tasks, show all tasks
-            $projects = Task::join('projects', 'projects.id', '=', 'tasks.project_id')
-                ->join('task_assigns', 'task_assigns.task_id', '=', 'tasks.id')
-                ->join('users', 'users.id', '=', 'task_assigns.employee_id')
-                ->select('tasks.task_name', 'projects.title', 'tasks.status', 'tasks.id', 'users.name')
-                ->get();
-        } else {
-            // If the user can only view their own tasks, filter by the logged-in user's ID
-            $projects = Task::join('projects', 'projects.id', '=', 'tasks.project_id')
-                ->join('task_assigns', 'task_assigns.task_id', '=', 'tasks.id')
-                ->join('users', 'users.id', '=', 'task_assigns.employee_id')
-                ->select('tasks.task_name', 'projects.title', 'tasks.status', 'tasks.id')
-                ->where('task_assigns.employee_id', Auth::user()->id)
-                ->get();
-        }
+        // if (Auth::user()->can('view_assign')) {
+        //     // If the user has permission to view all tasks, show all tasks
+        //     $projects = Task::join('projects', 'projects.id', '=', 'tasks.project_id')
+        //         ->join('task_assigns', 'task_assigns.task_id', '=', 'tasks.id')
+        //         ->join('users', 'users.id', '=', 'task_assigns.employee_id')
+        //         ->select('tasks.task_name', 'projects.title', 'tasks.status', 'tasks.id', 'users.name')
+        //         ->get();
+        // } else {
+        //     // If the user can only view their own tasks, filter by the logged-in user's ID
+        //     $projects = Task::join('projects', 'projects.id', '=', 'tasks.project_id')
+        //         ->join('task_assigns', 'task_assigns.task_id', '=', 'tasks.id')
+        //         ->join('users', 'users.id', '=', 'task_assigns.employee_id')
+        //         ->select('tasks.task_name', 'projects.title', 'tasks.status', 'tasks.id')
+        //         ->where('task_assigns.employee_id', Auth::user()->id)
+        //         ->get();
+        // }
 
-        if (Auth::user()->id === 1) {
-            $query = Timesheet::join('users', 'users.id', '=', 'timesheets.user_id')
-                ->join('projects', 'projects.id', '=', 'timesheets.project_id')
-                ->join('tasks', 'tasks.id', '=', 'timesheets.task_id')
-                ->join('task_assigns', function ($join) {
-                    $join->on('task_assigns.employee_id', '=', 'users.id')
-                        ->on('task_assigns.task_id', '=', 'tasks.id');
-                })
-                ->select(
-                    'projects.title',
-                    'tasks.task_name',
-                    'users.name',
-                    DB::raw('SUM(timesheets.time_number) as total_time_number'), // Sum of time_number
-                    'task_assigns.employee_hours'
-                )
-                // ->where('users.id', Auth::user()->id)
-                ->groupBy('projects.title', 'tasks.task_name', 'users.name', 'task_assigns.employee_hours') // Group by project, task, and user
-                ->get();
-        } else {
-            $query = Timesheet::join('users', 'users.id', '=', 'timesheets.user_id')
-                ->join('projects', 'projects.id', '=', 'timesheets.project_id')
-                ->join('tasks', 'tasks.id', '=', 'timesheets.task_id')
-                ->join('task_assigns', function ($join) {
-                    $join->on('task_assigns.employee_id', '=', 'users.id')
-                        ->on('task_assigns.task_id', '=', 'tasks.id');
-                })
-                ->select(
-                    'projects.title',
-                    'tasks.task_name',
-                    'users.name',
-                    DB::raw('SUM(timesheets.time_number) as total_time_number'), // Sum of time_number
-                    'task_assigns.employee_hours'
-                )
-                ->where('users.id', Auth::user()->id)
-                ->groupBy('projects.title', 'tasks.task_name', 'users.name', 'task_assigns.employee_hours') // Group by project, task, and user
-                ->get();
-        }
+        // if (Auth::user()->id === 1) {
+        //     $query = Timesheet::join('users', 'users.id', '=', 'timesheets.user_id')
+        //         ->join('projects', 'projects.id', '=', 'timesheets.project_id')
+        //         ->join('tasks', 'tasks.id', '=', 'timesheets.task_id')
+        //         ->join('task_assigns', function ($join) {
+        //             $join->on('task_assigns.employee_id', '=', 'users.id')
+        //                 ->on('task_assigns.task_id', '=', 'tasks.id');
+        //         })
+        //         ->select(
+        //             'projects.title',
+        //             'tasks.task_name',
+        //             'users.name',
+        //             DB::raw('SUM(timesheets.time_number) as total_time_number'), // Sum of time_number
+        //             'task_assigns.employee_hours'
+        //         )
+        //         // ->where('users.id', Auth::user()->id)
+        //         ->groupBy('projects.title', 'tasks.task_name', 'users.name', 'task_assigns.employee_hours') // Group by project, task, and user
+        //         ->get();
+        // } else {
+        //     $query = Timesheet::join('users', 'users.id', '=', 'timesheets.user_id')
+        //         ->join('projects', 'projects.id', '=', 'timesheets.project_id')
+        //         ->join('tasks', 'tasks.id', '=', 'timesheets.task_id')
+        //         ->join('task_assigns', function ($join) {
+        //             $join->on('task_assigns.employee_id', '=', 'users.id')
+        //                 ->on('task_assigns.task_id', '=', 'tasks.id');
+        //         })
+        //         ->select(
+        //             'projects.title',
+        //             'tasks.task_name',
+        //             'users.name',
+        //             DB::raw('SUM(timesheets.time_number) as total_time_number'), // Sum of time_number
+        //             'task_assigns.employee_hours'
+        //         )
+        //         ->where('users.id', Auth::user()->id)
+        //         ->groupBy('projects.title', 'tasks.task_name', 'users.name', 'task_assigns.employee_hours') // Group by project, task, and user
+        //         ->get();
+        // }
 
 
 
-        $usrrr = Auth::user()->id;
-        // dd($usrrr);
-        $user = Auth::user()->name;
-        $userss = Auth::user();
-        if ($userss) {
-            // Ensure permissions are assigned and fetched correctly
-            $user_type = $userss->getAllPermissions()->pluck('name')->toArray();
-            // dd($permissions);
-        }
-        $projectsss = Project::count();
-        $taskss = Task::count();
-        $holidays = Holiday::count();
-        $emp = Employee::count();
-        $leave =
-            LeaveManagement::where('employee_id', Auth::id())->count();;
-        $notif = Auth::user()->notifications;
+        // $usrrr = Auth::user()->id;
+        // // dd($usrrr);
+        // $user = Auth::user()->name;
+        // $userss = Auth::user();
+        // if ($userss) {
+        //     // Ensure permissions are assigned and fetched correctly
+        //     $user_type = $userss->getAllPermissions()->pluck('name')->toArray();
+        //     // dd($permissions);
+        // }
+        // $projectsss = Project::count();
+        // $taskss = Task::count();
+        // $holidays = Holiday::count();
+        // $emp = Employee::count();
+        // $leave =
+        //     LeaveManagement::where('employee_id', Auth::id())->count();;
+        // $notif = Auth::user()->notifications;
+        // // $assin = Project::with(['tasks.users.timesheets'])->get();
+        // //        $assin = Project::with(['tasks.users.timesheets'])->get();
+        // //        $assin->each(function ($project) {
+        // //            $project->tasks->each(function ($task) {
+        // //                // Ensure estimate_time is being set correctly
+        // //                $task->estimate_time = $task->estimate_time; // This should come from your database
+        // //                $task->users->each(function ($user) use ($task) {
+        // //                    $user->time_number_sum = $user->timesheets
+        // //                        ->where('task_id', $task->id)
+        // //                        ->sum('time_number');
+        // //                });
+        // //            });
+        // //        });
         // $assin = Project::with(['tasks.users.timesheets'])->get();
-        //        $assin = Project::with(['tasks.users.timesheets'])->get();
-        //        $assin->each(function ($project) {
-        //            $project->tasks->each(function ($task) {
-        //                // Ensure estimate_time is being set correctly
-        //                $task->estimate_time = $task->estimate_time; // This should come from your database
-        //                $task->users->each(function ($user) use ($task) {
-        //                    $user->time_number_sum = $user->timesheets
-        //                        ->where('task_id', $task->id)
-        //                        ->sum('time_number');
-        //                });
-        //            });
-        //        });
-        $assin = Project::with(['tasks.users.timesheets'])->get();
 
-        // Iterate over each project
-        $assin->each(function ($project) {
-            // Calculate the total estimated hours of all tasks for the project
-            $totalTaskEstimateHours = $project->tasks->sum('estimate_hours');
+        // // Iterate over each project
+        // $assin->each(function ($project) {
+        //     // Calculate the total estimated hours of all tasks for the project
+        //     $totalTaskEstimateHours = $project->tasks->sum('estimate_hours');
 
-            // Check if the total estimated hours of tasks exceed the project's estimate time
-            if ($totalTaskEstimateHours > $project->estimate_time) {
-                // Set a flag or an error message indicating the project's tasks exceed its estimate time
-                $project->error_message = "Total task estimate hours ($totalTaskEstimateHours hours) exceed the project estimate time ($project->estimate_time hours).";
-            } else {
-                $project->error_message = null; // No error
-            }
+        //     // Check if the total estimated hours of tasks exceed the project's estimate time
+        //     if ($totalTaskEstimateHours > $project->estimate_time) {
+        //         // Set a flag or an error message indicating the project's tasks exceed its estimate time
+        //         $project->error_message = "Total task estimate hours ($totalTaskEstimateHours hours) exceed the project estimate time ($project->estimate_time hours).";
+        //     } else {
+        //         $project->error_message = null; // No error
+        //     }
 
-            // Process each task for additional logic if needed
-            $project->tasks->each(function ($task) {
-                // Ensure estimate_time is being retrieved from the database
-                $task->estimate_time = $task->estimate_time;
+        //     // Process each task for additional logic if needed
+        //     $project->tasks->each(function ($task) {
+        //         // Ensure estimate_time is being retrieved from the database
+        //         $task->estimate_time = $task->estimate_time;
 
-                // Calculate total time logged by each user for the task
-                $task->users->each(function ($user) use ($task) {
-                    $user->time_number_sum = $user->timesheets
-                        ->where('task_id', $task->id)
-                        ->sum('time_number');
-                });
-            });
-        });
+        //         // Calculate total time logged by each user for the task
+        //         $task->users->each(function ($user) use ($task) {
+        //             $user->time_number_sum = $user->timesheets
+        //                 ->where('task_id', $task->id)
+        //                 ->sum('time_number');
+        //         });
+        //     });
+        // });
 
 
-        $emp = User::all();
-        $totalAssignedHours = User::join('employees', 'users.id', '=', 'employees.user_id')
-            ->join('task_assigns', 'employees.id', '=', 'task_assigns.employee_id')
-            ->selectRaw('SUM(task_assigns.employee_hours) as total_time_assigned')
-            ->where('task_assigns.employee_id', Auth::user()->id)
-            ->groupBy('users.id', 'employees.id')
-            ->first();  // Fetches the first result with the sum
+        // $emp = User::all();
+        // $totalAssignedHours = User::join('employees', 'users.id', '=', 'employees.user_id')
+        //     ->join('task_assigns', 'employees.id', '=', 'task_assigns.employee_id')
+        //     ->selectRaw('SUM(task_assigns.employee_hours) as total_time_assigned')
+        //     ->where('task_assigns.employee_id', Auth::user()->id)
+        //     ->groupBy('users.id', 'employees.id')
+        //     ->first();  // Fetches the first result with the sum
 
 
-        $results = $totalAssignedHours ? $totalAssignedHours->total_time_assigned : 0;  // Handle case where no result is found
+        // $results = $totalAssignedHours ? $totalAssignedHours->total_time_assigned : 0;  // Handle case where no result is found
 
-        $totalWorkingHours = Timesheet::join('users', 'users.id', '=', 'timesheets.user_id')
-            ->join('projects', 'projects.id', '=', 'timesheets.project_id')
-            ->join('tasks', 'tasks.id', '=', 'timesheets.task_id')
-            ->join('task_assigns', function ($join) {
-                $join->on('task_assigns.employee_id', '=', 'users.id')
-                    ->on('task_assigns.task_id', '=', 'tasks.id');
-            })
-            ->where('users.id', Auth::user()->id)
-            ->selectRaw('SUM(timesheets.time_number) as total_working_hours')  // Summing working hours
-            ->first();  // Fetch the result
+        // $totalWorkingHours = Timesheet::join('users', 'users.id', '=', 'timesheets.user_id')
+        //     ->join('projects', 'projects.id', '=', 'timesheets.project_id')
+        //     ->join('tasks', 'tasks.id', '=', 'timesheets.task_id')
+        //     ->join('task_assigns', function ($join) {
+        //         $join->on('task_assigns.employee_id', '=', 'users.id')
+        //             ->on('task_assigns.task_id', '=', 'tasks.id');
+        //     })
+        //     ->where('users.id', Auth::user()->id)
+        //     ->selectRaw('SUM(timesheets.time_number) as total_working_hours')  // Summing working hours
+        //     ->first();  // Fetch the result
 
-        $totalHours = $totalWorkingHours ? $totalWorkingHours->total_working_hours : 0;
+        // $totalHours = $totalWorkingHours ? $totalWorkingHours->total_working_hours : 0;
 
 
-        $projecteach = User::join('employees', 'users.id', '=', 'employees.user_id')
-            ->join('task_assigns', 'employees.id', '=', 'task_assigns.employee_id')
-            ->selectRaw('SUM(task_assigns.project_id)')
-            ->groupBy('users.id', 'employees.id')
-            ->where('task_assigns.employee_id', Auth::user()->id)
-            ->count();
-        //         dd($projecteach);
-        return Inertia::render('admin/dashboard', compact('projects', 'query', 'usrrr', 'user', 'user_type', 'projectsss', 'taskss', 'holidays', 'emp', 'leave', 'notif', 'assin', 'emp', 'results', 'projecteach', 'totalHours'));
+        // $projecteach = User::join('employees', 'users.id', '=', 'employees.user_id')
+        //     ->join('task_assigns', 'employees.id', '=', 'task_assigns.employee_id')
+        //     ->selectRaw('SUM(task_assigns.project_id)')
+        //     ->groupBy('users.id', 'employees.id')
+        //     ->where('task_assigns.employee_id', Auth::user()->id)
+        //     ->count();
+        // //         dd($projecteach);
+        // return Inertia::render('admin/dashboard', compact('projects', 'query', 'usrrr', 'user', 'user_type', 'projectsss', 'taskss', 'holidays', 'emp', 'leave', 'notif', 'assin', 'emp', 'results', 'projecteach', 'totalHours'));
+        $empCount = Employee::all()->count();
+        $clntCount = DB::table('tbl_user')->get()->count();
+        $amcCount = Amc::count();
+        $cmplnCount = Complaint::count();
+        $prdCount = DB::table('product')->join('products_category','products_category.id','=','product.category_id')->count();
+        $srvcCount = Amc::count();
+        
+        return Inertia::render('admin/dashboard',\compact('empCount','clntCount','amcCount','cmplnCount','prdCount','srvcCount'));
     }
 
     public function countProject()

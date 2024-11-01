@@ -2,17 +2,17 @@ import Header from '@/Layouts/Header'
 import Nav from '@/Layouts/Nav';
 import { Link } from '@inertiajs/react';
 import React, { useState, useEffect } from 'react'
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaUserTie } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
-import { MdCallEnd, MdLockClock, MdPhoneCallback } from "react-icons/md";
+import { MdBuild, MdCallEnd, MdFileOpen, MdHeadsetMic, MdLockClock, MdPhoneCallback } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaTasks } from "react-icons/fa";
 import AssignView from './asignview';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { HiDownload, HiPhoneMissedCall } from "react-icons/hi";
-import { FaCubes, FaRegHandshake } from 'react-icons/fa6';
-const Employee = ({ user, employee, user_type, projects, query, usrrr, projectsss, taskss, holidays, leave, notif, assin, emp, results, projecteach, totalHours }) => {
+import { FaCubes, FaRegHandshake, FaUsers } from 'react-icons/fa6';
+const Employee = ({ user, employee, user_type, projects, query, usrrr, projectsss, taskss, holidays, leave, notif, assin, emp, results, projecteach, totalHours,empCount,clntCount,prdCount,cmplnCount,amcCount,srvcCount }) => {
 
     const [permissions, setPermissions] = useState([]);
     useEffect(() => {
@@ -219,80 +219,80 @@ const Employee = ({ user, employee, user_type, projects, query, usrrr, projectss
                     <h1 className='text-xl font-semibold text-gray-700'>Dashboard</h1>
                     <p className='text-sm text-gray-500/80 font-medium'>Manage your overall status</p>
                 </div>
-                <div>
+                {/* <div>
                     <button className='flex items-center gap-x-1 bg-indigo-500 px-4 py-1.5 rounded text-white'>
                         <HiDownload size={15} />
                         <span className='text-sm font-medium'>Generate Report</span>
                     </button>
-                </div>
+                </div> */}
             </div>
             {/* card */}
             <div className='py-4 flex flex-wrap'>
                 <div className='w-1/3 p-2'>
-                    <div className='border border-gray-300 rounded flex justify-between items-center p-4'>
+                    <Link href='/Employee' className='border border-gray-300 rounded flex justify-between items-center p-4'>
                         <div className='p-3 bg-indigo-500 rounded-full text-white'>
-                            <FaRegHandshake size={30} />
+                            <FaUserTie size={30} />
                         </div>
                         <div className='text-end space-y-2'>
-                            <h1 className='text-2xl font-semibold'>51</h1>
-                            <p className='text-sm font-medium text-gray-600'>Total Partners</p>
+                            <h1 className='text-2xl font-semibold'>{empCount}</h1>
+                            <p className='text-sm font-medium text-gray-600'>Employees</p>
                         </div>
-                    </div>
+                    </Link>
                 </div>
                 <div className='w-1/3 p-2'>
-                    <div className='border border-gray-300 rounded flex justify-between items-center p-4'>
+                    <Link href='/Client' className='border border-gray-300 rounded flex justify-between items-center p-4'>
                         <div className='p-3 bg-orange-500 rounded-full text-white'>
-                            <FaRegHandshake size={30} />
+                            <FaUsers size={30} />
                         </div>
                         <div className='text-end space-y-2'>
-                            <h1 className='text-2xl font-semibold'>88</h1>
-                            <p className='text-sm font-medium text-gray-600'>Total Partners</p>
+                            <h1 className='text-2xl font-semibold'>{clntCount}</h1>
+                            <p className='text-sm font-medium text-gray-600'>Clients</p>
                         </div>
-                    </div>
+                    </Link>
                 </div>
                 <div className='w-1/3 p-2'>
-                    <div className='border border-gray-300 rounded flex justify-between items-center p-4'>
+                    <Link href='/products' className='border border-gray-300 rounded flex justify-between items-center p-4'>
                         <div className='p-3 bg-sky-500 rounded-full text-white'>
                             <FaCubes size={30} />
                         </div>
                         <div className='text-end space-y-2'>
-                            <h1 className='text-2xl font-semibold'>650</h1>
-                            <p className='text-sm font-medium text-gray-600'>Total Products</p>
+                            <h1 className='text-2xl font-semibold'>{prdCount}</h1>
+                            <p className='text-sm font-medium text-gray-600'>Products</p>
                         </div>
-                    </div>
+                    </Link>
                 </div>
                 <div className='w-1/3 p-2'>
-                    <div className='border border-gray-300 rounded flex justify-between items-center p-4'>
+                    <Link href='/complaint' className='border border-gray-300 rounded flex justify-between items-center p-4'>
                         <div className='p-3 bg-green-500 rounded-full text-white'>
-                            <MdPhoneCallback size={30} />
+                            <MdHeadsetMic size={30} />
                         </div>
                         <div className='text-end space-y-2'>
-                            <h1 className='text-2xl font-semibold'>78</h1>
-                            <p className='text-sm font-medium text-gray-600'>Calls Assigned</p>
+                            <h1 className='text-2xl font-semibold'>{cmplnCount}</h1>
+                            <p className='text-sm font-medium text-gray-600'>Complaints</p>
                         </div>
-                    </div>
+                    </Link>
                 </div>
                 <div className='w-1/3 p-2'>
-                    <div className='border border-gray-300 rounded flex justify-between items-center p-4'>
+                    <Link href='/amc' className='border border-gray-300 rounded flex justify-between items-center p-4'>
                         <div className='p-3 bg-amber-500 rounded-full text-white'>
-                            <MdCallEnd size={30} />
+                            <MdFileOpen size={30} />
                         </div>
                         <div className='text-end space-y-2'>
-                            <h1 className='text-2xl font-semibold'>23</h1>
-                            <p className='text-sm font-medium text-gray-600'>Call Closed</p>
+                            <h1 className='text-2xl font-semibold'>{amcCount}</h1>
+                            <p className='text-sm font-medium text-gray-600'>AMC</p>
                         </div>
-                    </div>
+                    </Link>
                 </div>
                 <div className='w-1/3 p-2'>
-                    <div className='border border-gray-300 rounded flex justify-between items-center p-4'>
+                    <Link href='/Client' className='border border-gray-300 rounded flex justify-between items-center p-4'>
                         <div className='p-3 bg-red-500 rounded-full text-white'>
-                            <HiPhoneMissedCall size={30} />
+                            <MdBuild size={30} />
                         </div>
                         <div className='text-end space-y-2'>
-                            <h1 className='text-2xl font-semibold'>76</h1>
-                            <p className='text-sm font-medium text-gray-600'>Calls Rejected</p>
+                            <h1 className='text-2xl font-semibold'>{srvcCount}</h1>
+                            <p className='text-sm font-medium text-gray-600'>Service</p>
                         </div>
-                    </div>
+                    </Link>
                 </div>
             </div>
         </AdminLayout>
