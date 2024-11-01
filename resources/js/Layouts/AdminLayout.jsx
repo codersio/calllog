@@ -251,17 +251,20 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             {showProductSubMenu && (
                                 <ul className='ml-4 space-y-2'>
                                     <li>
-                                        <Link href='/sales' className='flex items-center p-2 hover:bg-gray-100'>
+                                        <Link href='/sales' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
                                             <span className='text-sm'>Bill</span>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href='' className='flex items-center p-2 hover:bg-gray-100'>
+                                        <Link href='/amc-expense-index' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
                                             <span className='text-sm'>Expense</span>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href='' className='flex items-center p-2 hover:bg-gray-100'>
+                                        <Link href='/income' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
                                             <span className='text-sm'>Income</span>
                                         </Link>
                                     </li>
