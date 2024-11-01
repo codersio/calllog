@@ -23,7 +23,7 @@ class SaleController extends Controller
     public function create()
     {
         $customers = DB::table('tbl_user')->get();
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
+        $products = DB::table('tbl_product')->get();
         $taxs = Tax::all();
         return Inertia::render('sales/create', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs]);
     }
@@ -137,7 +137,7 @@ class SaleController extends Controller
         $sale = Sale::join('tbl_user', 'tbl_user.user_id', '=', 'sales.customer_id')->where('sales.id', $id)->first();
         $customers = DB::table('tbl_user')->get();
         $taxs = Tax::all();
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
+        $products = DB::table('tbl_product')->get();
         return Inertia::render('sales/edit', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs, 'sale' => $sale]);
     }
     

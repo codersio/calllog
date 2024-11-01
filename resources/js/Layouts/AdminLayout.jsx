@@ -7,8 +7,8 @@ import { Link } from '@inertiajs/react';
 import Header from './Header';
 import Nav from './Nav';
 import {
-    IoArchiveOutline, IoBuildOutline, IoCallOutline, IoChevronForward, IoCog, IoConstructOutline,
-    IoCubeOutline, IoDocumentTextOutline, IoGridOutline, IoMailOutline,
+    IoArchiveOutline, IoBuildOutline, IoCallOutline, IoChatbox, IoChatboxOutline, IoChevronForward, IoCog, IoConstruct, IoConstructOutline,
+    IoCubeOutline, IoCubeSharp, IoDocumentTextOutline, IoGridOutline, IoMailOutline,
     IoNotificationsOutline, IoPeopleOutline
 } from 'react-icons/io5';
 import { FaX } from 'react-icons/fa6';
@@ -157,8 +157,7 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             <span className='text-sm'>Service Center</span>
                         </Link>
                     </li>
-                    <li>
-                        {/* Products with Submenu */}
+                    {/* <li>
                         <div>
                             <button onClick={() => setShowProductSubMenu(!showProductSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
                                 <IoCubeOutline size={15} />
@@ -179,15 +178,15 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                                             <span className='text-sm'>Create Product</span>
                                         </Link>
                                     </li>
-                                    {/* <li>
+                                     <li>
                                         <Link href='/products/category3' className='flex items-center p-2 hover:bg-gray-100'>
                                             <span className='text-sm'>Category 3</span>
                                         </Link>
-                                    </li> */}
+                                    </li>
                                 </ul>
                             )}
                         </div>
-                    </li>
+                    </li> */}
                     <li>
                         <Link href='/spare-part' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoBuildOutline size={15} />
@@ -220,14 +219,20 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                     </li>
                     <li>
                         <Link href='/Product-List' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoPeopleOutline size={15} />
+                            <IoCubeOutline size={15} />
                             <span className='text-sm'>Products</span>
                         </Link>
                     </li>
                     <li>
                         <Link href='/Quotation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoPeopleOutline size={15} />
+                            <IoChatboxOutline size={15} />
                             <span className='text-sm'>Quotation</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href='/services' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoConstructOutline size={15} />
+                            <span className='text-sm'>Services</span>
                         </Link>
                     </li>
                     {/* <li>

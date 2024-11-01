@@ -25,7 +25,7 @@ class AmcController extends Controller
     {
         $customers = DB::table('tbl_user')->get();
         $intvls = Interval::where('status',1)->get();
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->get();
+        $products = DB::table('tbl_product')->get();
         $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')->get();
         return Inertia::render('amc/create', [
             'customers' => $customers,
@@ -84,14 +84,16 @@ class AmcController extends Controller
     public function edit($id)
     {
         $amc = Amc::findOrFail($id);
+        $intvls = Interval::where('status',1)->get();
         $customers = DB::table('tbl_user')->get();
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->get();
+        $products = DB::table('tbl_product')->get();
         $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')->get();
         return Inertia::render('amc/edit', [
             'customers' => $customers,
             'products' => $products,
             'employees' => $employees,
-            'amc' => $amc
+            'amc' => $amc,
+            'intvls'=>$intvls
         ]);
     }
 

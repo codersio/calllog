@@ -15,13 +15,15 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\DelarController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\IncomeController;
 use App\http\Controllers\MasterController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
-
 use App\Http\Controllers\RolsAndPermission;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
@@ -256,6 +258,15 @@ Route::get('/Get-Customer/{id}', [QuotationController::class, 'getCustomer']);
 Route::get('/gettaxoptions', [QuotationController::class, 'gettaxoptions']); 
 Route::get('/getproduct', [QuotationController::class, 'getproduct']); 
 Route::resource('/services', ServiceController::class);
+Route::resource('/expense', ExpenseController::class);
+Route::resource('/income', IncomeController::class);
+Route::get('/income/{id}/edit', [IncomeController::class, 'edit']);
+
+Route::get('amc-expense', [IncomeController::class, 'tblexpensecreate']);
+Route::get('amc-expense-index', [IncomeController::class, 'tblindex']);
+Route::post('amc-expense-create', [IncomeController::class, 'tblexpensestore']);
+Route::get('amc-expense/{id}', [IncomeController::class, 'tblexpenseedit']);
+Route::post('amc-expense-update/{id}', [IncomeController::class, 'tblexpenseupdate']);
 Route::resource('tasks',TaskController::class);
 Route::get('/tax', [AccountController::class, 'tax']);
 Route::post('/tax-store', [AccountController::class, 'taxstore']);

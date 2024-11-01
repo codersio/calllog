@@ -7,7 +7,7 @@ import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
 const notyf = new Notyf();
-function edit({ customers, products, employees,amc }) {
+function edit({ customers, products, employees,amc,intvls }) {
     const [rows, setRows] = useState(amc.amc_details || [
         { product: '', note: '' }
     ]);
@@ -200,9 +200,11 @@ function edit({ customers, products, employees,amc }) {
                         <select name="" value={intervalss}
                             onChange={(e) => setIntervalss(Number(e.target.value))} className='form-select w-full rounded' id="">
                             <option value="">-- No Of Interval --</option>
-                            <option value="1">1 Month</option>
-                            <option value="2">2 Month</option>
-                            <option value="3">3 Month</option>
+                            {
+                                intvls && intvls.map((intv,i)=>(
+                                    <option key={i} value={intv.id}>{ intv.name +' Month' }</option>
+                                ))
+                            }
                         </select>
                         {errors.interval && <p className="mt-1 text-xs text-red-500">{errors.interval}</p>}
                     </div>
@@ -264,7 +266,7 @@ function edit({ customers, products, employees,amc }) {
                                             >
                                                 <option value="">-- Select Product --</option>
                                                 {products && products.map((pr, i) => (
-                                                    <option key={i} value={pr.name}>{pr.name}</option>
+                                                    <option key={i} value={pr.item_name}>{pr.item_name}</option>
                                                 ))}
                                             </select>
                                         </td>

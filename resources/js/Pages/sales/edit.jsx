@@ -202,7 +202,7 @@ function edit({ customers, products, sale, taxes }) {
                                             >
                                                 <option value="">-- Select Product --</option>
                                                 {products && products.map((pr, i) => (
-                                                    <option key={i} value={pr.name}>{pr.name}</option>
+                                                    <option key={i} value={pr.item_name}>{pr.item_name}</option>
                                                 ))}
                                             </select>
                                         </td>
@@ -233,6 +233,7 @@ function edit({ customers, products, sale, taxes }) {
                                                     percent: tax.percent, // Keeping percent for calculations if needed
                                                 }))}
                                                 selectedValues={row.selectedTaxes}
+
                                                 onSelect={(selectedList) => handleTaxSelect(index, selectedList)}
                                                 onRemove={(selectedList) => handleTaxSelect(index, selectedList)}
                                                 displayValue="name"
