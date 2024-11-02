@@ -1,25 +1,38 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import Header from './Header';
 import Nav from './Nav';
 import {
+    IoAnalytics,
     IoArchiveOutline, IoBuildOutline, IoCallOutline, IoChatbox, IoChatboxOutline, IoChevronForward, IoCog, IoConstruct, IoConstructOutline,
     IoCubeOutline, IoCubeSharp, IoDocumentTextOutline, IoGridOutline, IoMailOutline,
     IoNotificationsOutline, IoPeopleOutline
 } from 'react-icons/io5';
 import { FaX } from 'react-icons/fa6';
-import { IoIosNotificationsOutline } from 'react-icons/io';
+import { IoIosNotificationsOutline, IoMdSettings } from 'react-icons/io';
 import { FaTasks } from 'react-icons/fa';
 
-export default function AdminLayout({ header, children, user, usrrr, notif, user_type }) {
+export default function AdminLayout({ header, children, notif, user_type }) {
+    const { props } = usePage();
+    console.log(props)
+    const [permissions, setPermissions] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(props.auth.permissions)) {
+            setPermissions(props.auth.permissions);
+        }
+    }, [props]);
+
+    console.log(permissions.includes('view_dealer'))
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [showProductSubMenu, setShowProductSubMenu] = useState(false); // New state for toggling product submenu
+    const [showReportSubMenu, setShowReportSubMenu] = useState(false); // New state for toggling product submenu
     const [showSalesSubMenu, setShowSalesSubMenu] = useState(false); // New state for toggling product submenu
     const [showGeneralSetupSubMenu, setShowGeneralSetupSubMenu] = useState(false); // New state for toggling product submenu
+    const [showSettingsSubMenu, setShowSettingsSubMenu] = useState(false); // New state for toggling product submenu
     const toggleNotification = (e) => {
         e.stopPropagation();
         setNotifyModal(prev => !prev);
@@ -145,18 +158,25 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             <span className='text-sm'>Distributor</span>
                         </Link>
                     </li> */}
-                    <li>
-                        <Link href='/delars' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoArchiveOutline size={15} />
-                            <span className='text-sm'>Dealer</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/service-centers' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoConstructOutline size={15} />
-                            <span className='text-sm'>Service Center</span>
-                        </Link>
-                    </li>
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_dealer') ?
+                            (<li>
+                                <Link href='/delars' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoArchiveOutline size={15} />
+                                    <span className='text-sm'>Dealer</span>
+                                </Link>
+                            </li>) : ''
+                    }
+                    {
+                        permissions.includes('view_service_center')
+                            ?
+                            (<li>
+                                <Link href='/service-centers' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoConstructOutline size={15} />
+                                    <span className='text-sm'>Service Center</span>
+                                </Link>
+                            </li>) : ''
+                    }
                     {/* <li>
                         <div>
                             <button onClick={() => setShowProductSubMenu(!showProductSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
@@ -187,54 +207,86 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                             )}
                         </div>
                     </li> */}
-                    <li>
-                        <Link href='/spare-part' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoBuildOutline size={15} />
-                            <span className='text-sm'>Spare & Parts</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/Call-Allocation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoCallOutline size={15} />
-                            <span className='text-sm'>Call Allocation</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/Warranty-Extend' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoDocumentTextOutline size={15} />
-                            <span className='text-sm'>Extened Warrenty</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/Client' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoPeopleOutline size={15} />
-                            <span className='text-sm'>Client</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/Employee' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoPeopleOutline size={15} />
-                            <span className='text-sm'>Employees</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/Product-List' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoCubeOutline size={15} />
-                            <span className='text-sm'>Products</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/Quotation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoChatboxOutline size={15} />
-                            <span className='text-sm'>Quotation</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/services' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoConstructOutline size={15} />
-                            <span className='text-sm'>Services</span>
-                        </Link>
-                    </li>
+                    {
+                        permissions.includes('view_spare_parts') ? (
+                            <li>
+                                <Link href='/spare-part' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoBuildOutline size={15} />
+                                    <span className='text-sm'>Spare & Parts</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        permissions.includes('view_call_allocation') ? (
+                            <li>
+                                <Link href='/Call-Allocation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoCallOutline size={15} />
+                                    <span className='text-sm'>Call Allocation</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        permissions.includes('view_extended_warranty') ? (
+                            <li>
+                                <Link href='/Warranty-Extend' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoDocumentTextOutline size={15} />
+                                    <span className='text-sm'>Extened Warrenty</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        permissions.includes('view_client') ? (
+                            <li>
+                                <Link href='/Client' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoPeopleOutline size={15} />
+                                    <span className='text-sm'>Client</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        permissions.includes('view_employee') ? (
+                            <li>
+                                <Link href='/Employee' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoPeopleOutline size={15} />
+                                    <span className='text-sm'>Employees</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        permissions.includes('view_product') ? (
+                            <li>
+                                <Link href='/Product-List' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoCubeOutline size={15} />
+                                    <span className='text-sm'>Products</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        permissions.includes('view_quotation') ? (
+                            <li>
+                                <Link href='/Quotation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoChatboxOutline size={15} />
+                                    <span className='text-sm'>Quotation</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        permissions.includes('view_services') ? (
+                            <li>
+                                <Link href='/services' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoConstructOutline size={15} />
+                                    <span className='text-sm'>Services</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
                     {/* <li>
                         <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <IoCallOutline size={15} />
@@ -288,6 +340,43 @@ export default function AdminLayout({ header, children, user, usrrr, notif, user
                         <Link href='/tasks' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                             <FaTasks size={15} />
                             <span className='text-sm'>Tasks</span>
+                        </Link>
+                    </li>
+                    <li>
+                        {/* Products with Submenu */}
+                        <div>
+                            <button onClick={() => setShowReportSubMenu(!showReportSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
+                                <IoAnalytics size={15} />
+                                <span className='text-sm'>Reports</span>
+                            </button>
+                            {showReportSubMenu && (
+                                <ul className='ml-4 space-y-2'>
+                                    <li>
+                                        <Link href='/complaint-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Complaint Reports</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/sales-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Sales Report</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/service-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                            <IoChevronForward size={15} />
+                                            <span className='text-sm'>Service Reports</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
+                    </li>
+                    <li>
+                        <Link href='/roles-permission-details' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                            <IoMdSettings size={15} />
+                            <span className='text-sm'>Roles & Permissions</span>
                         </Link>
                     </li>
                 </ul>

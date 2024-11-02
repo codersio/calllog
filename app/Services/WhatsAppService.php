@@ -9,8 +9,10 @@ class WhatsAppService
 
     public function __construct()
     {
-        $this->apiSecret = "3c1d2c5c4ce14c120dc4f668460ea68fb3bcdd1c"; // Move to .env in production
-        $this->account = "1730203027060ad92489947d410d897474079c14776720cd93ce9f4"; // Move to .env in production
+        // $this->apiSecret = "3c1d2c5c4ce14c120dc4f668460ea68fb3bcdd1c"; // Move to .env in production
+        // $this->account = "1730203027060ad92489947d410d897474079c14776720cd93ce9f4"; // Move to .env in production
+        $this->apiSecret = \config('services.whatsapp.api_key'); // Move to .env in production
+        $this->account = \config('services.whatsapp.account_id'); // Move to .env in production
     }
 
     public function sendMessage($recipient, $message)

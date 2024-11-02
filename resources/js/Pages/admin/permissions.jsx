@@ -1,10 +1,11 @@
+import AdminLayout from '@/Layouts/AdminLayout';
 import Header from '@/Layouts/Header';
 import Nav from '@/Layouts/Nav';
 // import React,{useState} from 'react'
 import { useForm } from '@inertiajs/react';
 import React, { useState, useEffect } from 'react';
 
-const Permissions = ({ user, user_type, permissions,notif }) => {
+const Permissions = ({ user, user_type, permissions, notif }) => {
   const [groupedPermissions, setGroupedPermissions] = useState({});
   const { data, setData, post, errors } = useForm({
     role_name: '',
@@ -66,30 +67,30 @@ const Permissions = ({ user, user_type, permissions,notif }) => {
     });
   };
   return (
-    <div className='w-[85.2%] ml-[12rem]'>
-      <Header user={user} notif={notif}/>
-      <Nav user_type={user_type} />
-
+    // <div className='w-[85.2%] ml-[12rem]'>
+    //   <Header user={user} notif={notif}/>
+    //   <Nav user_type={user_type} />
+    <AdminLayout>
       <div className="px-[9rem] form mt-9">
         <div className="form-group">
-          <input type="text" placeholder='Role Name' className='w-full rounded-md'   name="role_name"
-        value={data.role_name}
-        onChange={handleInputChange}/>
-        {errors.role_name && <div className="invalid-feedback">{errors.role_name}</div>}
+          <input type="text" placeholder='Role Name' className='w-full rounded-md' name="role_name"
+            value={data.role_name}
+            onChange={handleInputChange} />
+          {errors.role_name && <div className="invalid-feedback">{errors.role_name}</div>}
         </div>
       </div>
 
       <div className="px-[9rem] form-group">
         {Object.entries(groupedPermissions).map(([entity, permissions]) => (
           <div key={entity} className='flex space-x-2'>
-            <h3 className='w-[7rem]'>{entity.charAt(0).toUpperCase() + entity.slice(1)}</h3> {/* Capitalize entity name */}
+            <h3 className='w-[10rem]'>{entity.charAt(0).toUpperCase() + entity.slice(1)}</h3> {/* Capitalize entity name */}
             <div style={{ marginLeft: '20px' }} className='flex space-x-[4rem]'>
               {permissions.map(permission => (
                 <div key={permission.id} className='space-x-2'>
-                  <input  type="checkbox" name="permissions[]"
-                  value={permission.id}
-                  checked={data.permissions.includes(permission.id)}
-                  onChange={() => handleCheckboxChange(permission.id)} />
+                  <input type="checkbox" name="permissions[]"
+                    value={permission.id}
+                    checked={data.permissions.includes(permission.id)}
+                    onChange={() => handleCheckboxChange(permission.id)} />
                   <label>{permission.action.charAt(0).toUpperCase() + permission.action.slice(1)}</label> {/* Capitalize action */}
                 </div>
               ))}
@@ -97,9 +98,10 @@ const Permissions = ({ user, user_type, permissions,notif }) => {
           </div>
         ))}
 
-<button onClick={handleSubmit} type="submit" className="p-2 mt-4 text-white rounded btn bg-slate-900">Save Permissions</button>
+        <button onClick={handleSubmit} type="submit" className="p-2 mt-4 text-white rounded btn bg-slate-900">Save Permissions</button>
       </div>
-    </div>
+    </AdminLayout>
+    // </div>
   );
 }
 

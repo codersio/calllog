@@ -8,7 +8,7 @@ import 'notyf/notyf.min.css';
 import Multiselect from 'multiselect-react-dropdown';
 
 const notyf = new Notyf();
-function create({ customers, products, taxes }) {
+function create({ customers, products, taxes, blno }) {
 
     const [rows, setRows] = useState([
         { product: '', quantity: 0, price: 0, amount: 0, amountWithTax: 0, selectedTaxes: [] } // Removed selected field
@@ -81,7 +81,7 @@ function create({ customers, products, taxes }) {
 
 
     const { post, data, setData, errors, processing } = useForm({
-        bill_no: '',
+        bill_no: blno,
         status: '',
         date: '',
         customer_id: '',
@@ -121,7 +121,7 @@ function create({ customers, products, taxes }) {
                 <form onSubmit={handleSubmit} className="flex flex-wrap">
                     <div className='flex flex-col w-1/2 gap-2 p-2'>
                         <label htmlFor="">Bill No.</label>
-                        <input onChange={(e) => setData('bill_no', e.target.value)} value={data.bill_no} type="text" className="w-full rounded form-input" placeholder='Enter bill no' />
+                        <input readOnly value={data.bill_no} type="text" className="w-full rounded form-input" placeholder='Enter bill no' />
                         {errors.bill_no && <p className="mt-1 text-xs text-red-500">{errors.bill_no}</p>}
                     </div>
                     <div className='flex flex-col w-1/2 gap-2 p-2'>

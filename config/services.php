@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'whatsapp'=>[
+        'account_id'=>env('WHATSAPP_ACCOUNT_ID'),
+        'api_key'=>env('WHATSAPP_API_KEY'),
+    ]
 
 ];

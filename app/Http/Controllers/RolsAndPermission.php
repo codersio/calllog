@@ -102,8 +102,31 @@ class RolsAndPermission extends Controller
     }
     public function permission_create(Request $request)
     {
-        $permission = Permission::create(['name' => 'view_employeelave']);
-        dd($permission);
+        // $permissions = [
+        //     'create_quotation',
+        //     'delete_quotation',
+        //     'create_service',
+        //     'edit_service',
+        //     'delete_service',
+        //     'view_service',
+        //     'create_sales',
+        //     'edit_sales',
+        //     'delete_sales',
+        //     'view_sales',
+        //     'create_amc',
+        //     'edit_amc',
+        //     'delete_amc',
+        //     'view_amc',
+        //     'create_complaint',
+        //     'edit_complaint',
+        //     'delete_complaint',
+        //     'view_complaint',
+        // ];
+        // foreach($permissions as $perm){
+        //     Permission::create(['name' => $perm]);
+        // }
+        // dd("Permission Creation Success");
+        dd(auth()->user()->hasRole('admin'));
         // return back()->with('success', 'Permission created successfully');
     }
 }

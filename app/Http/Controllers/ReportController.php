@@ -6,9 +6,14 @@ use App\Models\Task;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Project;
+use App\Models\Complaint;
 use App\Models\Timesheet;
 use App\Exports\ExcelExport;
+use App\Models\Sale;
+use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -108,5 +113,132 @@ class ReportController extends Controller
             ->groupBy('task_name')
             ->get();
         return Inertia::render('reports/employeehours', compact('project', 'user', 'user_type', 'usrrr', 'employee', 'tasks', 'notif'));
+    }
+
+    public function complainReports(Request $request)
+    {
+        // Retrieve query parameters for date filtering
+        $start_date = $request->input('startDate');
+        $end_date = $request->input('endDate');
+        $client = $request->input('client');
+        $option = $request->input('option');
+
+        $complaintsQuery = Complaint::query();
+
+        // Apply date filters only if the dates are valid
+        if ($start_date) {
+            $complaintsQuery->whereDate('date', '>=', $start_date);
+        }
+        if ($end_date) {
+            $complaintsQuery->whereDate('date', '<=', $end_date);
+        }
+        if ($client && $client !== 'All') {
+            $complaintsQuery->where('customer_id', $client);
+        }
+        if ($option && $option !== 'All') {
+            $complaintsQuery->where('status', $option);
+        }
+
+        // Execute the query and group by month with count
+        $complaints = $complaintsQuery->selectRaw('DATE_FORMAT(date, "%b-%Y") as month, COUNT(*) as count')
+            ->groupBy('month')
+            ->orderBy('month') // Order by month for consistent results
+            ->get();
+
+
+        $clients = DB::table('tbl_user')->get(); // Ensure you use a different variable name for clients
+        // Return the complaints data to the Inertia view
+        return Inertia::render('reports/complainReports', [
+            'datas' => $complaints,
+            'clients' => $clients,
+            'startDate' => $start_date,
+            'endDate' => $end_date,
+            'client' => $client,
+            'option' => $option,
+        ]);
+    }
+
+
+
+    public function salesReports(Request $request)
+    {
+        $start_date = $request->input('startDate');
+        $end_date = $request->input('endDate');
+        $client = $request->input('client');
+        $option = $request->input('option');
+
+        $complaintsQuery = Sale::query();
+
+        // Apply date filters only if the dates are valid
+        if ($start_date) {
+            $complaintsQuery->whereDate('date', '>=', $start_date);
+        }
+        if ($end_date) {
+            $complaintsQuery->whereDate('date', '<=', $end_date);
+        }
+        if ($client && $client !== 'All') {
+            $complaintsQuery->where('customer_id', $client);
+        }
+        if ($option && $option !== 'All') {
+            $complaintsQuery->where('status', $option);
+        }
+
+        // Execute the query and group by month with count
+        $complaints = $complaintsQuery->selectRaw('DATE_FORMAT(date, "%b-%Y") as month, COUNT(*) as count')
+            ->groupBy('month')
+            ->orderBy('month') // Order by month for consistent results
+            ->get();
+
+
+        $clients = DB::table('tbl_user')->get();
+
+        return Inertia::render('reports/salesReports',[
+            'datas' => $complaints,
+            'clients' => $clients,
+            'startDate' => $start_date,
+            'endDate' => $end_date,
+            'client' => $client,
+            'option' => $option,
+        ]);
+    }
+    public function serviceReports(Request $request)
+    {
+        $start_date = $request->input('startDate');
+        $end_date = $request->input('endDate');
+        $client = $request->input('client');
+        $option = $request->input('option');
+
+        $complaintsQuery = Service::query();
+
+        // Apply date filters only if the dates are valid
+        if ($start_date) {
+            $complaintsQuery->whereDate('service_date', '>=', $start_date);
+        }
+        if ($end_date) {
+            $complaintsQuery->whereDate('service_date', '<=', $end_date);
+        }
+        if ($client && $client !== 'All') {
+            $complaintsQuery->where('customer_id', $client);
+        }
+        if ($option && $option !== 'All') {
+            $complaintsQuery->where('status', $option);
+        }
+
+        // Execute the query and group by month with count
+        $complaints = $complaintsQuery->selectRaw('DATE_FORMAT(service_date, "%b-%Y") as month, COUNT(*) as count')
+            ->groupBy('month')
+            ->orderBy('month') // Order by month for consistent results
+            ->get();
+
+
+        $clients = DB::table('tbl_user')->get();
+        return Inertia::render('reports/servicesReports',[
+            'datas' => $complaints,
+            'clients' => $clients,
+            'startDate' => $start_date,
+            'endDate' => $end_date,
+            'client' => $client,
+            'option' => $option,
+        ]);
     }
 }

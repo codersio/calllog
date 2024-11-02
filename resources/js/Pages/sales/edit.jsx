@@ -75,6 +75,7 @@ function edit({ customers, products, sale, taxes }) {
         setRows(updatedRows); // Update rows to reflect amountWithTax
     };
 
+    console.log(sale)
     const { put, data, setData, errors, processing } = useForm({
         bill_no: sale.bill_no,
         status: sale.status,

@@ -280,3 +280,6 @@ Route::get('/interval', [AccountController::class, 'interval']);
 Route::post('/interval-store', [AccountController::class, 'intervalstore']);
 Route::put('/interval-update/{interval}', [AccountController::class, 'intervalupdate']);
 Route::delete('/interval-delete/{interval}', [AccountController::class, 'intervaldestroy']);
+Route::get('/complaint-reports',[ReportController::class,'complainReports']);
+Route::get('/sales-reports',[ReportController::class,'salesReports']);
+Route::get('/service-reports',[ReportController::class,'serviceReports']);

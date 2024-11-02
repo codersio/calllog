@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\WhatsAppService;
+use Carbon\Carbon;
 
 class SaleController extends Controller
 {
@@ -25,7 +26,8 @@ class SaleController extends Controller
         $customers = DB::table('tbl_user')->get();
         $products = DB::table('tbl_product')->get();
         $taxs = Tax::all();
-        return Inertia::render('sales/create', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs]);
+        $blno = 'B'.Carbon::now()->format('dmy').str_pad(Sale::count(),3,"0",STR_PAD_LEFT);
+        return Inertia::render('sales/create', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs,'blno'=>$blno]);
     }
 
     // public function store(Request $request)
@@ -90,6 +92,7 @@ class SaleController extends Controller
         //     'sales_details' => 'required|array'
         // ]);
 
+        // dd($request->all());
         $sale = Sale::create($request->all());
 
         // Prepare product names from sales_details
@@ -106,9 +109,9 @@ class SaleController extends Controller
         $response = $whatsAppService->sendMessage($recipient, $message);
 
         return redirect()->route('sales.index');
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
-        $taxs = Tax::all();
-        return Inertia::render('sales/create', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs]);
+        // $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
+        // $taxs = Tax::all();
+        // return Inertia::render('sales/create', ['customers' => $customers, 'products' => $products, 'taxes' => $taxs]);
     }
 
     // public function store(Request $request) {
@@ -134,7 +137,7 @@ class SaleController extends Controller
 
     public function edit($id)
     {
-        $sale = Sale::join('tbl_user', 'tbl_user.user_id', '=', 'sales.customer_id')->where('sales.id', $id)->first();
+        $sale = Sale::join('tbl_user', 'tbl_user.user_id', '=', 'sales.customer_id')->where('sales.id', $id)->select('sales.*','tbl_user.first_name','tbl_user.middle_name','tbl_user.last_name')->first();
         $customers = DB::table('tbl_user')->get();
         $taxs = Tax::all();
         $products = DB::table('tbl_product')->get();
