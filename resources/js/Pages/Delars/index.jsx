@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link,useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdLockClock, MdOutlineAssignmentLate } from "react-icons/md";
@@ -11,6 +11,13 @@ import AdminLayout from '@/Layouts/AdminLayout';
 const notyf = new Notyf();
 
 const Delars = ({ data }) => {
+    const { props } = usePage();
+    const [permissions, setPermissions] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(props.auth.permissions)) {
+            setPermissions(props.auth.permissions);
+        }
+    }, [props]);
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState(data);
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,22 +38,22 @@ const Delars = ({ data }) => {
         setQuery(event.target.value);
         setCurrentPage(1); // Reset to the first page when search query changes
     };
-const { delete: destroy } = useForm();
- const handleDelete = (e, id) => {
-    e.preventDefault();
-    if (confirm('Are you sure you want to delete this record?')) {
-        destroy(`/delars/${id}`)
-            .then(() => {
-                notyf.success('Data deleted successfully');
-                // Assuming you have a state variable that holds your data
-                setDistributors(prev => prev.filter(distributor => distributor.id !== id));
-            })
-            .catch(error => {
-                console.error('Delete error:', error.response ? error.response.data : error.message);
-                notyf.error('Failed to delete data: ' + (error.response?.data.message || 'Unknown error'));
-            });
-    }
-};
+    const { delete: destroy } = useForm();
+    const handleDelete = (e, id) => {
+        e.preventDefault();
+        if (confirm('Are you sure you want to delete this record?')) {
+            destroy(`/delars/${id}`)
+                .then(() => {
+                    notyf.success('Data deleted successfully');
+                    // Assuming you have a state variable that holds your data
+                    setDistributors(prev => prev.filter(distributor => distributor.id !== id));
+                })
+                .catch(error => {
+                    console.error('Delete error:', error.response ? error.response.data : error.message);
+                    notyf.error('Failed to delete data: ' + (error.response?.data.message || 'Unknown error'));
+                });
+        }
+    };
 
 
     // Pagination logic
@@ -69,9 +76,14 @@ const { delete: destroy } = useForm();
                         placeholder="Search data..."
                         className='w-[60%] p-2 border border-gray-300 rounded-md'
                     />
-                    <Link href='distributers/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
-                        Create New Data
-                    </Link>
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('create_dealer') ?
+                            (
+                                <Link href='distributers/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                                    Create New Data
+                                </Link>
+                            ) : ''
+                    }
                 </div>
 
                 <table className="w-full border border-collapse table-auto">
@@ -106,9 +118,14 @@ const { delete: destroy } = useForm();
 
                                     <td className='p-3 text-center border'>
                                         <div className='flex justify-center space-x-3'>
-                                            <Link className='p-2 text-white bg-green-500 rounded' href={`delars/${emp.id}/edit`}>
-                                                <CiEdit />
-                                            </Link>
+                                            {
+                                                props.auth.user.roles[0].name === "admin" || permissions.includes('edit_dealer') ?
+                                                    (
+                                                        <Link className='p-2 text-white bg-green-500 rounded' href={`delars/${emp.id}/edit`}>
+                                                            <CiEdit />
+                                                        </Link>
+                                                    ) : ''
+                                            }
                                             <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>
                                                 <RiDeleteBinLine />
                                             </button>

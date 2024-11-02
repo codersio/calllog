@@ -18,7 +18,6 @@ import { FaTasks } from 'react-icons/fa';
 
 export default function AdminLayout({ header, children, notif, user_type }) {
     const { props } = usePage();
-    console.log(props)
     const [permissions, setPermissions] = useState([]);
     useEffect(() => {
         if (Array.isArray(props.auth.permissions)) {
@@ -26,7 +25,6 @@ export default function AdminLayout({ header, children, notif, user_type }) {
         }
     }, [props]);
 
-    console.log(permissions.includes('view_dealer'))
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [showProductSubMenu, setShowProductSubMenu] = useState(false); // New state for toggling product submenu
     const [showReportSubMenu, setShowReportSubMenu] = useState(false); // New state for toggling product submenu
