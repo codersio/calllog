@@ -134,9 +134,14 @@ const index = ({ data }) => {
                                                         </Link>
                                                     ) : ''
                                             }
-                                            <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>
-                                                <RiDeleteBinLine />
-                                            </button>
+                                            {
+                                                props.auth.user.roles[0].name === "admin" || permissions.includes('delete_service_center') ?
+                                                    (
+                                                        <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>
+                                                            <RiDeleteBinLine />
+                                                        </button>
+                                                    ) : ''
+                                            }
                                         </div>
                                     </td>
 
