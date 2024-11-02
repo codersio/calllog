@@ -1,12 +1,19 @@
 import AdminLayout from '@/Layouts/AdminLayout'
-import { Link, useForm } from '@inertiajs/react'
-import React,{useState,useEffect} from 'react'
+import { Link, useForm, usePage } from '@inertiajs/react'
+import React, { useState, useEffect } from 'react'
 import { FaPencil } from 'react-icons/fa6';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
 const notyf = new Notyf();
 export default function index({ amcs }) {
+    const { props } = usePage();
+    const [permissions, setPermissions] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(props.auth.permissions)) {
+            setPermissions(props.auth.permissions);
+        }
+    }, [props]);
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState(amcs);
     const [currentPage, setCurrentPage] = useState(1);
@@ -25,14 +32,14 @@ export default function index({ amcs }) {
         setCurrentPage(1); // Reset to the first page when search query changes
     };
 
-     // Pagination logic
-     const indexOfLastData = currentPage * itemsPerPage;
-     const indexOfFirstData = indexOfLastData - itemsPerPage;
-     const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
- 
-     // Page numbers
-     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+    // Pagination logic
+    const indexOfLastData = currentPage * itemsPerPage;
+    const indexOfFirstData = indexOfLastData - itemsPerPage;
+    const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
+
+    // Page numbers
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
     const formatLabel = (label) => {
         return label
@@ -72,9 +79,14 @@ export default function index({ amcs }) {
                         placeholder="Search data..."
                         className='w-[60%] p-2 border border-gray-300 rounded-md'
                     />
-                    <Link href={route('amc.create')} className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
-                        Add Amc
-                    </Link>
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('create_amc') ?
+                            (
+                                <Link href={route('amc.create')} className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                                    Add Amc
+                                </Link>
+                            ) : ''
+                    }
                 </div>
 
                 <table className="w-full border border-collapse table-auto">
@@ -117,8 +129,18 @@ export default function index({ amcs }) {
                                     </td>
                                     <td className='p-3 flex gap-1'>
                                         {/* <button className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-emerald-500 text-white rounded'><span>View</span></button> */}
-                                        <Link href={`/amc/${amc.id}/edit`} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-blue-500 text-white rounded'><span>Edit</span></Link>
-                                        <button type='button' onClick={()=>handleDelete(amc.id)} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-red-500 text-white rounded'><span>Delete</span></button>
+                                        {
+                                            props.auth.user.roles[0].name === "admin" || permissions.includes('edit_amc') ?
+                                                (
+                                                    <Link href={`/amc/${amc.id}/edit`} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-blue-500 text-white rounded'><span>Edit</span></Link>
+                                                ) : ''
+                                        }
+                                        {
+                                            props.auth.user.roles[0].name === "admin" || permissions.includes('delete_amc') ?
+                                                (
+                                                    <button type='button' onClick={() => handleDelete(amc.id)} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-red-500 text-white rounded'><span>Delete</span></button>
+                                                ) : ''
+                                        }
                                     </td>
                                 </tr>
                             ))

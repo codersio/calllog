@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 
 function ServiceTable({ data }) {
+  const { props } = usePage();
+    const [permissions, setPermissions] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(props.auth.permissions)) {
+            setPermissions(props.auth.permissions);
+        }
+    }, [props]);
   const [services, setServices] = useState(data); // Initialize state with props data
 
   useEffect(() => {
@@ -35,7 +42,12 @@ function ServiceTable({ data }) {
     <AdminLayout>
       <div className="p-6 bg-white rounded-lg shadow-lg">
         <h2 className="mb-4 text-xl font-semibold">Service List</h2>
-        <Link href="/services/create" className="px-4 py-2 text-white bg-blue-500 rounded">Create New Service</Link>
+        {
+          props.auth.user.roles[0].name === "admin" || permissions.includes('create_service') ?
+            (
+              <Link href="/services/create" className="px-4 py-2 text-white bg-blue-500 rounded">Create New Service</Link>
+            ) : ''
+        }
         <br />
         <br />
         <table className="min-w-full bg-white">
@@ -60,8 +72,18 @@ function ServiceTable({ data }) {
                   </span>
                 </td>
                 <td className="px-4 py-2 space-x-2 border">
-                  <Link href={`services/${service.id}/edit`} className="px-4 py-1 text-white bg-blue-500 rounded">Edit</Link>
-                  <button onClick={() => handleDelete(service.id)} className="px-4 py-1 text-white bg-red-500 rounded">Delete</button>
+                  {
+                    props.auth.user.roles[0].name === "admin" || permissions.includes('edit_service') ?
+                      (
+                        <Link href={`services/${service.id}/edit`} className="px-4 py-1 text-white bg-blue-500 rounded">Edit</Link>
+                      ) : ''
+                  }
+                  {
+                    props.auth.user.roles[0].name === "admin" || permissions.includes('delete_service') ?
+                      (
+                        <button onClick={() => handleDelete(service.id)} className="px-4 py-1 text-white bg-red-500 rounded">Delete</button>
+                      ) : ''
+                  }
                 </td>
               </tr>
             ))}
