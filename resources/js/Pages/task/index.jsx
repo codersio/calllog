@@ -1,11 +1,18 @@
 import AdminLayout from '@/Layouts/AdminLayout'
-import { Link, useForm } from '@inertiajs/react'
-import React,{useState,useEffect} from 'react'
+import { Link, useForm, usePage } from '@inertiajs/react'
+import React, { useState, useEffect } from 'react'
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
 const notyf = new Notyf();
 function index({ tasks }) {
+    const { props } = usePage();
+    const [permissions, setPermissions] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(props.auth.permissions)) {
+            setPermissions(props.auth.permissions);
+        }
+    }, [props]);
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState(tasks);
     const [currentPage, setCurrentPage] = useState(1);
@@ -24,14 +31,14 @@ function index({ tasks }) {
         setCurrentPage(1); // Reset to the first page when search query changes
     };
 
-     // Pagination logic
-     const indexOfLastData = currentPage * itemsPerPage;
-     const indexOfFirstData = indexOfLastData - itemsPerPage;
-     const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
- 
-     // Page numbers
-     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+    // Pagination logic
+    const indexOfLastData = currentPage * itemsPerPage;
+    const indexOfFirstData = indexOfLastData - itemsPerPage;
+    const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
+
+    // Page numbers
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
     const { delete: destroy } = useForm()
     function handleDelete(id) {
@@ -70,9 +77,14 @@ function index({ tasks }) {
                         placeholder="Search data..."
                         className='w-[60%] p-2 border border-gray-300 rounded-md'
                     />
-                    <Link href='tasks/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
-                        Add Task
-                    </Link>
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('create_task') ?
+                            (
+                                <Link href='tasks/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                                    Add Task
+                                </Link>
+                            ) : ''
+                    }
                 </div>
 
                 <table className="w-full border border-collapse table-auto">
@@ -103,8 +115,18 @@ function index({ tasks }) {
                                     </td>
                                     <td className='p-3 flex gap-1'>
                                         {/* <button className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-emerald-500 text-white rounded'><span>View</span></button> */}
-                                        <Link href={`/tasks/${tsk.id}/edit`} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-blue-500 text-white rounded'><span>Edit</span></Link>
-                                        <button type='button' onClick={() => handleDelete(tsk.id)} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-red-500 text-white rounded'><span>Delete</span></button>
+                                        {
+                                            props.auth.user.roles[0].name === "admin" || permissions.includes('edit_task') ?
+                                                (
+                                                    <Link href={`/tasks/${tsk.id}/edit`} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-blue-500 text-white rounded'><span>Edit</span></Link>
+                                                ) : ''
+                                        }
+                                        {
+                                            props.auth.user.roles[0].name === "admin" || permissions.includes('delete_task') ?
+                                                (
+                                                    <button type='button' onClick={() => handleDelete(tsk.id)} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-red-500 text-white rounded'><span>Delete</span></button>
+                                                ) : ''
+                                        }
                                     </td>
                                 </tr>
                             ))

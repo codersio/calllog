@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from '@inertiajs/react';
 import Header from '@/Layouts/Header';
 import Nav from '@/Layouts/Nav';
+import AdminLayout from '@/Layouts/AdminLayout';
 
-const Permissions = ({ user, user_type, role, permissions,notif }) => {
+const Permissions = ({ user, user_type, role, permissions, notif }) => {
   // Log props for debugging
   console.log('Role:', role);
   console.log('Permissions:', permissions);
@@ -75,10 +76,10 @@ const Permissions = ({ user, user_type, role, permissions,notif }) => {
   }
 
   return (
-    <div className='w-[85.2%] ml-[12rem]'>
-      <Header user={user} notif={notif}/>
-      <Nav user_type={user_type} />
-
+    // <div className='w-[85.2%] ml-[12rem]'>
+    //   <Header user={user} notif={notif}/>
+    //   <Nav user_type={user_type} />
+    <AdminLayout>
       <form onSubmit={handleSubmit} className='px-[9rem]'>
         <div className="form mt-9">
           <div className="form-group">
@@ -101,7 +102,7 @@ const Permissions = ({ user, user_type, role, permissions,notif }) => {
               <h3 className='w-[7rem]'>{entity.charAt(0).toUpperCase() + entity.slice(1)}</h3>
               <div style={{ marginLeft: '20px' }} className='flex space-x-[4rem]'>
                 {permissions.map(permission => (
-                  <div key={permission.id } className='space-x-2'>
+                  <div key={permission.id} className='space-x-2'>
                     <input
                       type="checkbox"
                       name="permissions[]"
@@ -121,7 +122,8 @@ const Permissions = ({ user, user_type, role, permissions,notif }) => {
           Update Role
         </button>
       </form>
-    </div>
+    </AdminLayout>
+    // </div>
   );
 };
 
