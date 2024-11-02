@@ -14,7 +14,8 @@ import {
 } from 'react-icons/io5';
 import { FaX } from 'react-icons/fa6';
 import { IoIosNotificationsOutline, IoMdSettings } from 'react-icons/io';
-import { FaTasks } from 'react-icons/fa';
+import { FaRegUserCircle, FaTasks } from 'react-icons/fa';
+import { LuLogOut } from 'react-icons/lu';
 
 export default function AdminLayout({ header, children, notif, user_type }) {
     const { props } = usePage();
@@ -37,6 +38,14 @@ export default function AdminLayout({ header, children, notif, user_type }) {
         setProfile(false);
     };
 
+    const toggleProfile = (e) => {
+        e.stopPropagation();  // Prevent propagation to the body or other handlers
+        setProfile(prev => !prev);
+        setNotifyModal(false);  // Close notification modal when profile is opened
+    };
+
+    const dropdownRef = useRef(null);
+    const [profile, setProfile] = useState(false);
     const notificationRef = useRef(null);
     const [notifyModal, setNotifyModal] = useState(false);
 
@@ -409,9 +418,26 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     <div className='flex items-center gap-x-2'>
                         <button onClick={(e) => setNotifyModal(true)} className='p-2 bg-gray-300 rounded'><IoNotificationsOutline size={15} /></button>
                         <button className='p-2 bg-gray-300 rounded'><IoMailOutline size={15} /></button>
-                        <button className=''>
-                            <img className='object-cover rounded-full w-7 h-7' src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="" />
-                        </button>
+                        <div className='flex space-x-2 cursor-pointer' onClick={toggleProfile}>
+                            <span className="grid place-items-center"><FaRegUserCircle className='text-[1.5rem]' /></span>
+                            <span className='text-[1rem]'>{props.auth.user.name}</span>
+                        </div>
+                        <div className='relative grid place-items-center'>
+                            <div ref={dropdownRef} className={`absolute top-full p-4 -right-5 my-5 border border-gray-300 rounded w-[10rem] bg-white shadow-lg transition-all duration-300 shadow-zinc-800/50 ${profile ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none translate-y-14'}`}>
+                                <div>
+                                    {/* <li className='p-2 text-black list-none flex space-x-2'>
+                                    <span className='grid place-items-center'><FaUserCog /></span>
+                                    <span><Link href="/profile">Profile</Link></span>
+                                </li> */}
+                                    <li className='p-2 text-black list-none'>
+                                        <ResponsiveNavLink method="post" href={route('logout')} as="button" className='flex space-x-2'>
+                                            <span className='grid mt-1 place-items-center'><LuLogOut /></span>
+                                            <span>Log Out</span>
+                                        </ResponsiveNavLink>
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </nav>
 
