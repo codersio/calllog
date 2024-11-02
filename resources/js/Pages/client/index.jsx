@@ -59,7 +59,7 @@ const Index = ({ data }) => {
                 <div className='flex justify-between mb-4'>
                     <input type="text" value={query} onChange={handleSearch} placeholder="Search data..." className='w-[60%] p-2 border border-gray-300 rounded-md' />
                     {
-                        props.auth.user.roles[0].name === "admin" || permissions.includes('create_extended_warranty') ?
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('create_client') ?
                             (
                                 <Link href='Client/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>Add Client</Link>
                             ) : ''
@@ -109,7 +109,7 @@ const Index = ({ data }) => {
                                     <td className="p-3 text-center border">
                                         <div className="flex justify-center space-x-3">
                                             {
-                                                props.auth.user.roles[0].name === "admin" || permissions.includes('edit_extended_warranty') ?
+                                                props.auth.user.roles[0].name === "admin" || permissions.includes('edit_client') ?
                                                     (
                                                         <Link className="p-2 text-white bg-green-500 rounded" href={`service-centers/${emp.user_id}/edit`}><CiEdit /></Link>
                                                     ) : ''
@@ -119,7 +119,7 @@ const Index = ({ data }) => {
                                                 <BiArchive />
                                             </Link>
                                             {
-                                                props.auth.user.roles[0].name === "admin" || permissions.includes('delete_extended_warranty') ?
+                                                props.auth.user.roles[0].name === "admin" || permissions.includes('delete_client') ?
                                                     (
                                                         <button className="p-2 text-white bg-red-500 rounded" onClick={(e) => handleDelete(e, emp.user_id)}><RiDeleteBinLine /></button>
                                                     ) : ''

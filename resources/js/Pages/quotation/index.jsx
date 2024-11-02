@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Notyf } from 'notyf';
@@ -10,6 +10,13 @@ import { BiArchive } from "react-icons/bi";
 const notyf = new Notyf();
 
 const Index = ({ data }) => {
+    const { props } = usePage();
+    const [permissions, setPermissions] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(props.auth.permissions)) {
+            setPermissions(props.auth.permissions);
+        }
+    }, [props]);
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState(data);
     const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +58,12 @@ const Index = ({ data }) => {
             <div className='p-6 bg-white rounded-lg shadow'>
                 <div className='flex justify-between mb-4'>
                     <input type="text" value={query} onChange={handleSearch} placeholder="Search data..." className='w-[60%] p-2 border border-gray-300 rounded-md' />
-                    <Link href='Quotation/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>Add Qoutation</Link>
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('add_quotation') ?
+                            (
+                                <Link href='Quotation/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>Add Qoutation</Link>
+                            ) : ''
+                    }
                 </div>
 
                 <table className="w-full border border-collapse table-auto">
@@ -76,9 +88,18 @@ const Index = ({ data }) => {
                                     <td className="p-3 border">{emp.email}</td>
                                     <td className="p-3 text-center border">
                                         <div className="flex justify-center space-x-3">
-                                            <Link className="p-2 text-white bg-green-500 rounded" href={`Quotation/${emp.quotation_id}/edit`}><CiEdit /></Link>
-                                            
-                                             <button className="p-2 text-white bg-red-500 rounded" onClick={(e) => handleDelete(e, emp.quotation_id)}><RiDeleteBinLine /></button>
+                                            {
+                                                props.auth.user.roles[0].name === "admin" || permissions.includes('edit_quotation') ?
+                                                    (
+                                                        <Link className="p-2 text-white bg-green-500 rounded" href={`Quotation/${emp.quotation_id}/edit`}><CiEdit /></Link>
+                                                    ) : ''
+                                            }
+                                            {
+                                                props.auth.user.roles[0].name === "admin" || permissions.includes('delete_quotation') ?
+                                                    (
+                                                        <button className="p-2 text-white bg-red-500 rounded" onClick={(e) => handleDelete(e, emp.quotation_id)}><RiDeleteBinLine /></button>
+                                                    ) : ''
+                                            }
                                         </div>
                                     </td>
                                 </tr>
