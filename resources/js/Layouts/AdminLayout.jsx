@@ -168,7 +168,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                             </li>) : ''
                     }
                     {
-                        permissions.includes('view_service_center')
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_service_center')
                             ?
                             (<li>
                                 <Link href='/service-centers' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
@@ -208,7 +208,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         </div>
                     </li> */}
                     {
-                        permissions.includes('view_spare_parts') ? (
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_spare_parts') ? (
                             <li>
                                 <Link href='/spare-part' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                                     <IoBuildOutline size={15} />
@@ -218,7 +218,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         ) : ''
                     }
                     {
-                        permissions.includes('view_call_allocation') ? (
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_call_allocation') ? (
                             <li>
                                 <Link href='/Call-Allocation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                                     <IoCallOutline size={15} />
@@ -228,7 +228,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         ) : ''
                     }
                     {
-                        permissions.includes('view_extended_warranty') ? (
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_extended_warranty') ? (
                             <li>
                                 <Link href='/Warranty-Extend' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                                     <IoDocumentTextOutline size={15} />
@@ -238,7 +238,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         ) : ''
                     }
                     {
-                        permissions.includes('view_client') ? (
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_client') ? (
                             <li>
                                 <Link href='/Client' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                                     <IoPeopleOutline size={15} />
@@ -248,7 +248,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         ) : ''
                     }
                     {
-                        permissions.includes('view_employee') ? (
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_employee') ? (
                             <li>
                                 <Link href='/Employee' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                                     <IoPeopleOutline size={15} />
@@ -258,7 +258,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         ) : ''
                     }
                     {
-                        permissions.includes('view_product') ? (
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_product') ? (
                             <li>
                                 <Link href='/Product-List' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                                     <IoCubeOutline size={15} />
@@ -268,7 +268,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         ) : ''
                     }
                     {
-                        permissions.includes('view_quotation') ? (
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_quotation') ? (
                             <li>
                                 <Link href='/Quotation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                                     <IoChatboxOutline size={15} />
@@ -278,7 +278,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         ) : ''
                     }
                     {
-                        permissions.includes('view_services') ? (
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_services') ? (
                             <li>
                                 <Link href='/services' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
                                     <IoConstructOutline size={15} />
@@ -293,92 +293,116 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                             <span className='text-sm'>Sales</span>
                         </Link>
                     </li> */}
-                    <li>
-                        {/* Products with Submenu */}
-                        <div>
-                            <button onClick={() => setShowProductSubMenu(!showProductSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
-                                <IoCallOutline size={15} />
-                                <span className='text-sm'>Sales</span>
-                            </button>
-                            {showProductSubMenu && (
-                                <ul className='ml-4 space-y-2'>
-                                    <li>
-                                        <Link href='/sales' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
-                                            <IoChevronForward size={15} />
-                                            <span className='text-sm'>Bill</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href='/amc-expense-index' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
-                                            <IoChevronForward size={15} />
-                                            <span className='text-sm'>Expense</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href='/income' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
-                                            <IoChevronForward size={15} />
-                                            <span className='text-sm'>Income</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            )}
-                        </div>
-                    </li>
-                    <li>
-                        <Link href='/amc' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoBuildOutline size={15} />
-                            <span className='text-sm'>AMC</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/complaint' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoDocumentTextOutline size={15} />
-                            <span className='text-sm'>Complaint</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href='/tasks' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <FaTasks size={15} />
-                            <span className='text-sm'>Tasks</span>
-                        </Link>
-                    </li>
-                    <li>
-                        {/* Products with Submenu */}
-                        <div>
-                            <button onClick={() => setShowReportSubMenu(!showReportSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
-                                <IoAnalytics size={15} />
-                                <span className='text-sm'>Reports</span>
-                            </button>
-                            {showReportSubMenu && (
-                                <ul className='ml-4 space-y-2'>
-                                    <li>
-                                        <Link href='/complaint-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
-                                            <IoChevronForward size={15} />
-                                            <span className='text-sm'>Complaint Reports</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href='/sales-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
-                                            <IoChevronForward size={15} />
-                                            <span className='text-sm'>Sales Report</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href='/service-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
-                                            <IoChevronForward size={15} />
-                                            <span className='text-sm'>Service Reports</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            )}
-                        </div>
-                    </li>
-                    <li>
-                        <Link href='/roles-permission-details' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
-                            <IoMdSettings size={15} />
-                            <span className='text-sm'>Roles & Permissions</span>
-                        </Link>
-                    </li>
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_sales') ? (
+                            <li>
+                                {/* Products with Submenu */}
+                                <div>
+                                    <button onClick={() => setShowProductSubMenu(!showProductSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
+                                        <IoCallOutline size={15} />
+                                        <span className='text-sm'>Sales</span>
+                                    </button>
+                                    {showProductSubMenu && (
+                                        <ul className='ml-4 space-y-2'>
+                                            <li>
+                                                <Link href='/sales' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                                    <IoChevronForward size={15} />
+                                                    <span className='text-sm'>Bill</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href='/amc-expense-index' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                                    <IoChevronForward size={15} />
+                                                    <span className='text-sm'>Expense</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href='/income' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                                    <IoChevronForward size={15} />
+                                                    <span className='text-sm'>Income</span>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    )}
+                                </div>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_amc') ? (
+                            <li>
+                                <Link href='/amc' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoBuildOutline size={15} />
+                                    <span className='text-sm'>AMC</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_complaint') ? (
+                            <li>
+                                <Link href='/complaint' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoDocumentTextOutline size={15} />
+                                    <span className='text-sm'>Complaint</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_task') ? (
+                            <li>
+                                <Link href='/tasks' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <FaTasks size={15} />
+                                    <span className='text-sm'>Tasks</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_report') ? (
+                            <li>
+                                {/* Products with Submenu */}
+                                <div>
+                                    <button onClick={() => setShowReportSubMenu(!showReportSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
+                                        <IoAnalytics size={15} />
+                                        <span className='text-sm'>Reports</span>
+                                    </button>
+                                    {showReportSubMenu && (
+                                        <ul className='ml-4 space-y-2'>
+                                            <li>
+                                                <Link href='/complaint-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                                    <IoChevronForward size={15} />
+                                                    <span className='text-sm'>Complaint Reports</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href='/sales-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                                    <IoChevronForward size={15} />
+                                                    <span className='text-sm'>Sales Report</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href='/service-reports' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
+                                                    <IoChevronForward size={15} />
+                                                    <span className='text-sm'>Service Reports</span>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    )}
+                                </div>
+                            </li>
+                        ) : ''
+                    }
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_role') ? (
+                            <li>
+                                <Link href='/roles-permission-details' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                    <IoMdSettings size={15} />
+                                    <span className='text-sm'>Roles & Permissions</span>
+                                </Link>
+                            </li>
+                        ) : ''
+                    }
                 </ul>
             </aside>
             <div className='flex flex-col flex-1'>
