@@ -945,7 +945,12 @@ window.location.reload();
         <div className='flex justify-between   bg-[#356A6A]'>
             <div className='w-[50%] grid place-items-center border-2 p-3'>
 
-                <button onClick={handleSubmit} disabled={isSubmitDisabled} className='border-2 p-2 bg-[#465584] text-white rounded-md' disabled={status === 1}>Save time Status</button>
+                {/* <button onClick={handleSubmit} disabled={isSubmitDisabled} className='border-2 p-2 bg-[#465584] text-white rounded-md' disabled={status === 1}>Save time Status</button>
+                {
+                    status === 1 ? <>  <p className='mt-3 text-white'>Already submitted timesheet status as approved</p>
+                    </> : <p className='mt-3 text-white'>Submit your timesheet status as approved</p>
+                } */}
+                <button onClick={handleSubmit} disabled={isSubmitDisabled} className='border-2 p-2 bg-[#465584] text-white rounded-md' >Save time Status</button>
                 {
                     status === 1 ? <>  <p className='mt-3 text-white'>Already submitted timesheet status as approved</p>
                     </> : <p className='mt-3 text-white'>Submit your timesheet status as approved</p>
