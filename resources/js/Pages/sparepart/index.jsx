@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdLockClock, MdOutlineAssignmentLate } from "react-icons/md";
@@ -10,6 +10,13 @@ import AdminLayout from '@/Layouts/AdminLayout';
 const notyf = new Notyf();
 
 const index = ({ data }) => {
+    const { props } = usePage();
+    const [permissions, setPermissions] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(props.auth.permissions)) {
+            setPermissions(props.auth.permissions);
+        }
+    }, [props]);
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState(data);
     const [currentPage, setCurrentPage] = useState(1);
@@ -67,13 +74,17 @@ const index = ({ data }) => {
                         placeholder="Search data..."
                         className='w-[60%] p-2 border border-gray-300 rounded-md'
                     />
-                    <Link href='spare-part/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
-                        Add Spare Parts
-                    </Link>
+                    {
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('create_spare_parts') ?
+                            (
+                                <Link href='spare-part/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                                    Add Spare Parts
+                                </Link>
+                            ) : ''
+                    }
                 </div>
 
                 <div className='max-w-5xl overflow-auto'>
-
                     <table className="w-full border text-nowrap border-collapse table-auto">
                         <thead className='text-white bg-gray-700'>
                             <tr>
@@ -115,12 +126,22 @@ const index = ({ data }) => {
                                         <td className='p-3 border'>{emp.category_name}</td>
                                         <td className='p-3 text-center border'>
                                             <div className='flex justify-center space-x-3'>
-                                                <Link className='p-2 text-white bg-green-500 rounded' href={`spare-part/${emp.id}/edit`}>
-                                                    <CiEdit />
-                                                </Link>
-                                                <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>
-                                                    <RiDeleteBinLine />
-                                                </button>
+                                                {
+                                                    props.auth.user.roles[0].name === "admin" || permissions.includes('edit_spare_parts') ?
+                                                        (
+                                                            <Link className='p-2 text-white bg-green-500 rounded' href={`spare-part/${emp.id}/edit`}>
+                                                                <CiEdit />
+                                                            </Link>
+                                                        ) : ''
+                                                }
+                                                {
+                                                    props.auth.user.roles[0].name === "admin" || permissions.includes('delete_spare_parts') ?
+                                                        (
+                                                            <button className='p-2 text-white bg-red-500 rounded' onClick={(e) => handleDelete(e, emp.id)}>
+                                                                <RiDeleteBinLine />
+                                                            </button>
+                                                        ) : ''
+                                                }
                                             </div>
                                         </td>
 
