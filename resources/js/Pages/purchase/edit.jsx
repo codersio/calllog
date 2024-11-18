@@ -189,7 +189,7 @@ function edit({ suppliers, products, taxes, pur }) {
                                             >
                                                 <option value="">-- Select Product --</option>
                                                 {products && products.map((pr, i) => (
-                                                    <option key={i} value={pr.name}>{pr.name}</option>
+                                                    <option key={i} value={pr.item_name}>{pr.item_name}</option>
                                                 ))}
                                             </select>
                                         </td>

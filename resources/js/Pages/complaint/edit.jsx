@@ -85,7 +85,7 @@ function edit({ complaint, customers, products, employees }) {
                             <option value="">-- Select Product --</option>
                             {
                                 products && products.map((prd, i) => (
-                                    <option key={i} value={prd.id}>{prd.name}</option>
+                                    <option key={i} value={prd.product_id}>{prd.item_name}</option>
                                 ))
                             }
                         </select>
@@ -97,7 +97,7 @@ function edit({ complaint, customers, products, employees }) {
                             <option value="">-- Select Assigned --</option>
                             {
                                 employees && employees.map((emp, i) => (
-                                    <option key={i} value={emp.id}>{emp.name}</option>
+                                    <option key={i} value={emp.user_id}>{emp.first_name+' '+emp.middle_name+' '+emp.last_name}</option>
                                 ))
                             }
                         </select>

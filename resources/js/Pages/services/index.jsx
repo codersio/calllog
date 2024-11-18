@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { Link, usePage } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia';
 
 function ServiceTable({ data }) {
   const { props } = usePage();
@@ -25,16 +26,7 @@ function ServiceTable({ data }) {
   const handleDelete = (serviceId) => {
     // Confirm deletion
     if (window.confirm('Are you sure you want to delete this service?')) {
-      axios.delete(`/services/${serviceId}`)
-        .then(() => {
-          // Filter out the deleted service from the state
-          setServices(services.filter(service => service.id !== serviceId));
-          alert('Service deleted successfully');
-        })
-        .catch(error => {
-          console.error('Error deleting service:', error);
-          alert('Failed to delete service');
-        });
+      Inertia.delete(`/services/${serviceId}`)
     }
   };
 
@@ -65,7 +57,7 @@ function ServiceTable({ data }) {
               <tr key={service.id} className="text-center">
                 <td className="px-4 py-2 border">{service.service_code}</td>
                 <td className="px-4 py-2 border">{service.service_date}</td>
-                <td className="px-4 py-2 border">{service.name}</td>
+                <td className="px-4 py-2 border">{service.assigned_first_name+' '+service.assigned_middle_name+' '+service.assigned_last_name}</td>
                 <td className="px-4 py-2 border">
                   <span className={`px-2 py-1 font-semibold text-white rounded ${service.status === 'Open' ? 'bg-green-500' : 'bg-gray-500'}`}>
                     {service.status}

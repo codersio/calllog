@@ -44,7 +44,7 @@ const Create = ({client_idf2}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/Employee/', { // Adjust the endpoint to the correct one for creating a client
+        post('/Employee', { // Adjust the endpoint to the correct one for creating a client
             onSuccess: () => {
                 notyf.success('Employee added successfully!');
             },

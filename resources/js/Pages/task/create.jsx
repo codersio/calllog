@@ -58,7 +58,7 @@ function create({ customers,employees,ttypes }) {
                             <option value="">-- Select Assigned To --</option>
                             {
                                 employees && employees.map((emp, i) => (
-                                    <option key={i} value={emp.id}>{emp.name}</option>
+                                    <option key={i} value={emp.user_id}>{emp.first_name+' '+emp.middle_name+' '+emp.last_name}</option>
                                 ))
                             }
                         </select>

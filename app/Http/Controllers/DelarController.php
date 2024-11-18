@@ -45,13 +45,20 @@ class DelarController extends Controller
         // dd($request->all());
         // Define validation rules
         $validatedData = $request->validate([
-
+            'name'=>'required',
+            'pin'=>'required',
+            'con1'=>'required',
+            'gstn'=>'required',
+            'username'=>'required',
+            'password'=>'required',
             'email' => 'required|email|unique:users,email', // Ensure the email is valid and unique in the 'users' table
 
 
             'phone' => 'nullable|string|max:10', // Optional field; adjust validation as needed
 
 
+        ],[
+            'con1.required'=>'Please enter contact number'
         ]);
 
         // Create and save the new user
@@ -124,8 +131,16 @@ class DelarController extends Controller
     {
         // dd($Delar);
         $validatedData = $request->validate([
+            'name'=>'required',
+            'pin'=>'required',
+            'con1'=>'required',
+            'gstn'=>'required',
+            'username'=>'required',
+            'password'=>'nullable',
             'email' => 'required|email', // Ensure the email is valid and unique in the 'users' table
             'phone' => 'nullable|string|max:10', // Optional field; adjust validation as needed
+        ],[
+            'con1.required'=>'Please enter contact number'
         ]);
 
         // Create and save the new user

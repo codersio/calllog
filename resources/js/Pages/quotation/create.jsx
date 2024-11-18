@@ -22,7 +22,7 @@ const Create = ({ client_idf2, customer_dets }) => {
         Billing_address: '',
         message: '',
         product_details: [{ product_id: '', p_qty: '', price: '', amount: '' }],
-        tax_details: [{ tax_id: '', tax_value: '',tax_name:'' }],
+        tax_details: [{ tax_id: '', tax_value: '', tax_name: '' }],
     });
 
     const [products, setProducts] = React.useState([]);
@@ -106,13 +106,13 @@ const Create = ({ client_idf2, customer_dets }) => {
         newTaxDetails[index] = {
             ...newTaxDetails[index],
             tax_id,
-            tax_name:selectedTax.acount_tax_name,
-            tax_value: selectedTax ? selectedTax.tax : 0, // Updated to use `tax`
+            tax_name: selectedTax.name,
+            tax_value: selectedTax ? selectedTax.percent : 0, // Updated to use `tax`
         };
         setData('tax_details', newTaxDetails);
     };
     const today = new Date().toISOString().split('T')[0];
-   
+
     const removeProductDetail = (index) => {
         const newProductDetails = data.product_details.filter((_, i) => i !== index);
         setData('product_details', newProductDetails);
@@ -125,7 +125,7 @@ const Create = ({ client_idf2, customer_dets }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/Quotation/', {
+        post('/Quotation', {
             onSuccess: () => notyf.success('Quotation added successfully!'),
             onError: () => notyf.error('Failed to add Quotation. Please check your inputs.'),
         });
@@ -165,8 +165,8 @@ const Create = ({ client_idf2, customer_dets }) => {
     return (
         <AdminLayout>
             <div className="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-md">
-                <h2 className="mb-6 text-2xl font-bold text-gray-800">Add Client</h2>
-                
+                <h2 className="mb-6 text-2xl font-bold text-gray-800">Add Quotation</h2>
+
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700">Quotation No</label>
@@ -206,7 +206,7 @@ const Create = ({ client_idf2, customer_dets }) => {
                             <option value="">---Select----</option>
                             {customer_dets.map((customer_det) => (
                                 <option key={customer_det.user_id} value={customer_det.user_id}>
-                                    {customer_det.first_name+' '+customer_det.last_name}
+                                    {customer_det.first_name + ' ' + customer_det.last_name}
                                 </option>
                             ))}
                         </select>
@@ -240,17 +240,17 @@ const Create = ({ client_idf2, customer_dets }) => {
                     </div>
                     <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700">Status</label>
-                         <select
-                                                name='status'
-                                                value={data.status}
-                                                onChange={handleChange}
-                                                className="w-full border border-gray-300 rounded-lg"
-                                            >
-                                                <option value="">Select Status</option>
-                                                <option value="1">Open</option>
-                                                <option value="0">Close</option>
-                                                <option value="2">Pending</option>
-                                            </select>
+                        <select
+                            name='status'
+                            value={data.status}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded-lg"
+                        >
+                            <option value="">Select Status</option>
+                            <option value="1">Open</option>
+                            <option value="0">Close</option>
+                            <option value="2">Pending</option>
+                        </select>
                         {errors.Billing_address && <p className="mt-1 text-xs text-red-500">{errors.Billing_address}</p>}
                     </div>
                     <div>
@@ -279,9 +279,9 @@ const Create = ({ client_idf2, customer_dets }) => {
                         {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}
                     </div>
 
-                   
 
-                    
+
+
 
                     <h2 className="mb-1 text-2xl font-bold text-gray-600 md:col-span-2">Product Details</h2>
 
@@ -362,63 +362,63 @@ const Create = ({ client_idf2, customer_dets }) => {
                     </div>
                     <h2 className="mb-1 text-2xl font-bold text-gray-600 md:col-span-2">Tax Details</h2>
 
-<div className="col-span-1 md:col-span-2">
-    <button
-        type="button"
-        onClick={addTaxDetail}
-        className="px-6 py-3 text-white bg-green-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
-    >
-        Add New Tax
-    </button>
-</div>
-
-<div className="overflow-x-auto w-full col-span-1 md:col-span-2">
-    <table className="table-auto w-full border-collapse border border-gray-300" id="tab_tax_detail">
-        <thead>
-            <tr>
-                <th className="border border-gray-300 px-4 py-2">Tax</th>
-                <th className="border border-gray-300 px-4 py-2">Value</th>
-                <th className="border border-gray-300 px-4 py-2">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {data.tax_details.map((taxDetail, index) => (
-                <tr key={index} id={`tax_row_id_${index}`}>
-                    <td className="border border-gray-300 px-4 py-2">
-                        <select
-                            name={`tax_id[${index}]`}
-                            value={taxDetail.tax_id}
-                            onChange={(e) => handleTaxChange(index, e.target.value, taxDetail.tax_value)}
-                            className="w-full border border-gray-300 rounded-lg"
+                    <div className="col-span-1 md:col-span-2">
+                        <button
+                            type="button"
+                            onClick={addTaxDetail}
+                            className="px-6 py-3 text-white bg-green-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
                         >
-                            <option value="">Select Tax</option>
-                            {taxOptions.map((tax) => (
-                                <option key={tax.id} value={tax.id}>
-                                    {tax.acount_tax_name}
-                                </option>
-                            ))}
-                        </select>
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2">
-                        <input
-                            type="number"
-                            name={`tax_value[${index}]`}
-                            value={taxDetail.tax_value}
-                            onChange={(e) => handleTaxChange(index, taxDetail.tax_id, e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg"
-                            placeholder="Enter Tax Value"
-                        />
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2">
-                        <span className="text-red-600 cursor-pointer" onClick={() => removeTaxDetail(index)}>
-                            <i className="fa fa-trash"></i> Delete
-                        </span>
-                    </td>
-                </tr>
-            ))}
-        </tbody>
-    </table>
-</div>
+                            Add New Tax
+                        </button>
+                    </div>
+
+                    <div className="overflow-x-auto w-full col-span-1 md:col-span-2">
+                        <table className="table-auto w-full border-collapse border border-gray-300" id="tab_tax_detail">
+                            <thead>
+                                <tr>
+                                    <th className="border border-gray-300 px-4 py-2">Tax</th>
+                                    <th className="border border-gray-300 px-4 py-2">Value (%)</th>
+                                    <th className="border border-gray-300 px-4 py-2">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.tax_details.map((taxDetail, index) => (
+                                    <tr key={index} id={`tax_row_id_${index}`}>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            <select
+                                                name={`tax_id[${index}]`}
+                                                value={taxDetail.tax_id}
+                                                onChange={(e) => handleTaxChange(index, e.target.value, taxDetail.tax_value)}
+                                                className="w-full border border-gray-300 rounded-lg"
+                                            >
+                                                <option value="">Select Tax</option>
+                                                {taxOptions.map((tax) => (
+                                                    <option key={tax.id} value={tax.id}>
+                                                        {tax.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            <input
+                                                type="number"
+                                                name={`tax_value[${index}]`}
+                                                value={taxDetail.tax_value}
+                                                onChange={(e) => handleTaxChange(index, taxDetail.tax_id, e.target.value)}
+                                                className="w-full border border-gray-300 rounded-lg"
+                                                placeholder="Enter Tax Value"
+                                            />
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            <span className="text-red-600 cursor-pointer" onClick={() => removeTaxDetail(index)}>
+                                                <i className="fa fa-trash"></i> Delete
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
                     <div className="col-span-1 md:col-span-2">
                         <button

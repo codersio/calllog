@@ -7,7 +7,7 @@ import AdminLayout from '@/Layouts/AdminLayout';
 // Create an instance of Notyf
 const notyf = new Notyf();
 
-const CreateCategory = ({ categories,service_centers }) => {
+const CreateCategory = ({ categories, service_centers }) => {
     const { data, setData, post, processing, errors } = useForm({
         call_allocation: '',
         customer_name: '',
@@ -20,23 +20,23 @@ const CreateCategory = ({ categories,service_centers }) => {
         model: '',
         spare_part_Serial: '',
         invoice: '',
-        dispatch_model:'',
-        dispatch_type:'',
-        date:'',
+        dispatch_model: '',
+        dispatch_type: '',
+        date: '',
 
-   
+
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-    
+
         // Check if the dispatch_model has changed
         if (name === "dispatch_model") {
             // Update the dispatch_type to "1 2 3" if dispatch_model is changed
             setData({
                 ...data,
                 dispatch_model: value,
-                dispatch_type: value ? value+'-' : "" , // Clear dispatch_type if no model is selected
+                dispatch_type: value ? value + '-' : "", // Clear dispatch_type if no model is selected
             });
         } else {
             // Update other fields as normal
@@ -46,11 +46,11 @@ const CreateCategory = ({ categories,service_centers }) => {
             });
         }
     };
-    
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/spare-part/', {
+        post('/spare-part', {
             onSuccess: () => {
                 notyf.success('Spare & Parts  added successfully!');
             },
@@ -126,8 +126,8 @@ const CreateCategory = ({ categories,service_centers }) => {
                         />
                         {errors.phone_number && <p className="mt-1 text-xs text-red-500">{errors.phone_number}</p>}
                     </div>
-                     {/* Service Partner */}
-                     <div>
+                    {/* Service Partner */}
+                    <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700">Service Partner</label>
                         <select
                             name="service_partner"
@@ -166,9 +166,9 @@ const CreateCategory = ({ categories,service_centers }) => {
                             onChange={handleChange}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                         >
-                             {categories.map((category) => (
-                                <option key={category.id} value={category.id}>
-                                    {category.name}
+                            {categories.map((category) => (
+                                <option key={category.product_id} value={category.product_id}>
+                                    {category.item_name}
                                 </option>
                             ))}
                         </select>
@@ -188,49 +188,49 @@ const CreateCategory = ({ categories,service_centers }) => {
                         {errors.qty && <p className="mt-1 text-xs text-red-500">{errors.qty}</p>}
                     </div>
 
-                  
 
-                {/* Source Of Material */}
-                <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">Model</label>
-                    <input
-                        type="text"
-                        name="model"
-                        value={data.model}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Source Of Material"
-                    />
-                    {errors.model && <p className="mt-1 text-xs text-red-500">{errors.model}</p>}
-                </div>
-                 {/* Spare Part Serial No */}
-                 <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">Spare Parts Serial Number</label>
-                    <input
-                        type="number"
-                        name="spare_part_Serial"
-                        value={data.spare_part_Serial}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Source Of Material"
-                    />
-                    {errors.spare_part_Serial && <p className="mt-1 text-xs text-red-500">{errors.spare_part_Serial}</p>}
-                </div>
+
+                    {/* Source Of Material */}
+                    <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Model</label>
+                        <input
+                            type="text"
+                            name="model"
+                            value={data.model}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Source Of Material"
+                        />
+                        {errors.model && <p className="mt-1 text-xs text-red-500">{errors.model}</p>}
+                    </div>
+                    {/* Spare Part Serial No */}
+                    <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Spare Parts Serial Number</label>
+                        <input
+                            type="number"
+                            name="spare_part_Serial"
+                            value={data.spare_part_Serial}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Source Of Material"
+                        />
+                        {errors.spare_part_Serial && <p className="mt-1 text-xs text-red-500">{errors.spare_part_Serial}</p>}
+                    </div>
                     {/* Invoice No */}
                     <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">Invoice Number</label>
-                    <input
-                        type="text"
-                        name="invoice"
-                        value={data.invoice}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter Invoice No"
-                    />
-                    {errors.invoice && <p className="mt-1 text-xs text-red-500">{errors.invoice}</p>}
-                </div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Invoice Number</label>
+                        <input
+                            type="text"
+                            name="invoice"
+                            value={data.invoice}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter Invoice No"
+                        />
+                        {errors.invoice && <p className="mt-1 text-xs text-red-500">{errors.invoice}</p>}
+                    </div>
                     {/* Dispatch Module */}
-                <div>
+                    <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700">Dispatch Module</label>
                         <select
                             name="dispatch_model"
@@ -242,38 +242,38 @@ const CreateCategory = ({ categories,service_centers }) => {
                             <option value="Courier">Courier</option>
                             <option value="Bus">Bus</option>
                             <option value="Staff">Staff</option>
-                            
+
                         </select>
                         {errors.dispatch_model && <p className="mt-1 text-xs text-red-500">{errors.dispatch_model}</p>}
                     </div>
-                     {/* Dispatch   */}
-                     <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">Dispatch Type</label>
-                    <input
-                        type="text"
-                        name="dispatch_type"
-                        value={data.dispatch_type}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        placeholder=""
-                    />
-                    {errors.dispatch_type && <p className="mt-1 text-xs text-red-500">{errors.dispatch_type}</p>}
-                </div>
-                 {/* Date */}
-                 <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">Date</label>
-                    <input
-                        type="date"
-                        name="date"
-                        value={data.date}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Primary contact number"
-                    />
-                    {errors.date && <p className="mt-1 text-xs text-red-500">{errors.date}</p>}
-                </div>
-                   
-                    
+                    {/* Dispatch   */}
+                    <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Dispatch Type</label>
+                        <input
+                            type="text"
+                            name="dispatch_type"
+                            value={data.dispatch_type}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder=""
+                        />
+                        {errors.dispatch_type && <p className="mt-1 text-xs text-red-500">{errors.dispatch_type}</p>}
+                    </div>
+                    {/* Date */}
+                    <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Date</label>
+                        <input
+                            type="date"
+                            name="date"
+                            value={data.date}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Primary contact number"
+                        />
+                        {errors.date && <p className="mt-1 text-xs text-red-500">{errors.date}</p>}
+                    </div>
+
+
 
                     {/* Submit Button */}
                     <div className="col-span-1 md:col-span-2">

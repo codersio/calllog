@@ -170,7 +170,7 @@ function edit({ customers, products, employees,amc,intvls }) {
                             <option value="">-- Select Assigned --</option>
                             {
                                 employees && employees.map((emp, i) => (
-                                    <option key={i} value={emp.id}>{emp.name}</option>
+                                    <option key={i} value={emp.user_id}>{emp.first_name+' '+emp.middle_name+' '+emp.last_name}</option>
                                 ))
                             }
                         </select>

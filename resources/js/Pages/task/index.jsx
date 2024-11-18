@@ -103,7 +103,7 @@ function index({ tasks }) {
                             currentData && currentData.map((tsk, i) => (
                                 <tr key={i}>
                                     <td className='p-3'>{tsk.first_name + ' ' + tsk.middle_name + ' ' + tsk.last_name}</td>
-                                    <td className='p-3'>{tsk.name}</td>
+                                    <td className='p-3'>{tsk.af_name+' ' + tsk.am_name + ' ' + tsk.al_name}</td>
                                     <td className='p-3'>{tsk.assign_date}</td>
                                     <td className='p-3'>{tsk.close_date}</td>
                                     <td>

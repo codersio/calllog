@@ -7,7 +7,7 @@ use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
@@ -16,21 +16,35 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $data = \DB::table('tbl_user')->join('services', 'services.customer_id', 'tbl_user.user_id')
-            ->join('users', 'services.assigned_to', '=', 'users.id')
-            ->select('services.service_code', 'services.service_date', 'users.name', 'services.id', 'services.status')->get();
-        // dd($data);
+        $data = DB::table('tbl_user')
+            ->join('services', 'services.customer_id', '=', 'tbl_user.user_id')
+            ->join('tbl_user as assigned_user', 'services.assigned_to', '=', 'assigned_user.user_id')
+            ->select(
+                'services.service_code',
+                'services.service_date',
+                'tbl_user.first_name as customer_first_name',
+                'tbl_user.middle_name as customer_middle_name',
+                'tbl_user.last_name as customer_last_name',
+                'assigned_user.first_name as assigned_first_name',
+                'assigned_user.middle_name as assigned_middle_name',
+                'assigned_user.last_name as assigned_last_name',
+                'services.id',
+                'services.status'
+            )
+            ->get();
+
         return Inertia::render('services/index', compact('data'));
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')->get();
-        $customers = DB::table('tbl_user')->get();
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->get();
+        $employees = DB::table('tbl_user')->where('role', 'employee')->get();
+        $customers = DB::table('tbl_user')->where('role', 'client')->get();
+        $products = DB::table('tbl_product')->get();
         // dd($customers);
 
         $dateCode = Carbon::now()->format('ymd');
@@ -84,9 +98,9 @@ class ServiceController extends Controller
         // Eager load amcDetails
         $service->load('amcDetails');
 
-        $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')->get();
-        $customers = \DB::table('tbl_user')->get();
-        $products = \DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->get();
+        $employees = DB::table('tbl_user')->where('role', 'employee')->get();
+        $customers = DB::table('tbl_user')->get();
+        $products = DB::table('tbl_product')->get();
 
         // Get the last service record to generate the new service code
         $lastService = Service::latest()->first();

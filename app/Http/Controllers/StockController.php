@@ -11,7 +11,7 @@ class StockController extends Controller
 {
     public function create()
     {
-        $cats = DB::table('products_category')->get();
+        $cats = DB::table('tbl_product')->get();
         return Inertia::render('stock/create',['cats'=>$cats]);
     }
 
@@ -24,7 +24,8 @@ class StockController extends Controller
             'price' => 'required',
             'category_id' => 'required',
             'quantity' => 'required',
-            'unit' => 'required',
+        ],[
+            'category_id.required'=>'Please select a product'
         ]);
 
         Stock::create($request->only(['name', 'sku', 'price', 'category_id', 'quantity', 'unit']));
@@ -35,14 +36,14 @@ class StockController extends Controller
     // List all stocks
     public function index()
     {
-        $stocks = Stock::all();
+        $stocks = Stock::join('tbl_product','tbl_product.product_id','=','stocks.category_id')->select('stocks.*','tbl_product.item_name')->get();
         return Inertia::render('stock/index', ['stocks' => $stocks]);
     }
 
     // Display the form to edit a stock
     public function edit(Stock $stock)
     {
-        $cats = DB::table('products_category')->get();
+        $cats = DB::table('tbl_product')->get();
         return Inertia::render('stock/edit', ['stock' => $stock,'cats'=>$cats]);
     }
 

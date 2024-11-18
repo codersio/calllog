@@ -116,7 +116,7 @@ export default function index({ amcs }) {
                                         {amc.date}
                                     </td>
                                     <td className="p-3">
-                                        {amc.assigned_to}
+                                        {amc.a_first_name + ' ' + amc.a_middle_name + ' '+ amc.a_last_name}
                                     </td>
                                     <td className="p-3">
                                         {addOneMonth(new Date())}

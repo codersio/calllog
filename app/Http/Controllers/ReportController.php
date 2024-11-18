@@ -146,7 +146,7 @@ class ReportController extends Controller
             ->get();
 
 
-        $clients = DB::table('tbl_user')->get(); // Ensure you use a different variable name for clients
+        $clients = DB::table('tbl_user')->where('role', 'client')->get(); // Ensure you use a different variable name for clients
         // Return the complaints data to the Inertia view
         return Inertia::render('reports/complainReports', [
             'datas' => $complaints,
@@ -190,9 +190,9 @@ class ReportController extends Controller
             ->get();
 
 
-        $clients = DB::table('tbl_user')->get();
+        $clients = DB::table('tbl_user')->where('role', 'client')->get();
 
-        return Inertia::render('reports/salesReports',[
+        return Inertia::render('reports/salesReports', [
             'datas' => $complaints,
             'clients' => $clients,
             'startDate' => $start_date,
@@ -231,8 +231,8 @@ class ReportController extends Controller
             ->get();
 
 
-        $clients = DB::table('tbl_user')->get();
-        return Inertia::render('reports/servicesReports',[
+        $clients = DB::table('tbl_user')->where('role', 'client')->get();
+        return Inertia::render('reports/servicesReports', [
             'datas' => $complaints,
             'clients' => $clients,
             'startDate' => $start_date,

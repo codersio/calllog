@@ -7,6 +7,7 @@ import 'notyf/notyf.min.css';
 import AdminLayout from '@/Layouts/AdminLayout';
 
 import { BiArchive } from "react-icons/bi";
+import { FaRegFilePdf } from 'react-icons/fa6';
 const notyf = new Notyf();
 
 const Index = ({ data }) => {
@@ -40,7 +41,6 @@ const Index = ({ data }) => {
             destroy(`/Quotation/${id}`, {
                 onSuccess: () => {
                     notyf.success('Quotation deleted successfully!');
-                    location.reload();
                 },
                 onError: () => notyf.error('Failed to delete data.')
             });
@@ -94,6 +94,7 @@ const Index = ({ data }) => {
                                                         <Link className="p-2 text-white bg-green-500 rounded" href={`Quotation/${emp.quotation_id}/edit`}><CiEdit /></Link>
                                                     ) : ''
                                             }
+                                            <Link className="p-2 text-white bg-red-500 rounded" href={`quotation-print/${emp.quotation_id}`}><FaRegFilePdf /></Link>
                                             {
                                                 props.auth.user.roles[0].name === "admin" || permissions.includes('delete_quotation') ?
                                                     (

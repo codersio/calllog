@@ -58,6 +58,8 @@ export default function AdminLayout({ header, children, notif, user_type }) {
         }
     };
 
+    const { url } = usePage()
+
     return (
         <div className="fixed w-full h-full left-0 top-0 flex">
             {/* Notification Modal */}
@@ -105,17 +107,19 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                 </div>
                 <ul className='p-4 flex-1 overflow-y-auto custom-scrollbar space-y-2'>
                     <li>
-                        <Link href='/dashboard' className='flex items-center p-3 text-white rounded gap-x-1 bg-rose-500'>
+                        <Link href='/' className={`flex items-center p-3 rounded gap-x-1 transition duration-300 hover:bg-rose-500 hover:text-white ${url === '/'?'text-white bg-rose-500': ''}`}>
                             <IoGridOutline size={15} />
                             <span className='text-sm'>Dashboard</span>
                         </Link>
+                       
                     </li>
                     <li>
                         {/* Products with Submenu */}
                         <div>
-                            <button onClick={() => setShowGeneralSetupSubMenu(!showGeneralSetupSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
+                            <button onClick={() => setShowGeneralSetupSubMenu(!showGeneralSetupSubMenu)} className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full ${url === '/tasktype' || url === '/interval' || url === '/tax' || url === '/purchase' || url === '/stocks'?'text-white bg-rose-500': ''}`}>
                                 <IoCog size={15} />
                                 <span className='text-sm'>Master</span>
+                                <IoChevronForward size={15} className={`ml-auto transition-all duration-300 ${showGeneralSetupSubMenu ? 'rotate-90' : 'rotate-0'}`}/>
                             </button>
                             {showGeneralSetupSubMenu && (
                                 <ul className='ml-4 space-y-2'>
@@ -149,28 +153,28 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                                             <span className='text-sm'>Stock</span>
                                         </Link>
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <Link href='/distributers' className='flex items-center gap-1 p-2 hover:bg-gray-100'>
                                             <IoChevronForward size={15} />
                                             <span className='text-sm'>Distributor</span>
                                         </Link>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             )}
                         </div>
                     </li>
                     {/* <li>
-                        <Link href='/distributers' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                        <Link href='/distributers' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/Warranty-Extend'?'text-white bg-rose-500': ''}`}>
                             <IoPeopleOutline size={15} />
                             <span className='text-sm'>Distributor</span>
                         </Link>
                     </li> */}
                     {
-                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_dealer') ?
+                        props.auth.user.roles[0].name === "admin" || permissions.includes('view_distributers') ?
                             (<li>
-                                <Link href='/delars' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/distributers' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/distributers'?'text-white bg-rose-500': ''}`}>
                                     <IoArchiveOutline size={15} />
-                                    <span className='text-sm'>Dealer</span>
+                                    <span className='text-sm'>Distributor</span>
                                 </Link>
                             </li>) : ''
                     }
@@ -178,7 +182,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_service_center')
                             ?
                             (<li>
-                                <Link href='/service-centers' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/service-centers' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/service-centers'?'text-white bg-rose-500': ''}`}>
                                     <IoConstructOutline size={15} />
                                     <span className='text-sm'>Service Center</span>
                                 </Link>
@@ -217,7 +221,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_spare_parts') ? (
                             <li>
-                                <Link href='/spare-part' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/spare-part' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/spare-part'?'text-white bg-rose-500': ''}`}>
                                     <IoBuildOutline size={15} />
                                     <span className='text-sm'>Spare & Parts</span>
                                 </Link>
@@ -227,7 +231,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_call_allocation') ? (
                             <li>
-                                <Link href='/Call-Allocation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/Call-Allocation' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/Call-Allocation'?'text-white bg-rose-500': ''}`}>
                                     <IoCallOutline size={15} />
                                     <span className='text-sm'>Call Allocation</span>
                                 </Link>
@@ -237,7 +241,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_extended_warranty') ? (
                             <li>
-                                <Link href='/Warranty-Extend' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/Warranty-Extend' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/Warranty-Extend'?'text-white bg-rose-500': ''}`}>
                                     <IoDocumentTextOutline size={15} />
                                     <span className='text-sm'>Extened Warrenty</span>
                                 </Link>
@@ -247,7 +251,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_client') ? (
                             <li>
-                                <Link href='/Client' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/Client' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/Client'?'text-white bg-rose-500': ''}`}>
                                     <IoPeopleOutline size={15} />
                                     <span className='text-sm'>Client</span>
                                 </Link>
@@ -257,7 +261,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_employee') ? (
                             <li>
-                                <Link href='/Employee' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/Employee' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/Employee'?'text-white bg-rose-500': ''}`}>
                                     <IoPeopleOutline size={15} />
                                     <span className='text-sm'>Employees</span>
                                 </Link>
@@ -267,7 +271,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_product') ? (
                             <li>
-                                <Link href='/Product-List' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/Product-List' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/Product-List'?'text-white bg-rose-500': ''}`}>
                                     <IoCubeOutline size={15} />
                                     <span className='text-sm'>Products</span>
                                 </Link>
@@ -277,7 +281,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_quotation') ? (
                             <li>
-                                <Link href='/Quotation' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/Quotation' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/Quotation'?'text-white bg-rose-500': ''}`}>
                                     <IoChatboxOutline size={15} />
                                     <span className='text-sm'>Quotation</span>
                                 </Link>
@@ -287,7 +291,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_services') ? (
                             <li>
-                                <Link href='/services' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/services' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/services'?'text-white bg-rose-500': ''}`}>
                                     <IoConstructOutline size={15} />
                                     <span className='text-sm'>Services</span>
                                 </Link>
@@ -295,7 +299,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                         ) : ''
                     }
                     {/* <li>
-                        <Link href='/sales' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                        <Link href='/sales' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/Warranty-Extend'?'text-white bg-rose-500': ''}`}>
                             <IoCallOutline size={15} />
                             <span className='text-sm'>Sales</span>
                         </Link>
@@ -305,9 +309,10 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                             <li>
                                 {/* Products with Submenu */}
                                 <div>
-                                    <button onClick={() => setShowProductSubMenu(!showProductSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
+                                    <button onClick={() => setShowProductSubMenu(!showProductSubMenu)} className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full ${url === '/sales' || url === '/amc-expense-index' || url === '/income'?'text-white bg-rose-500': ''}`}>
                                         <IoCallOutline size={15} />
                                         <span className='text-sm'>Sales</span>
+                                        <IoChevronForward size={15} className={`ml-auto transition-all duration-300 ${showProductSubMenu ? 'rotate-90' : 'rotate-0'}`}/>
                                     </button>
                                     {showProductSubMenu && (
                                         <ul className='ml-4 space-y-2'>
@@ -338,7 +343,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_amc') ? (
                             <li>
-                                <Link href='/amc' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/amc' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/amc'?'text-white bg-rose-500': ''}`}>
                                     <IoBuildOutline size={15} />
                                     <span className='text-sm'>AMC</span>
                                 </Link>
@@ -348,7 +353,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_complaint') ? (
                             <li>
-                                <Link href='/complaint' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/complaint' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/complaint'?'text-white bg-rose-500': ''}`}>
                                     <IoDocumentTextOutline size={15} />
                                     <span className='text-sm'>Complaint</span>
                                 </Link>
@@ -358,7 +363,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_task') ? (
                             <li>
-                                <Link href='/tasks' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/tasks' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/tasks'?'text-white bg-rose-500': ''}`}>
                                     <FaTasks size={15} />
                                     <span className='text-sm'>Tasks</span>
                                 </Link>
@@ -370,9 +375,10 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                             <li>
                                 {/* Products with Submenu */}
                                 <div>
-                                    <button onClick={() => setShowReportSubMenu(!showReportSubMenu)} className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full'>
+                                    <button onClick={() => setShowReportSubMenu(!showReportSubMenu)} className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white w-full ${url === '/complaint-reports' || url === '/sales-reports' || url === '/service-reports'?'text-white bg-rose-500': ''}`}>
                                         <IoAnalytics size={15} />
                                         <span className='text-sm'>Reports</span>
+                                        <IoChevronForward size={15} className={`ml-auto transition-all duration-300 ${showReportSubMenu ? 'rotate-90' : 'rotate-0'}`}/>
                                     </button>
                                     {showReportSubMenu && (
                                         <ul className='ml-4 space-y-2'>
@@ -403,7 +409,7 @@ export default function AdminLayout({ header, children, notif, user_type }) {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('view_role') ? (
                             <li>
-                                <Link href='/roles-permission-details' className='flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white'>
+                                <Link href='/roles-permission-details' className={`flex items-center p-3 transition duration-300 rounded gap-x-1 hover:bg-rose-500 hover:text-white ${url === '/roles-permission-details'?'text-white bg-rose-500': ''}`}>
                                     <IoMdSettings size={15} />
                                     <span className='text-sm'>Roles & Permissions</span>
                                 </Link>

@@ -63,7 +63,7 @@ const Create = ({ client_idf2 }) => {
 
         fetchBrands();
         fetchCategories();
-        fetchUnits(); 
+        fetchUnits();
     }, []);
 
     const handleImageChange = (e) => {
@@ -76,7 +76,7 @@ const Create = ({ client_idf2 }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/Product-List/', {
+        post('/Product-List', {
             onSuccess: () => {
                 notyf.success('Product added successfully!');
             },
@@ -168,7 +168,7 @@ const Create = ({ client_idf2 }) => {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
             });
-    
+
             if (response.ok) {
                 // Update categories based on 'cat_id'
                 setCategories(categories.filter((category) => category.cat_id !== categoryId));
@@ -180,9 +180,9 @@ const Create = ({ client_idf2 }) => {
             notyf.error('Error deleting category');
         }
     };
-    
-     // New functions for managing units
-     const handleAddUnit = async () => {
+
+    // New functions for managing units
+    const handleAddUnit = async () => {
         if (newUnit) {
             try {
                 const response = await fetch('/unit', {
@@ -307,7 +307,7 @@ const Create = ({ client_idf2 }) => {
                         {showBrandManager && (
                             <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-50">
                                 <h3 className="mb-2 font-bold">Manage Brands</h3>
-                                
+
                                 {/* New Brand Input */}
                                 <div className="flex items-center mb-4">
                                     <input
@@ -373,7 +373,7 @@ const Create = ({ client_idf2 }) => {
                         {showCategoryManager && (
                             <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-50">
                                 <h3 className="mb-2 font-bold">Manage Categories</h3>
-                                
+
                                 {/* New Category Input */}
                                 <div className="flex items-center mb-4">
                                     <input
@@ -427,69 +427,69 @@ const Create = ({ client_idf2 }) => {
 
                     {/* Unit */}
                     <div>
-    <label className="block mb-1 text-sm font-medium text-gray-700">Unit</label>
-    <select
-        name="unit"
-        value={data.unit}
-        onChange={handleChange}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-    >
-        <option value="">Select a Unit</option>
-        {units.map((unit) => (
-            <option key={unit.cat_id} value={unit.cat_id}>
-                {unit.title}
-            </option>
-        ))}
-    </select>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Unit</label>
+                        <select
+                            name="unit"
+                            value={data.unit}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        >
+                            <option value="">Select a Unit</option>
+                            {units.map((unit) => (
+                                <option key={unit.cat_id} value={unit.cat_id}>
+                                    {unit.title}
+                                </option>
+                            ))}
+                        </select>
 
-    <button
-        type="button"
-        onClick={() => setShowUnitManager(!showUnitManager)}
-        className="mt-2 px-4 py-2 text-sm text-white bg-blue-600 rounded-lg"
-    >
-        Manage Units
-    </button>
-
-    {showUnitManager && (
-        <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-50">
-            <h3 className="mb-2 font-bold">Manage Units</h3>
-            
-            {/* New Unit Input */}
-            <div className="flex items-center mb-4">
-                <input
-                    type="text"
-                    value={newUnit}
-                    onChange={(e) => setNewUnit(e.target.value)}
-                    placeholder="New Unit Name"
-                    className="flex-grow px-2 py-1 border border-gray-300 rounded-lg"
-                />
-                <button
-                    type="button"
-                    onClick={handleAddUnit}
-                    className="ml-2 px-3 py-1 text-sm text-white bg-green-600 rounded-lg"
-                >
-                    Add
-                </button>
-            </div>
-
-            {/* List of Units with Delete Button */}
-            <ul>
-                {units.map((unit) => (
-                    <li key={unit.cat_id} className="flex items-center justify-between py-1">
-                        <span>{unit.title}</span>
                         <button
                             type="button"
-                            onClick={() => handleDeleteUnit(unit.cat_id)}
-                            className="px-2 py-1 text-sm text-white bg-red-600 rounded-lg"
+                            onClick={() => setShowUnitManager(!showUnitManager)}
+                            className="mt-2 px-4 py-2 text-sm text-white bg-blue-600 rounded-lg"
                         >
-                            Delete
+                            Manage Units
                         </button>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    )}
-</div>
+
+                        {showUnitManager && (
+                            <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-50">
+                                <h3 className="mb-2 font-bold">Manage Units</h3>
+
+                                {/* New Unit Input */}
+                                <div className="flex items-center mb-4">
+                                    <input
+                                        type="text"
+                                        value={newUnit}
+                                        onChange={(e) => setNewUnit(e.target.value)}
+                                        placeholder="New Unit Name"
+                                        className="flex-grow px-2 py-1 border border-gray-300 rounded-lg"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleAddUnit}
+                                        className="ml-2 px-3 py-1 text-sm text-white bg-green-600 rounded-lg"
+                                    >
+                                        Add
+                                    </button>
+                                </div>
+
+                                {/* List of Units with Delete Button */}
+                                <ul>
+                                    {units.map((unit) => (
+                                        <li key={unit.cat_id} className="flex items-center justify-between py-1">
+                                            <span>{unit.title}</span>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleDeleteUnit(unit.cat_id)}
+                                                className="px-2 py-1 text-sm text-white bg-red-600 rounded-lg"
+                                            >
+                                                Delete
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
 
 
                     {/* Image Upload */}
@@ -505,17 +505,17 @@ const Create = ({ client_idf2 }) => {
                     </div>
 
                     {/* Product Description */}
-<div className="md:col-span-2">
-    <label className="block mb-1 text-sm font-medium text-gray-700">Product Description</label>
-    <ReactQuill
-        theme="snow"
-        value={data.product_desc}
-        onChange={(content) => setData('product_desc', content)}
-        // className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg"
-        placeholder="Enter Product Description"
-    />
-    {errors.product_desc && <p className="mt-1 text-xs text-red-500">{errors.product_desc}</p>}
-</div>
+                    <div className="md:col-span-2">
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Product Description</label>
+                        <ReactQuill
+                            theme="snow"
+                            value={data.product_desc}
+                            onChange={(content) => setData('product_desc', content)}
+                            // className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg"
+                            placeholder="Enter Product Description"
+                        />
+                        {errors.product_desc && <p className="mt-1 text-xs text-red-500">{errors.product_desc}</p>}
+                    </div>
 
                     {/* Submit Button */}
                     <div className="md:col-span-2">

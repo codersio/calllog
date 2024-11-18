@@ -53,18 +53,18 @@ use Flasher\Prime\Test\Constraint\NotificationCount;
 //     ]);
 // });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/', [AdminController::class, 'Dashboard']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::middleware('check_permission')->group(function () {
 
 
-        Route::get('/', [AdminController::class, 'index']);
         Route::get('/employees', [EmployeeController::class, 'index'])->name('employees');
         Route::get('/employees-create', [EmployeeController::class, 'create'])->name('employees-create');
         Route::post('/employees-store', [EmployeeController::class, 'store']);
@@ -267,6 +267,7 @@ Route::get('amc-expense-index', [IncomeController::class, 'tblindex']);
 Route::post('amc-expense-create', [IncomeController::class, 'tblexpensestore']);
 Route::get('amc-expense/{id}', [IncomeController::class, 'tblexpenseedit']);
 Route::post('amc-expense-update/{id}', [IncomeController::class, 'tblexpenseupdate']);
+Route::delete('amc-expense-delete/{id}', [IncomeController::class, 'tblexpensedelete']);
 Route::resource('tasks',TaskController::class);
 Route::get('/tax', [AccountController::class, 'tax']);
 Route::post('/tax-store', [AccountController::class, 'taxstore']);
@@ -283,3 +284,5 @@ Route::delete('/interval-delete/{interval}', [AccountController::class, 'interva
 Route::get('/complaint-reports',[ReportController::class,'complainReports']);
 Route::get('/sales-reports',[ReportController::class,'salesReports']);
 Route::get('/service-reports',[ReportController::class,'serviceReports']);
+Route::get('/quotation-print/{id}', [QuotationController::class, 'Print']);
+Route::get('/complaint-print/{id}',[ComplaintController::class,'Print']);

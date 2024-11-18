@@ -4,27 +4,29 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
 {
     protected $user_image;
-    
-  
+
+
     // Fetch list of clients
     public function index()
     {
-        
-            $data = DB::table('tbl_user')
-                ->where('role', 'client')
-                ->where('is_archive', 0)
-                ->get();
+
+        $data = DB::table('tbl_user')
+            ->where('role', 'client')
+            ->where('is_archive', 0)
+            ->get();
 
         return Inertia::render('client/index', compact('data'));
     }
@@ -66,6 +68,140 @@ class ClientController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $client = DB::table('tbl_user')
+            ->join('tbl_company_detail', 'tbl_company_detail.client_id', '=', 'tbl_user.user_id')
+            ->where('tbl_user.user_id', $id)
+            ->select(
+                'tbl_user.*',
+                'tbl_company_detail.main_person',
+                'tbl_company_detail.account_number',
+                'tbl_company_detail.ifs_code',
+                'tbl_company_detail.branch_name',
+                'tbl_company_detail.tin_no',
+                'tbl_company_detail.cst_no',
+                'tbl_company_detail.pan_no',
+            )
+            ->first();
+        if ($client && !empty($client->address)) {
+            $client->address = json_decode($client->address, true);
+        }
+        $client_history = DB::table('tbl_client_history')
+            ->where('client_id', $id)
+            ->select('contact_name as name', 'mobile', 'designation')
+            ->get()
+            ->toArray();
+        return Inertia::render('client/edit', \compact('client', 'client_history'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'client_id' => 'required',
+            'first_name' => 'required',
+            'middle_name' => 'nullable',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'dob' => 'required',
+            'company_name' => 'required',
+            'position' => 'required',
+            'account_number' => 'required',
+            'ifsc_code' => 'required',
+            'branch_name' => 'required',
+            'tin_no' => 'required',
+            'cst_no' => 'required',
+            'pan_no' => 'required',
+            'contact_person.*.name' => 'required',
+            'contact_person.*.mobile' => 'required',
+            'contact_person.*.designation' => 'required',
+            'mobile_no' => 'required',
+            'addresses.*.address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'pin' => 'required',
+            'alt_mobile' => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        // Retrieve the current user and their image path
+        $client = DB::table('tbl_user')->where('user_id', $id)->first();
+        $currentImagePath = $client->photo ?? null;
+
+        // Handle image upload if a new file is provided
+        $imagePath = $currentImagePath;
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($currentImagePath && file_exists(public_path($currentImagePath))) {
+                unlink(public_path($currentImagePath));
+            }
+
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('client_img'), $filename);
+            $imagePath = 'client_img/' . $filename;
+        }
+
+        // Prepare data for updating tbl_user
+        $userData = [
+            'client_id' => $validatedData['client_id'],
+            'first_name' => $validatedData['first_name'],
+            'middle_name' => $validatedData['middle_name'],
+            'last_name' => $validatedData['last_name'],
+            'company_name' => $validatedData['company_name'],
+            'dob' => $validatedData['dob'],
+            'gender' => $validatedData['gender'],
+            'address' => json_encode($validatedData['addresses']),
+            'city' => $validatedData['city'],
+            'state' => $validatedData['state'],
+            'photo' => $imagePath,
+            'email' => $validatedData['email'],
+            'mobile_no' => $validatedData['mobile_no'],
+            'alt_mobile' => $validatedData['alt_mobile'],
+            'pincode' => $validatedData['pin'],
+            'last_send_mail_Date' => now(),
+        ];
+
+        // Hash password if it's provided
+        if (!empty($validatedData['password'])) {
+            $userData['password'] = bcrypt($validatedData['password']);
+        }
+
+        // Update tbl_user record
+        DB::table('tbl_user')->where('user_id', $id)->update($userData);
+
+        // Update tbl_client_history entries
+        DB::table('tbl_client_history')->where('client_id', $id)->delete();
+
+        if (!empty($validatedData['contact_person'])) {
+            foreach ($validatedData['contact_person'] as $contact) {
+                DB::table('tbl_client_history')->insert([
+                    'client_id' => $id,
+                    'contact_name' => $contact['name'],
+                    'mobile' => $contact['mobile'],
+                    'designation' => $contact['designation'],
+                ]);
+            }
+        }
+
+        // Update tbl_company_detail record
+        DB::table('tbl_company_detail')->where('client_id', $id)->update([
+            'main_person' => $validatedData['position'],
+            'account_number' => $validatedData['account_number'],
+            'ifs_code' => $validatedData['ifsc_code'],
+            'branch_name' => $validatedData['branch_name'],
+            'tin_no' => $validatedData['tin_no'],
+            'cst_no' => $validatedData['cst_no'],
+            'pan_no' => $validatedData['pan_no'],
+        ]);
+
+        // Redirect or return response as needed
+        return redirect()->route('Client.index');
+    }
+
     // Update client
     public function updateclient(Request $request, $id)
     {
@@ -75,7 +211,7 @@ class ClientController extends Controller
 
         if ($request->isMethod('post')) {
             $valid_email = $this->check_update_email($row_update, $request->email);
-            
+
             if ($valid_email) {
                 $image = $request->file('client_image');
                 if ($image) {
@@ -125,14 +261,15 @@ class ClientController extends Controller
         return view('client.updateclient', compact('row_update', 'client_data', 'history_record'));
     }
 
+
     // Add a new client
     public function create(Request $request)
     {
-        $last_record = DB::table('tbl_user')->orderBy('user_id', 'desc')->first();
-        $client_idf = 'C' . $last_record->user_id . rand(11, 99) . date('mY');
+        $last_record = DB::table('tbl_user')->count();
+        $client_idf = 'C' . $last_record . rand(11, 99) . date('mY');
         $client_idf2 = (object)[
             'value' => $client_idf,
-            
+
         ];
         if ($request->isMethod('post')) {
             $image = $request->file('image');
@@ -174,47 +311,47 @@ class ClientController extends Controller
     public function store(Request $request)
     {
 
-        $validatedData =$request->validate([
-            'client_id' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'gender' => 'required|in:male,female,other',
-            'dob' => 'nullable|date',
-            'company_name' => 'nullable|string|max:255',
-            'position' => 'nullable|string|max:255',
-            'account_number' => 'nullable|string|max:255',
-            'ifsc_code' => 'nullable|string|max:255',
-            'branch_name' => 'nullable|string|max:255',
-            'tin_no' => 'nullable|string|max:255',
-            'cst_no' => 'nullable|string|max:255',
-            'pan_no' => 'nullable|string|max:10',
-            'contact_person.*.name' => 'nullable|string|max:255',
-            'contact_person.*.mobile' => 'nullable|string|max:15', // Adjust as per your requirements
-            'contact_person.*.designation' => 'nullable|string|max:255',
-            'mobile_no' => 'nullable|string|max:15', // Adjust as per your requirements
-            'addresses.*.address' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'pin' => 'nullable|string|max:10', // Adjust as per your requirements
-            'alt_mobile' => 'nullable|string|max:15', // Adjust as per your requirements
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust as per your requirements
-            'email' => 'required|email|max:255',
+        $validatedData = $request->validate([
+            'client_id' => 'required',
+            'first_name' => 'required',
+            'middle_name' => 'nullable',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'dob' => 'required',
+            'company_name' => 'required',
+            'position' => 'required',
+            'account_number' => 'required',
+            'ifsc_code' => 'required',
+            'branch_name' => 'required',
+            'tin_no' => 'required',
+            'cst_no' => 'required',
+            'pan_no' => 'required',
+            'contact_person.*.name' => 'required',
+            'contact_person.*.mobile' => 'required', // Adjust as per your requirements
+            'contact_person.*.designation' => 'required',
+            'mobile_no' => 'required', // Adjust as per your requirements
+            'addresses.*.address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'pin' => 'required', // Adjust as per your requirements
+            'alt_mobile' => 'required', // Adjust as per your requirements
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust as per your requirements
+            'email' => 'required',
             'password' => 'required', // Ensure a confirmation field is present in your form
         ]);
-         // Handle the image upload if provided
-         $imagePath = null;
-         if ($request->hasFile('image')) {
-             $image = $request->file('image');
-             $filename = time() . '.' . $image->getClientOriginalExtension();
+        // Handle the image upload if provided
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
             //  $imagePath = $image->storeAs('client_img', $filename, 'public');
             //  // Uncomment this line if you want to move it to a specific directory within public
             // $image->move(public_path('public/client_img1'), $filename);
             $image->move(public_path('client_img'), $filename);
             $imagePath = 'client_img/' . $filename;
-         }
- 
-         $userId = DB::table('tbl_user')->insertGetId([
+        }
+
+        $userId = DB::table('tbl_user')->insertGetId([
             'client_id' => $validatedData['client_id'],
             'first_name' => $validatedData['first_name'],
             'middle_name' => $validatedData['middle_name'],
@@ -239,14 +376,15 @@ class ClientController extends Controller
             'create_date' => now(),
         ]);
         if (!empty($validatedData['contact_person'])) {
-        foreach ($validatedData['contact_person'] as $contact) {
-            DB::table('tbl_client_history')->insert([
-                'client_id' => $userId, // Assuming you have a user ID to link it to the user
-                'contact_name' => $contact['name'],
-                'mobile' => $contact['mobile'],
-                'designation' => $contact['designation'],
-            ]);
-        }}
+            foreach ($validatedData['contact_person'] as $contact) {
+                DB::table('tbl_client_history')->insert([
+                    'client_id' => $userId, // Assuming you have a user ID to link it to the user
+                    'contact_name' => $contact['name'],
+                    'mobile' => $contact['mobile'],
+                    'designation' => $contact['designation'],
+                ]);
+            }
+        }
         DB::table('tbl_company_detail')->insert([
             'client_id' => $userId,    // Example placeholder for client ID
             'main_person' => $validatedData['position'], // Example placeholder for main person
@@ -256,7 +394,7 @@ class ClientController extends Controller
             'tin_no' => $validatedData['tin_no'],
             'cst_no' => $validatedData['cst_no'],
             'pan_no' => $validatedData['pan_no'],
-           
+
         ]);
 
         // Redirect with a success message

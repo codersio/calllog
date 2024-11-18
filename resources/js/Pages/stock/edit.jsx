@@ -85,9 +85,9 @@ function Edit({ stock, cats }) {
                             value={data.category_id}
                             className='w-full rounded form-select'
                         >
-                            <option value="">-- Select Category --</option>
+                            <option value="">-- Select Product --</option>
                             {cats && cats.map((cat) => (
-                                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                <option key={cat.id} value={cat.id}>{cat.item_name}</option>
                             ))}
                         </select>
                         {errors.category_id && <p className="mt-1 text-xs text-red-500">{errors.category_id}</p>}

@@ -135,16 +135,12 @@ public function getDetails2($id)
     public function edit($id)
     {
 
-        $category = DB::table('spare_part')
-            ->join('products_category', 'spare_part.category_id', '=', 'products_category.id')
-            ->join('service_centers', 'spare_part.service_partner_id', '=', 'service_centers.id')
-            ->select('spare_part.*', 'products_category.name as category_name', 'service_centers.name as service_partner')
-            ->where('spare_part.id', $id) // Add where clause for id
-            ->first();
-            $categories = DB::table('products_category')->get();
+        $categories = DB::table('products_category')->get();
         $service_centers = DB::table('service_centers')->get();
+        $distribter = DB::table('d_istributers')->get();
+        $callAlloc = DB::table('call_allocation')->where('id',$id)->first();
 
-        return Inertia::render('sparepart/edit', compact('category','categories','service_centers'));
+        return Inertia::render('callallocation/edit', compact('service_centers','distribter','callAlloc'));
     }
 
     /**

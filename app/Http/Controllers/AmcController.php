@@ -15,7 +15,7 @@ class AmcController extends Controller
 {
     public function index()
     {
-        $amcs = Amc::join('tbl_user', 'tbl_user.user_id', '=', 'amcs.customer_id')->join('users', 'users.id', '=', 'amcs.assigned_to')->select('amcs.amc_no', 'amcs.status', 'amcs.date', 'amcs.interval', 'amcs.no_of_service', 'amcs.id', 'tbl_user.first_name', 'tbl_user.middle_name', 'tbl_user.last_name', 'users.name as assigned_to')->get();
+        $amcs = Amc::join('tbl_user', 'tbl_user.user_id', '=', 'amcs.customer_id')->join('tbl_user as assign_user', 'assign_user.user_id', '=', 'amcs.assigned_to')->select('amcs.amc_no', 'amcs.status', 'amcs.date', 'amcs.interval', 'amcs.no_of_service', 'amcs.id', 'tbl_user.first_name', 'tbl_user.middle_name', 'tbl_user.last_name', 'assign_user.first_name as a_first_name','assign_user.middle_name as a_middle_name','assign_user.last_name as a_last_name')->get();
         return Inertia::render('amc/index', [
             'amcs' => $amcs
         ]);
@@ -23,10 +23,10 @@ class AmcController extends Controller
 
     public function create()
     {
-        $customers = DB::table('tbl_user')->get();
+        $customers = DB::table('tbl_user')->where('role','client')->get();
         $intvls = Interval::where('status',1)->get();
         $products = DB::table('tbl_product')->get();
-        $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')->get();
+        $employees = DB::table('tbl_user')->where('role','Employee')->get();
         return Inertia::render('amc/create', [
             'customers' => $customers,
             'products' => $products,
@@ -85,9 +85,9 @@ class AmcController extends Controller
     {
         $amc = Amc::findOrFail($id);
         $intvls = Interval::where('status',1)->get();
-        $customers = DB::table('tbl_user')->get();
+        $customers = DB::table('tbl_user')->where('role','client')->get();
         $products = DB::table('tbl_product')->get();
-        $employees = Employee::join('users', 'users.id', '=', 'employees.user_id')->get();
+        $employees = DB::table('tbl_user')->where('role','Employee')->get();
         return Inertia::render('amc/edit', [
             'customers' => $customers,
             'products' => $products,

@@ -111,7 +111,7 @@ const Index = ({ data }) => {
                                             {
                                                 props.auth.user.roles[0].name === "admin" || permissions.includes('edit_client') ?
                                                     (
-                                                        <Link className="p-2 text-white bg-green-500 rounded" href={`service-centers/${emp.user_id}/edit`}><CiEdit /></Link>
+                                                        <Link className="p-2 text-white bg-green-500 rounded" href={`Client/${emp.user_id}/edit`}><CiEdit /></Link>
                                                     ) : ''
                                             }
 

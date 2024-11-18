@@ -125,7 +125,7 @@ const index = ({ data }) => {
                                                 {
                                                     props.auth.user.roles[0].name === "admin" || permissions.includes('edit_call_allocation') ?
                                                         (
-                                                            <Link className="p-2 text-white bg-green-500 rounded" href={`service-centers/${emp.id}/edit`}>
+                                                            <Link className="p-2 text-white bg-green-500 rounded" href={`Call-Allocation/${emp.id}/edit`}>
                                                                 <CiEdit />
                                                             </Link>
                                                         ) : ''

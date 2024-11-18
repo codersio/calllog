@@ -4,6 +4,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tax;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -17,16 +18,16 @@ use Illuminate\Support\Facades\Validator;
 class QuotationController extends Controller
 {
     protected $user_image;
-    
-  
+
+
     // Fetch list of clients
     public function index()
     {
-        
+
         $data = DB::table('tbl_quotation')
-        ->join('tbl_user', 'tbl_quotation.customer_id', '=', 'tbl_user.user_id')
-        ->select('tbl_quotation.*', 'tbl_user.first_name as f_name','tbl_user.last_name as l_name')
-        ->get();
+            ->join('tbl_user', 'tbl_quotation.customer_id', '=', 'tbl_user.user_id')
+            ->select('tbl_quotation.*', 'tbl_user.first_name as f_name', 'tbl_user.last_name as l_name')
+            ->get();
 
         return Inertia::render('quotation/index', compact('data'));
     }
@@ -55,7 +56,16 @@ class QuotationController extends Controller
         return redirect()->route('Quotation.index');
     }
 
-   
+    public function edit($id)
+    {
+        $qt = DB::table('tbl_quotation')->where('quotation_id', $id)->first();
+        $qt_acc = DB::table('quatation_account_tax')->join('taxes','taxes.name','=','quatation_account_tax.tax_name')->where('quatation_account_tax.quation_id', $id)->select('taxes.id as tax_id','tax as tax_value', 'tax_name')->get()->toArray();
+        $qt_his = DB::table('tbl_quotation_history')->where('quotation_id', $id)->select('item_name as product_id', 'price', 'qty as p_qty', DB::raw('qty * price as amount'))->get()->toArray();
+        $taxOptions = DB::table('tbl_account_tax_rates')->first();
+        $customer_dets = DB::table('tbl_user')->where('role', 'client')->get();
+        return Inertia::render('quotation/edit', compact('customer_dets', 'taxOptions', 'qt', 'qt_acc', 'qt_his'));
+    }
+
     public function getproduct()
     {
         $product = DB::table('tbl_product')->get();
@@ -68,17 +78,17 @@ class QuotationController extends Controller
         $client_idf = 'Q' . $last_record->quotation_id . rand(11, 99) . date('mY');
         $client_idf2 = (object)[
             'value' => $client_idf,
-            
-        ];
-        $taxOptions=DB::table('tbl_account_tax_rates')->first();
-        $customer_dets=DB::table('tbl_user')->where('role','client')->get();
-        
 
-        return Inertia::render('quotation/create', compact('client_idf2','customer_dets','taxOptions'));
+        ];
+        $taxOptions = DB::table('tbl_account_tax_rates')->first();
+        $customer_dets = DB::table('tbl_user')->where('role', 'client')->get();
+
+
+        return Inertia::render('quotation/create', compact('client_idf2', 'customer_dets', 'taxOptions'));
     }
     public function gettaxoptions()
     {
-        $product = DB::table('tbl_account_tax_rates')->get();
+        $product = Tax::all();
         return response()->json($product, Response::HTTP_OK);
     }
     public function getCustomer($id)
@@ -89,7 +99,7 @@ class QuotationController extends Controller
         if (!$customer_details) {
             return response()->json(['message' => 'Custoemr not found'], 404);
         }
-    
+
         // Return the service partner details as JSON
         return response()->json($customer_details);
     }
@@ -106,15 +116,7 @@ class QuotationController extends Controller
             'status' => 'required|in:0,1,2', // Adjust as needed for your status options
             'Billing_address' => 'required|string',
             'message' => 'nullable|string',
-            'product_details' => 'required|array',
-            'product_details.*.product_id' => 'required|integer',
-            'product_details.*.p_qty' => 'required|integer',
-            'product_details.*.price' => 'required|numeric',
-            'product_details.*.amount' => 'required|numeric',
-            'tax_details' => 'nullable|array',
-            'tax_details.*.tax_id' => 'required|integer',
-            'tax_details.*.tax_value' => 'required|numeric',
-            'tax_details.*.tax_name' => 'required',
+            
         ]);
         $quotationId = DB::table('tbl_quotation')->insertGetId([
             'quotation_no' => $request->quotation_no,
@@ -123,11 +125,11 @@ class QuotationController extends Controller
             'mobile' => $request->mobile_no,
             'email' => $request->email,
             'status' => $request->status,
-            'subject'=>'',
+            'subject' => '',
             'address' => $request->Billing_address,
             'message' => $request->message,
         ]);
-        
+
         foreach ($request->product_details as $product) {
             DB::table('tbl_quotation_history')->insert([
                 'quotation_id' => $quotationId,
@@ -151,5 +153,105 @@ class QuotationController extends Controller
         // Redirect with a success message
         return redirect()->route('Quotation.index');
     }
-   
+
+    public function update(Request $request, $id)
+    {
+
+        $request->validate([
+            'quotation_no' => 'required',
+            'quotation_date' => 'required',
+            'customer_name' => 'required',
+            'customer_details' => 'required',
+            'mobile_no' => 'required',
+            'email' => 'required|email',
+            'status' => 'required', // Adjust as needed for your status options
+            'Billing_address' => 'required',
+            'message' => 'nullable',
+            'product_details' => 'required|array',
+            'product_details.*.product_id' => 'required',
+            'product_details.*.p_qty' => 'required',
+            'product_details.*.price' => 'required',
+            'product_details.*.amount' => 'required',
+            'tax_details' => 'nullable|array',
+            'tax_details.*.tax_id' => 'required',
+            'tax_details.*.tax_value' => 'required',
+            'tax_details.*.tax_name' => 'required',
+        ]);
+
+        // Update the main quotation details
+        DB::table('tbl_quotation')->where('quotation_id', $id)->update([
+            'quotation_no' => $request->quotation_no,
+            'quotation_date' => $request->quotation_date,
+            'customer_id' => $request->customer_details,
+            'mobile' => $request->mobile_no,
+            'email' => $request->email,
+            'status' => $request->status,
+            'subject' => '', // Update as needed
+            'address' => $request->Billing_address,
+            'message' => $request->message,
+        ]);
+
+        // Delete old product details for this quotation
+        DB::table('tbl_quotation_history')->where('quotation_id', $id)->delete();
+
+        // Insert new product details
+        foreach ($request->product_details as $product) {
+            DB::table('tbl_quotation_history')->insert([
+                'quotation_id' => $id,
+                'item_name' => $product['product_id'],
+                'qty' => $product['p_qty'],
+                'price' => $product['price'],
+                'net_amount' => $product['amount'],
+                'create_date' => now(),
+            ]);
+        }
+
+        // Delete old tax details for this quotation
+        DB::table('quatation_account_tax')->where('quation_id', $id)->delete();
+
+        // Insert new tax details if they exist
+        if (!empty($request->tax_details)) {
+            foreach ($request->tax_details as $tax) {
+                DB::table('quatation_account_tax')->insert([
+                    'quation_id' => $id,
+                    'tax_name' => $tax['tax_name'],
+                    'tax' => $tax['tax_value'],
+                ]);
+            }
+        }
+
+        // Redirect with a success message
+        return redirect()->route('Quotation.index');
+    }
+
+    public function Print($id)
+    {
+        $user = Auth::user();
+
+        $data = DB::table('tbl_quotation')
+            ->join('tbl_user', 'tbl_quotation.customer_id', '=', 'tbl_user.user_id')
+            ->select('tbl_quotation.*', 'tbl_user.first_name','tbl_user.middle_name','tbl_user.last_name', 'tbl_user.email', 'tbl_user.address', 'tbl_user.phone')
+            ->where('tbl_quotation.quotation_id', $id)
+            ->first();
+        // dd($data);
+
+        $products = DB::table('tbl_quotation_history')
+            ->join('tbl_product', 'tbl_quotation_history.item_name', '=', 'tbl_product.product_id')
+            ->select('tbl_quotation_history.qty', 'tbl_quotation_history.price', 'tbl_quotation_history.net_amount', 'tbl_product.item_name')
+            ->where('tbl_quotation_history.quotation_id', $id)
+            ->get();
+        $taxes = DB::table('quatation_account_tax')
+            ->where('quation_id',$id)
+            ->get();
+
+        $totalAmount = $products->sum('net_amount');
+
+        return Inertia::render('quotation/print', [
+            'data' => $data,
+            'user' => $user,
+            'products' => $products,
+            'totalAmount' => $totalAmount,
+            'taxes'=>$taxes
+        ]);
+    }
 }

@@ -172,7 +172,7 @@ class IncomeController extends Controller
         TblExpense::create($dataToStore);
 
         // Redirect or return response as needed
-        return redirect('income')->with('success', 'Income entries stored successfully.');
+        return redirect('income')->with('success', 'Expense entries stored successfully.');
     }
 
 
@@ -217,12 +217,24 @@ class IncomeController extends Controller
         ]);
 
         // Redirect or return response as needed
-        return redirect('income')->with('success', 'Income entry updated successfully.');
+        return redirect('income')->with('success', 'Expense entry updated successfully.');
     }
 
     public function tblindex()
     {
         $incomes = TblExpense::all();
         return Inertia::render('Income/expensetld', compact('incomes'));
+    }
+
+    public function tblexpensedelete($id)
+    {
+        // Find the income entry by id
+        $income = TblExpense::findOrFail($id);
+
+        // Delete the income entry
+        $income->delete();
+
+        // Redirect or return response as needed
+        return redirect('amc-expense-index')->with('success', 'Expense entry deleted successfully.');
     }
 }

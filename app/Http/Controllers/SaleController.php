@@ -80,17 +80,17 @@ class SaleController extends Controller
     // }
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'bill_no' => 'required',
-        //     'customer_id' => 'required',
-        //     'date' => 'required',
-        //     'billing_address' => 'required',
-        //     'status' => 'required',
-        //     'amc_type' => 'required',
-        //     'mobile_no' => 'required',
-        //     'email' => 'required',
-        //     'sales_details' => 'required|array'
-        // ]);
+        $request->validate([
+            'bill_no' => 'required',
+            'customer_id' => 'required',
+            'date' => 'required',
+            'billing_address' => 'required',
+            'status' => 'required',
+            'amc_type' => 'required',
+            'mobile_no' => 'required',
+            'email' => 'required',
+            'sales_details' => 'required|array'
+        ]);
 
         // dd($request->all());
         $sale = Sale::create($request->all());

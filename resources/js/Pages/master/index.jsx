@@ -39,10 +39,8 @@ const index = ({ data }) => {
         if (confirm('Are you sure you want to delete this record?')) {
             destroy(`/Product-List/${id}`, {
                 onSuccess: () => {
-
                     // Show success notification on successful submission
                     notyf.success('Client deleted successfully!');
-                    location.reload()
                 },
                 onError: () => {
                     // Show error notification if there are errors
@@ -125,7 +123,7 @@ const index = ({ data }) => {
                                             {
                                                 props.auth.user.roles[0].name === "admin" || permissions.includes('edit_product') ?
                                                     (
-                                                        <Link className="p-2 text-white bg-green-500 rounded" href={`service-centers/${emp.product_id}/edit`}>
+                                                        <Link className="p-2 text-white bg-green-500 rounded" href={`Product-List/${emp.product_id}/edit`}>
                                                             <CiEdit />
                                                         </Link>
                                                     ) : ''

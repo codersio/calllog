@@ -3,10 +3,10 @@ import { useForm } from '@inertiajs/react';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 import AdminLayout from '@/Layouts/AdminLayout';
-
+import { Inertia } from '@inertiajs/inertia';
 const notyf = new Notyf();
 
-const Create = ({client_idf2}) => {
+const Create = ({ client_idf2 }) => {
     const { data, setData, post, processing, errors } = useForm({
         client_id: client_idf2.value,
         first_name: '',
@@ -28,15 +28,15 @@ const Create = ({client_idf2}) => {
         city: '',
         state: '',
         pin: '',
-        alt_mobile:'',
-        image:'',
-        email:'',
-        password:'',
+        alt_mobile: '',
+        photo: '',
+        email: '',
+        password: '',
     });
 
     // New function to handle image change
     const handleImageChange = (e) => {
-        setData('image', e.target.files[0]); // Save the first selected file
+        setData('photo', e.target.files[0]); // Save the first selected file
     };
 
     const handleChange = (e) => {
@@ -61,28 +61,28 @@ const Create = ({client_idf2}) => {
         setData('addresses', newAddresses);
     };
 
-        // Function to handle adding a new contact person row
-        const addContactPerson = () => {
-            setData('contact_person', [...data.contact_person, { name: '', mobile: '', designation: '' }]);
-        };
-    
-        // Function to handle changes in contact person fields
-        const handleContactPersonChange = (index, field, value) => {
-            const newContactPersons = [...data.contact_person];
-            newContactPersons[index][field] = value;
-            setData('contact_person', newContactPersons);
-        };
-    
-        // Function to remove a contact person row
-        const removeContactPerson = (index) => {
-            const newContactPersons = data.contact_person.filter((_, i) => i !== index);
-            setData('contact_person', newContactPersons);
-        };
-    
+    // Function to handle adding a new contact person row
+    const addContactPerson = () => {
+        setData('contact_person', [...data.contact_person, { name: '', mobile: '', designation: '' }]);
+    };
+
+    // Function to handle changes in contact person fields
+    const handleContactPersonChange = (index, field, value) => {
+        const newContactPersons = [...data.contact_person];
+        newContactPersons[index][field] = value;
+        setData('contact_person', newContactPersons);
+    };
+
+    // Function to remove a contact person row
+    const removeContactPerson = (index) => {
+        const newContactPersons = data.contact_person.filter((_, i) => i !== index);
+        setData('contact_person', newContactPersons);
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/Client/', { // Adjust the endpoint to the correct one for creating a client
+        post('/Client', { // Adjust the endpoint to the correct one for creating a client
             onSuccess: () => {
                 notyf.success('Client added successfully!');
             },
@@ -96,9 +96,9 @@ const Create = ({client_idf2}) => {
         <AdminLayout>
             <div className="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-md">
                 <h2 className="mb-6 text-2xl font-bold text-gray-800">Add Client</h2>
-                
+
                 <h2 className="mb-1 text-2xl font-bold text-gray-600">Personal Information</h2>
-                
+
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {/* Client Id */}
                     <div>
@@ -237,7 +237,7 @@ const Create = ({client_idf2}) => {
                         {errors.company_name && <p className="mt-1 text-xs text-red-500">{errors.company_name}</p>}
                     </div>
 
-                    
+
 
                     {/* Account Number */}
                     <div>
@@ -340,8 +340,8 @@ const Create = ({client_idf2}) => {
                     {/* Address Section */}
                     <h2 className="mb-1 text-2xl font-bold text-gray-600 md:col-span-2">Address Information</h2>
 
-                   {/* Render Address Fields */}
-                   {data.addresses.map((address, index) => (
+                    {/* Render Address Fields */}
+                    {data.addresses.map((address, index) => (
                         <div key={index} className="md:col-span-2 flex items-center space-x-2">
                             <input
                                 name={`address_${index}`}
@@ -413,9 +413,9 @@ const Create = ({client_idf2}) => {
                     </div>
                     <h2 className="mb-1 text-2xl font-bold text-gray-600 md:col-span-2">Contact</h2>
 
-                  
-                     {/* Contact */}
-                     <div>
+
+                    {/* Contact */}
+                    <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700">Alternate Mobile No</label>
                         <input
                             type="text"
@@ -427,11 +427,11 @@ const Create = ({client_idf2}) => {
                         />
                         {errors.alt_mobile && <p className="mt-1 text-xs text-red-500">{errors.alt_mobile}</p>}
                     </div>
-                     <h2 className="mb-1 text-2xl font-bold text-gray-600 md:col-span-2">Other Info</h2>
+                    <h2 className="mb-1 text-2xl font-bold text-gray-600 md:col-span-2">Other Info</h2>
 
-                  
-                     {/* Email */}
-                     <div>
+
+                    {/* Email */}
+                    <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700">Email</label>
                         <input
                             type="text"
@@ -457,22 +457,22 @@ const Create = ({client_idf2}) => {
                         />
                         {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password}</p>}
                     </div>
-                     {/* Image Upload Field */}
-                     <div>
+                    {/* Image Upload Field */}
+                    <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700">Upload Image</label>
                         <input
                             type="file"
-                            name="image"
+                            name="photo"
                             accept="image/*" // Accept only image files
                             onChange={handleImageChange}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                         />
-                        {errors.image && <p className="mt-1 text-xs text-red-500">{errors.image}</p>}
+                        {errors.photo && <p className="mt-1 text-xs text-red-500">{errors.photo}</p>}
                     </div>
-                      {/* Contact Person Table Section */}
-                      <h2 className="mb-1 text-2xl font-bold text-gray-600 md:col-span-2">Other Contact Details</h2>
+                    {/* Contact Person Table Section */}
+                    <h2 className="mb-1 text-2xl font-bold text-gray-600 md:col-span-2">Other Contact Details</h2>
 
-                    
+
                     <div className="col-span-1 md:col-span-2">
                         <button
                             type="button"
@@ -483,56 +483,56 @@ const Create = ({client_idf2}) => {
                         </button>
                     </div>
                     <table className="table-auto border-collapse border border-gray-300" id="tab_product_detail" align="center">
-    <thead>
-        <tr>
-            <th className="border border-gray-300 px-4 py-2">Contact Person Name</th>
-            <th className="border border-gray-300 px-4 py-2">Mobile Number</th>
-            <th className="border border-gray-300 px-4 py-2">Designation</th>
-            <th className="border border-gray-300 px-4 py-2">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {data.contact_person.map((contact, index) => (
-            <tr key={index} id={`row_id_${index}`}>
-                <td className="border border-gray-300 px-4 py-2">
-                    <input
-                        type="text"
-                        name={`contact_person[name][${index}]`}
-                        placeholder="Enter Name.."
-                        className="quantity form-control"
-                        value={contact.name}
-                        onChange={(e) => handleContactPersonChange(index, 'name', e.target.value)}
-                    />
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                    <input
-                        type="text"
-                        name={`contact_person[mobile][${index}]`}
-                        placeholder="Enter Mobile Number.."
-                        className="quantity form-control"
-                        value={contact.mobile}
-                        onChange={(e) => handleContactPersonChange(index, 'mobile', e.target.value)}
-                    />
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                    <input
-                        type="text"
-                        name={`contact_person[designation][${index}]`}
-                        placeholder="Enter Designation.."
-                        className="quantity form-control"
-                        value={contact.designation}
-                        onChange={(e) => handleContactPersonChange(index, 'designation', e.target.value)}
-                    />
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                    <span className="trash" onClick={() => removeContactPerson(index)}>
-                        <i className="fa fa-trash"></i> Delete
-                    </span>
-                </td>
-            </tr>
-        ))}
-    </tbody>
-</table>
+                        <thead>
+                            <tr>
+                                <th className="border border-gray-300 px-4 py-2">Contact Person Name</th>
+                                <th className="border border-gray-300 px-4 py-2">Mobile Number</th>
+                                <th className="border border-gray-300 px-4 py-2">Designation</th>
+                                <th className="border border-gray-300 px-4 py-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.contact_person.map((contact, index) => (
+                                <tr key={index} id={`row_id_${index}`}>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        <input
+                                            type="text"
+                                            name={`contact_person[name][${index}]`}
+                                            placeholder="Enter Name.."
+                                            className="quantity form-control"
+                                            value={contact.name}
+                                            onChange={(e) => handleContactPersonChange(index, 'name', e.target.value)}
+                                        />
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        <input
+                                            type="text"
+                                            name={`contact_person[mobile][${index}]`}
+                                            placeholder="Enter Mobile Number.."
+                                            className="quantity form-control"
+                                            value={contact.mobile}
+                                            onChange={(e) => handleContactPersonChange(index, 'mobile', e.target.value)}
+                                        />
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        <input
+                                            type="text"
+                                            name={`contact_person[designation][${index}]`}
+                                            placeholder="Enter Designation.."
+                                            className="quantity form-control"
+                                            value={contact.designation}
+                                            onChange={(e) => handleContactPersonChange(index, 'designation', e.target.value)}
+                                        />
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        <span className="trash" onClick={() => removeContactPerson(index)}>
+                                            <i className="fa fa-trash"></i> Delete
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
 
 
                     {/* Submit Button */}

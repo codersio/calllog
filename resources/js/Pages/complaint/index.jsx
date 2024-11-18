@@ -1,7 +1,7 @@
 import AdminLayout from '@/Layouts/AdminLayout'
 import { Link, useForm, usePage } from '@inertiajs/react'
 import React, { useState, useEffect } from 'react'
-import { FaPencil } from 'react-icons/fa6';
+import { FaPencil, FaRegFilePdf } from 'react-icons/fa6';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
@@ -108,7 +108,7 @@ export default function index({ complaints }) {
                                         {cmpl.complaint_type == 1 && 'Warranty Expires'}
                                     </td>
                                     <td className="p-3">
-                                        {cmpl.assigned_to}
+                                        {cmpl.af_name+" "+cmpl.am_name+" "+cmpl.al_name}
                                     </td>
                                     <td className="p-3">
                                         <div className='flex'>
@@ -125,6 +125,7 @@ export default function index({ complaints }) {
                                                     <Link href={`/complaint/${cmpl.id}/edit`} className='text-sm flex items-center gap-1 font-medium px-2 py-1 bg-blue-500 text-white rounded'><span>Edit</span></Link>
                                                 ) : ''
                                         }
+                                        <Link className="p-2 text-white bg-red-500 rounded" href={`complaint-print/${cmpl.id}`}><FaRegFilePdf /></Link>
                                         {
                                             props.auth.user.roles[0].name === "admin" || permissions.includes('delete_complaint') ?
                                                 (

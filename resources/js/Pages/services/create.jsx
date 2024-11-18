@@ -117,8 +117,8 @@ useEffect(() => {
             >
               <option value="">--Select Name--</option>
               {employees.map((emp) => (
-                <option key={emp.id} value={emp.id}>
-                  {emp.name}
+                <option key={emp.user_id} value={emp.user_id}>
+                  {emp.first_name +' '+ emp.middle_name+ ' ' + emp.last_name}
                 </option>
               ))}
             </select>
@@ -185,7 +185,7 @@ useEffect(() => {
                 <option value="">--Select Product--</option>
                 {products.map((prod) => (
                   <option key={prod.id} value={prod.id}>
-                    {prod.name}
+                    {prod.item_name}
                   </option>
                 ))}
               </select>

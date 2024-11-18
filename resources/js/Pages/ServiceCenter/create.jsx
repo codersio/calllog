@@ -30,11 +30,11 @@ const create = () => {
         post('/service-centers', {
             onSuccess: () => {
                 // Show success notification on successful submission
-                // notyf.success('Service center added successfully!');
+                notyf.success('Service center added successfully!');
             },
             onError: () => {
                 // Show error notification if there are errors
-                // notyf.error('Failed to add service center. Please check your inputs.');
+                notyf.error('Failed to add service center. Please check your inputs.');
             }
         });
     };

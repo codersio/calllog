@@ -14,14 +14,14 @@ use Carbon\Carbon;
 
 class MasterController extends Controller
 {
-  
+
     // Fetch list of clients
     public function index()
     {
-        
-            $data = DB::table('tbl_product')
-                ->where('is_archive', 0)
-                ->get();
+
+        $data = DB::table('tbl_product')
+            ->where('is_archive', 0)
+            ->get();
 
         return Inertia::render('master/index', compact('data'));
     }
@@ -34,6 +34,74 @@ class MasterController extends Controller
             ->get();
         return Inertia::render('master/archiveproduct', compact('data'));
     }
+
+    public function edit($id)
+    {
+        $prd = DB::table('tbl_product')->where('product_id', $id)->first();
+        return Inertia::render('master/edit', \compact('prd'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // dd($request->all());
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'product_id' => 'required',
+            'item_name' => 'required',
+            'model_no' => 'required',
+            'brand' => 'required',
+            'product_category' => 'required',
+            'price' => 'required|numeric|min:0',
+            'unit' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_desc' => 'nullable',
+        ]);
+
+        // Retrieve the existing product record to get the current image path
+        $product = DB::table('tbl_product')->where('product_id', $id)->first();
+        $currentImagePath = $product->image ?? null;
+
+        // Handle image upload if a new file is provided
+        $imagePath = $currentImagePath;
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($currentImagePath && file_exists(public_path($currentImagePath))) {
+                unlink(public_path($currentImagePath));
+            }
+
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('product_img'), $filename);
+            $imagePath = 'product_img/' . $filename;
+        }
+
+        // Prepare data for updating tbl_product
+        $productData = [
+            'item_name' => $validatedData['item_name'],
+            'is_archive' => 0,
+            'brand_id' => $validatedData['brand'],
+            'model_no' => $validatedData['model_no'],
+            'product_code' => $validatedData['product_id'],
+            'category_id' => $validatedData['product_category'],
+            'short_name' => '', // Update if necessary
+            'price' => $validatedData['price'],
+            'unit_id' => $validatedData['unit'],
+            'open_stock' => 0,
+            'min_stock' => 0,
+            'max_stock' => 0,
+            'image' => $imagePath,
+            'specification' => $validatedData['product_desc'],
+            'product_qty' => 0,
+            'warehouse_id' => 0,
+        ];
+
+        // Update tbl_product record
+        DB::table('tbl_product')->where('product_id', $id)->update($productData);
+
+        // Redirect with a success message
+        return redirect()->route('Product-List.index')->with('success', 'Product updated successfully');
+    }
+
 
     // Delete client
     public function destroy($id)
@@ -71,7 +139,7 @@ class MasterController extends Controller
 
         if ($request->isMethod('post')) {
             $valid_email = $this->check_update_email($row_update, $request->email);
-            
+
             if ($valid_email) {
                 $image = $request->file('client_image');
                 if ($image) {
@@ -128,16 +196,16 @@ class MasterController extends Controller
         $client_idf = 'PR' . $last_record->product_id . rand(11, 99) . date('mY');
         $client_idf2 = (object)[
             'value' => $client_idf,
-            
+
         ];
-        
+
 
         return Inertia::render('master/create', compact('client_idf2'));
     }
     public function store(Request $request)
     {
 
-        $validatedData =$request->validate([
+        $validatedData = $request->validate([
             'product_id' => 'required',
             'item_name' => 'required|string|max:255',
             'model_no' => 'required|string|max:255',
@@ -145,19 +213,19 @@ class MasterController extends Controller
             'product_category' => 'required|string',
             'price' => 'required|numeric|min:0',
             'unit' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'product_desc' => 'nullable|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_desc' => 'required|string',
         ]);
-         // Handle the image upload if provided
-         $imagePath = null;
-         if ($request->hasFile('image')) {
-             $image = $request->file('image');
-             $filename = time() . '.' . $image->getClientOriginalExtension();
+        // Handle the image upload if provided
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('product_img'), $filename);
             $imagePath = 'product_img/' . $filename;
-         }
- 
-         $userId = DB::table('tbl_product')->insertGetId([
+        }
+
+        $userId = DB::table('tbl_product')->insertGetId([
             'item_name' => $validatedData['item_name'],
             'is_archive' => 0,
             'brand_id' => $validatedData['brand'],
@@ -167,7 +235,7 @@ class MasterController extends Controller
             'short_name' => '',
             'price' => $validatedData['price'], // Store addresses as JSON
             'unit_id' => $validatedData['unit'], // Assuming you want to set it later or leave it empty
-            'open_stock' =>0, // Make sure these fields are properly set
+            'open_stock' => 0, // Make sure these fields are properly set
             'min_stock' => 0,
             'max_stock' => 0,
             'image' => $imagePath,

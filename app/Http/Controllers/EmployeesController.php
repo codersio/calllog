@@ -4,13 +4,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeesController extends Controller
 {
@@ -128,8 +130,8 @@ class EmployeesController extends Controller
     // Add a new client
     public function create(Request $request)
     {
-        $last_record = DB::table('tbl_user')->orderBy('user_id', 'desc')->first();
-        $client_idf = 'E' . $last_record->user_id . rand(11, 99) . date('mY');
+        $last_record = DB::table('tbl_user')->count();
+        $client_idf = 'E' . $last_record . rand(11, 99) . date('mY');
         $client_idf2 = (object)[
             'value' => $client_idf,
             
@@ -175,21 +177,21 @@ class EmployeesController extends Controller
     {
 
         $validatedData =$request->validate([
-            'client_id' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'client_id' => 'required',
+            'first_name' => 'required',
+            'middle_name' => 'nullable',
+            'last_name' => 'required',
             'gender' => 'required|in:male,female,other',
             'dob' => 'nullable|date',
             'phone'=>'required',
             'mobile_no' => 'nullable|string|max:15', // Adjust as per your requirements
-            'addresses' => 'required|string|max:255',
-            'city' => 'nullable|string|max:255',
-            'state' => 'nullable|string|max:255',
+            'addresses' => 'required',
+            'city' => 'nullable',
+            'state' => 'nullable',
             'pin' => 'nullable|string|max:10', // Adjust as per your requirements
             'alt_mobile' => 'nullable|string|max:15', // Adjust as per your requirements
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust as per your requirements
-            'email' => 'required|email|max:255',
+            'image' => 'nullable|image', // Adjust as per your requirements
+            'email' => 'required|email',
             'password' => 'required', // Ensure a confirmation field is present in your form
         ]);
          // Handle the image upload if provided

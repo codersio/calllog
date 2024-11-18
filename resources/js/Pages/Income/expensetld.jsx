@@ -11,7 +11,7 @@ const ExpenseTbl = () => {
     // Function to handle delete
     const handleDelete = (incomeId) => {
         if (confirm('Are you sure you want to delete this entry?')) {
-            deleteIncome(route('income.destroy', incomeId));
+            deleteIncome(`amc-expense-delete/${incomeId}`);
         }
     };
 

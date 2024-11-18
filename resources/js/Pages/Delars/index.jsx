@@ -79,7 +79,7 @@ const Delars = ({ data }) => {
                     {
                         props.auth.user.roles[0].name === "admin" || permissions.includes('create_dealer') ?
                             (
-                                <Link href='distributers/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
+                                <Link href='delars/create' className='px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600'>
                                     Create New Data
                                 </Link>
                             ) : ''

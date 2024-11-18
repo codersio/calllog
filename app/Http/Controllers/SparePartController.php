@@ -19,9 +19,9 @@ class SparePartController extends Controller
     {
       
         $data = DB::table('spare_part')
-    ->join('products_category', 'spare_part.category_id', '=', 'products_category.id')
+    ->join('tbl_product', 'spare_part.category_id', '=', 'tbl_product.product_id')
     ->join('service_centers', 'spare_part.service_partner_id', '=', 'service_centers.id')
-    ->select('spare_part.*', 'products_category.name as category_name','service_centers.name as service_partner') // Select all product columns and the category name
+    ->select('spare_part.*', 'tbl_product.item_name as category_name','service_centers.name as service_partner') // Select all product columns and the category name
     ->get();
         return Inertia::render('sparepart/index', compact('data'));
     }
@@ -31,7 +31,7 @@ class SparePartController extends Controller
      */
     public function create()
     {
-        $categories = DB::table('products_category')->get();
+        $categories = DB::table('tbl_product')->get();
         $service_centers = DB::table('service_centers')->get();
    
         return Inertia::render('sparepart/create',compact('categories','service_centers'));
@@ -44,20 +44,20 @@ class SparePartController extends Controller
     {
         
         $validatedData = $request->validate([
-            'call_allocation' => 'required|string|max:255',
-            'customer_name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-           'phone_number' => 'required|digits:10',  // You can customize phone validation as per your need
-            'service_partner' => 'required|string|max:255',
-            'spare_part_type' => 'required|string|max:255',
-            'product_name' => 'required|string|max:255',  // Assuming product name refers to a category
-            'qty' => 'required|integer|min:1',
-            'model' => 'required|string|max:255',
+            'call_allocation' => 'required',
+            'customer_name' => 'required',
+            'address' => 'required',
+           'phone_number' => 'required',  // You can customize phone validation as per your need
+            'service_partner' => 'required',
+            'spare_part_type' => 'required',
+            'product_name' => 'required',  // Assuming product name refers to a category
+            'qty' => 'required',
+            'model' => 'required',
             'spare_part_Serial' => 'required',
             'invoice' => 'required',
-            'dispatch_model' => 'required|string|max:255',
-            'dispatch_type' => 'required|string|max:255',
-            'date' => 'required|date',
+            'dispatch_model' => 'required',
+            'dispatch_type' => 'required',
+            'date' => 'required',
         ]);
     
         // Insert the validated data into the database
@@ -92,12 +92,12 @@ class SparePartController extends Controller
     {
 
         $category = DB::table('spare_part')
-            ->join('products_category', 'spare_part.category_id', '=', 'products_category.id')
+            ->join('tbl_product', 'spare_part.category_id', '=', 'tbl_product.product_id')
             ->join('service_centers', 'spare_part.service_partner_id', '=', 'service_centers.id')
-            ->select('spare_part.*', 'products_category.name as category_name', 'service_centers.name as service_partner')
+            ->select('spare_part.*', 'tbl_product.item_name as category_name', 'service_centers.name as service_partner')
             ->where('spare_part.id', $id) // Add where clause for id
             ->first();
-            $categories = DB::table('products_category')->get();
+            $categories = DB::table('tbl_product')->get();
         $service_centers = DB::table('service_centers')->get();
 
         return Inertia::render('sparepart/edit', compact('category','categories','service_centers'));

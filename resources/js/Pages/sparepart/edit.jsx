@@ -177,8 +177,8 @@ const UpdateCategory = ({ category, categories, service_centers }) => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                         >
                             {categories.map((categoryItem) => (
-                                <option key={categoryItem.id} value={categoryItem.id}>
-                                    {categoryItem.name}
+                                <option key={categoryItem.product_id} value={categoryItem.product_id}>
+                                    {categoryItem.item_name}
                                 </option>
                             ))}
                         </select>

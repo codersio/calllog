@@ -251,7 +251,7 @@ const Employee = ({ user, employee, user_type, projects, query, usrrr, projectss
                     </Link>
                 </div>
                 <div className='w-1/3 p-2'>
-                    <Link href='/products' className='border border-gray-300 rounded flex justify-between items-center p-4'>
+                    <Link href='/Product-List' className='border border-gray-300 rounded flex justify-between items-center p-4'>
                         <div className='p-3 bg-sky-500 rounded-full text-white'>
                             <FaCubes size={30} />
                         </div>
@@ -284,7 +284,7 @@ const Employee = ({ user, employee, user_type, projects, query, usrrr, projectss
                     </Link>
                 </div>
                 <div className='w-1/3 p-2'>
-                    <Link href='/Client' className='border border-gray-300 rounded flex justify-between items-center p-4'>
+                    <Link href='/services' className='border border-gray-300 rounded flex justify-between items-center p-4'>
                         <div className='p-3 bg-red-500 rounded-full text-white'>
                             <MdBuild size={30} />
                         </div>

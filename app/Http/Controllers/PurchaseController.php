@@ -24,7 +24,7 @@ class PurchaseController extends Controller
     public function create()
     {
         $suppliers = DIstributer::all();
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
+        $products = DB::table('tbl_product')->get();
         $taxs = Tax::all();
         return Inertia::render('purchase/create', ['suppliers' => $suppliers, 'products' => $products, 'taxes' => $taxs]);
     }
@@ -134,7 +134,7 @@ class PurchaseController extends Controller
     {
         $purchase = Purchase::findOrFail($id);
         $suppliers = DIstributer::all();
-        $products = DB::table('product')->join('products_category', 'products_category.id', '=', 'product.category_id')->select('products_category.name', 'product.id')->get();
+        $products = DB::table('tbl_product')->get();
         $taxs = Tax::all();
         return Inertia::render('purchase/edit', ['suppliers' => $suppliers, 'products' => $products, 'taxes' => $taxs, 'pur' => $purchase]);
     }

@@ -15,6 +15,7 @@ use App\Models\Timesheet;
 use App\Models\TaskAssign;
 use Illuminate\Http\Request;
 use App\Models\LeaveManagement;
+use App\Models\Service;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -180,12 +181,12 @@ class AdminController extends Controller
         //     ->count();
         // //         dd($projecteach);
         // return Inertia::render('admin/dashboard', compact('projects', 'query', 'usrrr', 'user', 'user_type', 'projectsss', 'taskss', 'holidays', 'emp', 'leave', 'notif', 'assin', 'emp', 'results', 'projecteach', 'totalHours'));
-        $empCount = Employee::all()->count();
-        $clntCount = DB::table('tbl_user')->get()->count();
+        $empCount = DB::table('tbl_user')->where('role','employee')->get()->count();
+        $clntCount = DB::table('tbl_user')->where('role','client')->get()->count();
         $amcCount = Amc::count();
         $cmplnCount = Complaint::count();
         $prdCount = DB::table('product')->join('products_category','products_category.id','=','product.category_id')->count();
-        $srvcCount = Amc::count();
+        $srvcCount = Service::count();
         
         return Inertia::render('admin/dashboard',\compact('empCount','clntCount','amcCount','cmplnCount','prdCount','srvcCount'));
     }

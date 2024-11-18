@@ -14,7 +14,10 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::join('tbl_user','tbl_user.user_id','=','tasks.customer_id')->join('users','users.id','=','tasks.employee_id')->join('task_types','task_types.id','=','tasks.task_type_id')->select('tasks.*','users.name','tbl_user.first_name','tbl_user.middle_name','tbl_user.last_name')->get(); // Get tasks with related employees
+        $tasks = Task::join('tbl_user','tbl_user.user_id','=','tasks.customer_id')
+        ->join('tbl_user as a_user','a_user.user_id','=','tasks.employee_id')
+        ->join('task_types','task_types.id','=','tasks.task_type_id')
+        ->select('tasks.*','a_user.first_name as af_name','a_user.middle_name as am_name','a_user.last_name as al_name','tbl_user.first_name','tbl_user.middle_name','tbl_user.last_name')->get(); // Get tasks with related employees
         return Inertia::render('task/index', [
             'tasks' => $tasks,
         ]);
@@ -23,8 +26,8 @@ class TaskController extends Controller
     // Show the form for creating a new task
     public function create()
     {
-        $employees = Employee::join('users','users.id','=','employees.user_id')->get();
-        $customers = DB::table('tbl_user')->get();
+        $employees = DB::table('tbl_user')->where('role','employee')->get();
+        $customers = DB::table('tbl_user')->where('role','client')->get();
         $ttype = TaskType::where('status',1)->get();
         return Inertia::render('task/create', [
             'employees' => $employees,
@@ -69,8 +72,8 @@ class TaskController extends Controller
     // Show the form for editing the specified task
     public function edit(Task $task)
     {
-        $employees = Employee::join('users','users.id','=','employees.user_id')->get();
-        $customers = DB::table('tbl_user')->get();
+        $employees = DB::table('tbl_user')->where('role','employee')->get();
+        $customers = DB::table('tbl_user')->where('role','client')->get();
         $ttype = TaskType::where('status',1)->get();
         return Inertia::render('task/edit', [
            'employees' => $employees,

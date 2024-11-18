@@ -56,8 +56,8 @@ export default function Index({ stocks }) {
                                 <tr key={stock.id}>
                                     <td className="p-3">{stock.name}</td>
                                     <td className="p-3">{stock.sku}</td>
-                                    <td className="p-3">{stock.price}</td>
-                                    <td className="p-3">{stock.category_id}</td>
+                                    <td className="p-3">&#8377; {stock.price}</td>
+                                    <td className="p-3">{stock.item_name}</td>
                                     <td className="p-3">{stock.quantity}</td>
                                     {/* <td className="p-3">{stock.unit}</td> */}
                                     <td className='p-3 flex gap-1'>
