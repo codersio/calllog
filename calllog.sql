@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 02, 2024 at 11:57 AM
+-- Generation Time: Nov 18, 2024 at 05:26 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.21
 
@@ -55,7 +55,8 @@ CREATE TABLE `amcs` (
 
 INSERT INTO `amcs` (`id`, `amc_no`, `contact_person`, `customer_id`, `assigned_to`, `status`, `details`, `interval`, `no_of_service`, `date`, `mobile_no`, `email`, `billing_address`, `attachments`, `services`, `service_details`, `amc_details`, `created_at`, `updated_at`) VALUES
 (1, 'A455675343', 'fabyhijy@mailinator.com', 1, 45, 'open', 'Facilis voluptas dol', '2', '4', '2003-02-14', '+1 (785) 544-2853', 'kawyjumax@mailinator.com', 'Occaecat officia omn', 'attachments/ccc0b244-fd39-40ba-a06b-b9db8c6d55ca.pdf', NULL, NULL, '[{\"note\": \"tyqagoqenu@mailinator.com\", \"product\": \"ffdfd\"}]', '2024-10-29 10:22:25', '2024-10-31 23:58:08'),
-(2, 'A1234567', 'New Person', 2, 45, 'open', 'qq', '2', '4', '2024-11-04', '12345678', 'bidikeci@mailinator.com', 'qq', 'attachments/68599fc3-aec5-40ed-8841-c71f4864491f.jpg', NULL, '[{\"id\": 1, \"date\": \"2024-11-05\", \"service\": \"1 Service\"}, {\"id\": 2, \"date\": \"2025-01-16\", \"service\": \"2 Service\"}, {\"id\": 3, \"date\": \"2025-03-05\", \"service\": \"3 Service\"}, {\"id\": 4, \"date\": \"2025-05-28\", \"service\": \"4 Service\"}]', '[{\"note\": \"no notes\", \"product\": \"VIT Bhopal\"}]', '2024-10-31 23:09:26', '2024-11-01 00:26:20');
+(2, 'A1234567', 'New Person', 2, 45, 'open', 'qq', '2', '4', '2024-11-04', '12345678', 'bidikeci@mailinator.com', 'qq', 'attachments/68599fc3-aec5-40ed-8841-c71f4864491f.jpg', NULL, '[{\"id\": 1, \"date\": \"2024-11-05\", \"service\": \"1 Service\"}, {\"id\": 2, \"date\": \"2025-01-16\", \"service\": \"2 Service\"}, {\"id\": 3, \"date\": \"2025-03-05\", \"service\": \"3 Service\"}, {\"id\": 4, \"date\": \"2025-05-28\", \"service\": \"4 Service\"}]', '[{\"note\": \"no notes\", \"product\": \"VIT Bhopal\"}]', '2024-10-31 23:09:26', '2024-11-01 00:26:20'),
+(3, 'jysaf@mailinator.com', 'venow@mailinator.com', 15, 24, 'open', 'Consequuntur do occa', '1', '8', '1971-06-17', '+1 (137) 429-8718', 'ferujyhez@mailinator.com', 'Dolores non ut et ex', 'attachments/45aafff7-6ca8-4f6e-af0b-0bb6d4d53b09.jpg', NULL, '[{\"id\": \"1\", \"date\": \"1971-06-17\", \"service\": \"1 Service\"}, {\"id\": \"2\", \"date\": \"1971-07-17\", \"service\": \"2 Service\"}, {\"id\": \"3\", \"date\": \"1971-08-17\", \"service\": \"3 Service\"}, {\"id\": \"4\", \"date\": \"1971-09-17\", \"service\": \"4 Service\"}, {\"id\": \"5\", \"date\": \"1971-10-17\", \"service\": \"5 Service\"}, {\"id\": \"6\", \"date\": \"1971-11-17\", \"service\": \"6 Service\"}, {\"id\": \"7\", \"date\": \"1971-12-17\", \"service\": \"7 Service\"}, {\"id\": \"8\", \"date\": \"1972-01-17\", \"service\": \"8 Service\"}]', '[{\"note\": \"bineb@mailinator.com\", \"product\": \"Test\"}]', '2024-11-05 05:53:55', '2024-11-05 05:56:36');
 
 -- --------------------------------------------------------
 
@@ -78,7 +79,8 @@ CREATE TABLE `amc_details` (
 
 INSERT INTO `amc_details` (`id`, `service_id`, `product`, `note`, `created_at`, `updated_at`) VALUES
 (5, 6, '13', 'Dolores necessitatib', '2024-11-01 06:56:58', '2024-11-02 01:57:07'),
-(6, 7, '13', 'In sed sint ab est', '2024-11-01 08:00:13', '2024-11-02 02:00:39');
+(6, 7, '13', 'In sed sint ab est', '2024-11-01 08:00:13', '2024-11-02 02:00:39'),
+(10, 11, 'Brittany Langley', 'Nesciunt magnam rer', '2024-11-05 05:40:56', '2024-11-05 05:40:56');
 
 -- --------------------------------------------------------
 
@@ -141,20 +143,6 @@ CREATE TABLE `cache` (
   `expiration` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `cache`
---
-
-INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('admin@ecspvt.com|127.0.0.1', 'i:1;', 1729328501),
-('admin@ecspvt.com|127.0.0.1:timer', 'i:1729328501;', 1729328501),
-('admin@gmail.com|127.0.0.1', 'i:1;', 1729330302),
-('admin@gmail.com|127.0.0.1:timer', 'i:1729330302;', 1729330302),
-('kashif@gmail.com|127.0.0.1', 'i:2;', 1728019861),
-('kashif@gmail.com|127.0.0.1:timer', 'i:1728019861;', 1728019861),
-('wahys@mailinator.com|43.251.172.217', 'i:1;', 1727965687),
-('wahys@mailinator.com|43.251.172.217:timer', 'i:1727965687;', 1727965687);
-
 -- --------------------------------------------------------
 
 --
@@ -175,17 +163,19 @@ CREATE TABLE `cache_locks` (
 
 CREATE TABLE `call_allocation` (
   `id` int NOT NULL,
-  `call_no` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `customer_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `serial_no` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `call_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `customer_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `phone_two` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `service_partner` int NOT NULL,
-  `pin` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `pin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `distributer` int NOT NULL,
-  `source_material` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `model` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `source_material` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `model` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `purchase` datetime NOT NULL,
-  `reason` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -194,8 +184,8 @@ CREATE TABLE `call_allocation` (
 -- Dumping data for table `call_allocation`
 --
 
-INSERT INTO `call_allocation` (`id`, `call_no`, `customer_name`, `address`, `phone`, `service_partner`, `pin`, `distributer`, `source_material`, `model`, `purchase`, `reason`, `created_at`, `updated_at`) VALUES
-(10, '23102024/10', 'Nitesh Kumar Verma', 'Sihodih(Kodambari)', '8210365137', 5, '1333', 1, 'MMM', 'm1', '2024-10-23 00:00:00', 'mm', '2024-10-23 07:15:56', '2024-10-23 12:45:56');
+INSERT INTO `call_allocation` (`id`, `serial_no`, `call_no`, `customer_name`, `address`, `phone`, `phone_two`, `service_partner`, `pin`, `distributer`, `source_material`, `model`, `purchase`, `reason`, `created_at`, `updated_at`) VALUES
+(10, 'C2310240001', '23102024/10', 'Nitesh Kumar Verma', 'Sihodih(Kodambari)', '8210365137', '8210365137', 5, '1333', 1, 'MMM', 'm1', '2024-10-23 00:00:00', 'mm', '2024-10-23 07:15:56', '2024-10-23 12:45:56');
 
 -- --------------------------------------------------------
 
@@ -245,13 +235,11 @@ INSERT INTO `category_master` (`cat_id`, `type`, `title`, `status`, `created_dat
 (3, 'complainttype', 'Warranty Expires', 1, '2024-04-19 14:21:05', 0),
 (15, 'purchase_status', 'pending', 1, '2024-06-19 10:15:19', 0),
 (16, 'tasktype', 'develop', 1, '2024-06-19 10:46:01', 0),
-(23, 'brand', 'test', 1, '2024-10-26 08:55:30', 0),
 (28, 'category', 'test', 1, '2024-10-26 09:18:07', 0),
-(29, 'brand', 'tess', 1, '2024-10-26 09:18:14', 0),
 (30, 'unit', 'noid', 1, '2024-10-26 13:55:55', 0),
-(31, 'brand', 'new bandr', 1, '2024-10-26 14:34:29', 0),
 (32, 'category', 'new cat', 1, '2024-10-26 14:34:41', 0),
-(33, 'unit', 'bwew', 1, '2024-10-26 14:34:53', 0);
+(33, 'unit', 'bwew', 1, '2024-10-26 14:34:53', 0),
+(34, 'brand', 'Hbd', 1, '2024-11-04 12:17:11', 0);
 
 -- --------------------------------------------------------
 
@@ -284,7 +272,8 @@ CREATE TABLE `complaints` (
 INSERT INTO `complaints` (`id`, `complaint_no`, `date`, `customer_id`, `complaint_type`, `description`, `product_id`, `assigned_id`, `assigned_date`, `status`, `mobile_no`, `email`, `address`, `created_at`, `updated_at`) VALUES
 (1, 'C45789819', '2024-11-07', 2, '0', 'Possimus sed quo in', 11, 45, '2024-10-29', '1', '+1 (855) 848-2838', 'lazo@mailinator.com', 'Consequatur do quo c', '2024-10-29 05:00:50', '2024-11-02 00:41:48'),
 (3, 'C123455', '2023-09-08', 17, '1', 'Dolorem quis rerum d', 11, 47, '1983-09-16', '2', '+1 (531) 634-4379', 'rehyc@mailinator.com', 'Velit quis ipsum hic', '2024-10-29 11:38:51', '2024-11-02 00:42:04'),
-(4, 'navype@mailinator.com', '2024-11-28', 2, '0', 'Dolor odio quis aut', 9, 47, '1986-10-10', '0', '+1 (715) 309-4801', 'qeny@mailinator.com', 'Quis corporis quis n', '2024-11-02 01:17:14', '2024-11-02 01:37:26');
+(4, 'C1454475', '2024-11-28', 2, '0', 'Dolor odio quis aut', 9, 47, '1986-10-10', '0', '+1 (715) 309-4801', 'qeny@mailinator.com', 'Quis corporis quis n', '2024-11-02 01:17:14', '2024-11-02 01:37:26'),
+(5, 'C7898445', '1981-03-24', 16, '1', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 10, 23, '2016-06-02', '1', '+1 (393) 955-2014', 'muhydoq@mailinator.com', 'Similique adipisci u', '2024-11-14 04:07:11', '2024-11-14 04:07:11');
 
 -- --------------------------------------------------------
 
@@ -1177,6 +1166,28 @@ INSERT INTO `purchases` (`id`, `purchase_no`, `date`, `contact_person`, `status`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `quatation_account_tax`
+--
+
+CREATE TABLE `quatation_account_tax` (
+  `id` int NOT NULL,
+  `quation_id` int NOT NULL,
+  `tax_name` varchar(255) NOT NULL,
+  `tax` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `quatation_account_tax`
+--
+
+INSERT INTO `quatation_account_tax` (`id`, `quation_id`, `tax_name`, `tax`) VALUES
+(7, 12, 'service', '1'),
+(8, 11, 'GST', '18'),
+(9, 11, 'Others', '5');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `roles`
 --
 
@@ -1387,7 +1398,8 @@ CREATE TABLE `services` (
 
 INSERT INTO `services` (`id`, `service_code`, `service_date`, `customer_id`, `assigned_to`, `status`, `service_charge`, `service_details`, `created_at`, `updated_at`) VALUES
 (6, 'SV241101001', '2024-11-08', 1, '45', 'closed', 'no-charge', 'Nostrum impedit ali', '2024-11-01 06:56:58', '2024-11-02 01:57:07'),
-(7, 'SV241101007', '2024-10-28', 1, '45', 'open', 'no-charge', 'Soluta rem eos persp', '2024-11-01 08:00:13', '2024-11-02 02:00:39');
+(7, 'SV241101007', '2024-10-28', 1, '45', 'open', 'no-charge', 'Soluta rem eos persp', '2024-11-01 08:00:13', '2024-11-02 02:00:39'),
+(11, 'SV241105008', '2009-02-09', 16, '24', 'open', 'charge', 'Unde dolore voluptas', '2024-11-05 05:40:56', '2024-11-05 05:40:56');
 
 -- --------------------------------------------------------
 
@@ -1439,7 +1451,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('wJiSTnhafF7Ch6eQL6NuFlGG7ch1KBEiB9rstoVw', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiVVRLVkk1a0dCbDh6c0VCMGxHYTBzajVOQ21xR3pqSUQxV2JoQ0Q3cCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czoyMToiaHR0cDovL2xvY2FsaG9zdDo4MDAwIjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9zZXJ2aWNlcyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTg6ImZsYXNoZXI6OmVudmVsb3BlcyI7YToyOntpOjA7TzozNToiRmxhc2hlclxQcmltZVxOb3RpZmljYXRpb25cRW52ZWxvcGUiOjI6e3M6NDM6IgBGbGFzaGVyXFByaW1lXE5vdGlmaWNhdGlvblxFbnZlbG9wZQBzdGFtcHMiO2E6Njp7czozMToiRmxhc2hlclxQcmltZVxTdGFtcFxQbHVnaW5TdGFtcCI7TzozMToiRmxhc2hlclxQcmltZVxTdGFtcFxQbHVnaW5TdGFtcCI6MTp7czozOToiAEZsYXNoZXJcUHJpbWVcU3RhbXBcUGx1Z2luU3RhbXAAcGx1Z2luIjtzOjc6ImZsYXNoZXIiO31zOjM0OiJGbGFzaGVyXFByaW1lXFN0YW1wXENyZWF0ZWRBdFN0YW1wIjtPOjM0OiJGbGFzaGVyXFByaW1lXFN0YW1wXENyZWF0ZWRBdFN0YW1wIjoyOntzOjQ1OiIARmxhc2hlclxQcmltZVxTdGFtcFxDcmVhdGVkQXRTdGFtcABjcmVhdGVkQXQiO086MTc6IkRhdGVUaW1lSW1tdXRhYmxlIjozOntzOjQ6ImRhdGUiO3M6MjY6IjIwMjQtMTEtMDIgMTE6MjM6MDAuNTEyMDU5IjtzOjEzOiJ0aW1lem9uZV90eXBlIjtpOjM7czo4OiJ0aW1lem9uZSI7czozOiJVVEMiO31zOjQyOiIARmxhc2hlclxQcmltZVxTdGFtcFxDcmVhdGVkQXRTdGFtcABmb3JtYXQiO3M6MTE6IlktbS1kIEg6aTpzIjt9czoyNzoiRmxhc2hlclxQcmltZVxTdGFtcFxJZFN0YW1wIjtPOjI3OiJGbGFzaGVyXFByaW1lXFN0YW1wXElkU3RhbXAiOjE6e3M6MzE6IgBGbGFzaGVyXFByaW1lXFN0YW1wXElkU3RhbXAAaWQiO3M6MzI6Ijk5ZmUzODEyNGYxMDIxYTk0MmI4MDlkODhiMzllZDU0Ijt9czozMDoiRmxhc2hlclxQcmltZVxTdGFtcFxEZWxheVN0YW1wIjtPOjMwOiJGbGFzaGVyXFByaW1lXFN0YW1wXERlbGF5U3RhbXAiOjE6e3M6Mzc6IgBGbGFzaGVyXFByaW1lXFN0YW1wXERlbGF5U3RhbXAAZGVsYXkiO2k6MDt9czoyOToiRmxhc2hlclxQcmltZVxTdGFtcFxIb3BzU3RhbXAiO086Mjk6IkZsYXNoZXJcUHJpbWVcU3RhbXBcSG9wc1N0YW1wIjoxOntzOjM3OiIARmxhc2hlclxQcmltZVxTdGFtcFxIb3BzU3RhbXAAYW1vdW50IjtpOjE7fXM6MzM6IkZsYXNoZXJcUHJpbWVcU3RhbXBcUHJpb3JpdHlTdGFtcCI7TzozMzoiRmxhc2hlclxQcmltZVxTdGFtcFxQcmlvcml0eVN0YW1wIjoxOntzOjQzOiIARmxhc2hlclxQcmltZVxTdGFtcFxQcmlvcml0eVN0YW1wAHByaW9yaXR5IjtpOjA7fX1zOjQ5OiIARmxhc2hlclxQcmltZVxOb3RpZmljYXRpb25cRW52ZWxvcGUAbm90aWZpY2F0aW9uIjtPOjM5OiJGbGFzaGVyXFByaW1lXE5vdGlmaWNhdGlvblxOb3RpZmljYXRpb24iOjQ6e3M6NDY6IgBGbGFzaGVyXFByaW1lXE5vdGlmaWNhdGlvblxOb3RpZmljYXRpb24AdGl0bGUiO3M6MDoiIjtzOjQ4OiIARmxhc2hlclxQcmltZVxOb3RpZmljYXRpb25cTm90aWZpY2F0aW9uAG1lc3NhZ2UiO3M6MjU6IlJvbGUgdXBkYXRlZCBzdWNjZXNzZnVsbHkiO3M6NDU6IgBGbGFzaGVyXFByaW1lXE5vdGlmaWNhdGlvblxOb3RpZmljYXRpb24AdHlwZSI7czo3OiJzdWNjZXNzIjtzOjQ4OiIARmxhc2hlclxQcmltZVxOb3RpZmljYXRpb25cTm90aWZpY2F0aW9uAG9wdGlvbnMiO2E6MDp7fX19aToxO086MzU6IkZsYXNoZXJcUHJpbWVcTm90aWZpY2F0aW9uXEVudmVsb3BlIjoyOntzOjQzOiIARmxhc2hlclxQcmltZVxOb3RpZmljYXRpb25cRW52ZWxvcGUAc3RhbXBzIjthOjY6e3M6MzE6IkZsYXNoZXJcUHJpbWVcU3RhbXBcUGx1Z2luU3RhbXAiO086MzE6IkZsYXNoZXJcUHJpbWVcU3RhbXBcUGx1Z2luU3RhbXAiOjE6e3M6Mzk6IgBGbGFzaGVyXFByaW1lXFN0YW1wXFBsdWdpblN0YW1wAHBsdWdpbiI7czo3OiJmbGFzaGVyIjt9czozNDoiRmxhc2hlclxQcmltZVxTdGFtcFxDcmVhdGVkQXRTdGFtcCI7TzozNDoiRmxhc2hlclxQcmltZVxTdGFtcFxDcmVhdGVkQXRTdGFtcCI6Mjp7czo0NToiAEZsYXNoZXJcUHJpbWVcU3RhbXBcQ3JlYXRlZEF0U3RhbXAAY3JlYXRlZEF0IjtPOjE3OiJEYXRlVGltZUltbXV0YWJsZSI6Mzp7czo0OiJkYXRlIjtzOjI2OiIyMDI0LTExLTAyIDExOjIzOjE0LjQ1MjExNyI7czoxMzoidGltZXpvbmVfdHlwZSI7aTozO3M6ODoidGltZXpvbmUiO3M6MzoiVVRDIjt9czo0MjoiAEZsYXNoZXJcUHJpbWVcU3RhbXBcQ3JlYXRlZEF0U3RhbXAAZm9ybWF0IjtzOjExOiJZLW0tZCBIOmk6cyI7fXM6Mjc6IkZsYXNoZXJcUHJpbWVcU3RhbXBcSWRTdGFtcCI7TzoyNzoiRmxhc2hlclxQcmltZVxTdGFtcFxJZFN0YW1wIjoxOntzOjMxOiIARmxhc2hlclxQcmltZVxTdGFtcFxJZFN0YW1wAGlkIjtzOjMyOiI2ZGVlN2QxNTIxMjVlMzJiNmRlNzJmMDA0MDQ3OTVlYyI7fXM6MzA6IkZsYXNoZXJcUHJpbWVcU3RhbXBcRGVsYXlTdGFtcCI7TzozMDoiRmxhc2hlclxQcmltZVxTdGFtcFxEZWxheVN0YW1wIjoxOntzOjM3OiIARmxhc2hlclxQcmltZVxTdGFtcFxEZWxheVN0YW1wAGRlbGF5IjtpOjA7fXM6Mjk6IkZsYXNoZXJcUHJpbWVcU3RhbXBcSG9wc1N0YW1wIjtPOjI5OiJGbGFzaGVyXFByaW1lXFN0YW1wXEhvcHNTdGFtcCI6MTp7czozNzoiAEZsYXNoZXJcUHJpbWVcU3RhbXBcSG9wc1N0YW1wAGFtb3VudCI7aToxO31zOjMzOiJGbGFzaGVyXFByaW1lXFN0YW1wXFByaW9yaXR5U3RhbXAiO086MzM6IkZsYXNoZXJcUHJpbWVcU3RhbXBcUHJpb3JpdHlTdGFtcCI6MTp7czo0MzoiAEZsYXNoZXJcUHJpbWVcU3RhbXBcUHJpb3JpdHlTdGFtcABwcmlvcml0eSI7aTowO319czo0OToiAEZsYXNoZXJcUHJpbWVcTm90aWZpY2F0aW9uXEVudmVsb3BlAG5vdGlmaWNhdGlvbiI7TzozOToiRmxhc2hlclxQcmltZVxOb3RpZmljYXRpb25cTm90aWZpY2F0aW9uIjo0OntzOjQ2OiIARmxhc2hlclxQcmltZVxOb3RpZmljYXRpb25cTm90aWZpY2F0aW9uAHRpdGxlIjtzOjA6IiI7czo0ODoiAEZsYXNoZXJcUHJpbWVcTm90aWZpY2F0aW9uXE5vdGlmaWNhdGlvbgBtZXNzYWdlIjtzOjI1OiJSb2xlIHVwZGF0ZWQgc3VjY2Vzc2Z1bGx5IjtzOjQ1OiIARmxhc2hlclxQcmltZVxOb3RpZmljYXRpb25cTm90aWZpY2F0aW9uAHR5cGUiO3M6Nzoic3VjY2VzcyI7czo0ODoiAEZsYXNoZXJcUHJpbWVcTm90aWZpY2F0aW9uXE5vdGlmaWNhdGlvbgBvcHRpb25zIjthOjA6e319fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1730548604);
+('8B2mhVdpre0yKqdJhlIY8l5qHxEvgEgr0ox4YHiM', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoidWQyd3UzUmJORzZwdmg5bkpRbnNZSnNnOWUzc3VIaDlYdFVUSWlpWSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMC9zdG9ja3MvMS9lZGl0Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1731585313),
+('ZrIbJXCUhJOgXaAUAkKE9tbsEUsT75J9ioKfEnvq', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiYlZSNXVYc3hWOEJDV1JzR1hmSW15Qkt5Y2VpU2pQcW9ZWUNRMnNEQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czoyMToiaHR0cDovL2xvY2FsaG9zdDo5MDAwIjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMC9jb21wbGFpbnQvY3JlYXRlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1731585312);
 
 -- --------------------------------------------------------
 
@@ -1526,7 +1539,8 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `customer_id`, `subject`, `task_type_id`, `description`, `attachment`, `employee_id`, `assign_date`, `remarks`, `close_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Catherine Crosby', 2, 'Ipsam enim voluptate', 'attachments/1730288633_All Branch Oct-2024 Monthly Payroll Report of All Department.pdf', 47, '1990-05-01', NULL, '1996-02-02', 'progress', '2024-10-30 06:13:53', '2024-10-30 06:41:06');
+(1, 2, 'Catherine Crosby', 2, 'Ipsam enim voluptate', 'attachments/1730288633_All Branch Oct-2024 Monthly Payroll Report of All Department.pdf', 47, '1990-05-01', NULL, '1996-02-02', 'progress', '2024-10-30 06:13:53', '2024-10-30 06:41:06'),
+(9, 17, 'Briar Cooley', 1, 'Dolor modi hic persp', 'attachments/1730807389_tamilnadu.jpg', 23, '1982-05-09', NULL, '1982-08-20', 'closed', '2024-11-05 06:19:49', '2024-11-05 06:19:49');
 
 -- --------------------------------------------------------
 
@@ -1705,8 +1719,6 @@ INSERT INTO `tbl_client_history` (`id`, `client_id`, `contact_name`, `mobile`, `
 (1, 3, 'Leo Blankenship', '995', 'Sed quia tempor quia'),
 (2, 4, 'Cruz Wagner', '811', 'Quia ratione quo neq'),
 (3, 5, 'Aline Powell', '335', 'Nam iure fugiat exer'),
-(4, 7, 'Dean Montgomery', '767', 'Pariatur Perspiciat'),
-(5, 8, 'Kaye Glass', '503', 'Nisi elit hic conse'),
 (6, 16, 'Nitesh Kumar Verma', '08210365137', 'Nitesh Kumar Verma'),
 (7, 16, 'Nitesh Kumar Verma', '08210365137', 'Nitesh Kumar Verma'),
 (8, 17, 'Nitesh Kumar Verma', '08210365137', 'Nitesh Kumar Verma'),
@@ -1717,7 +1729,11 @@ INSERT INTO `tbl_client_history` (`id`, `client_id`, `contact_name`, `mobile`, `
 (13, 18, 'Nitesh Kumar Verma', '08210365137', 'Nitesh Kumar Verma'),
 (14, 19, 'Nitesh Kumar Verma', '08210365137', 'Nitesh Kumar Verma'),
 (15, 19, 'Nitesh Kumar Verma', '08210365137', 'Nitesh Kumar Verma'),
-(16, 19, 'Nitesh Kumar Verma', '08210365137', 'Nitesh Kumar Verma');
+(16, 19, 'Nitesh Kumar Verma', '08210365137', 'Nitesh Kumar Verma'),
+(17, 20, 'Maris Decker', 'Est eum nulla obcae', 'Harum officia dolori'),
+(18, 21, 'Germane Terry', 'Obcaecati voluptate', 'Voluptates id est qu'),
+(21, 14, 'Dean Montgomery', '767', 'Pariatur Perspiciat'),
+(22, 14, 'Kaye Glass', '503', 'Nisi elit hic conse');
 
 -- --------------------------------------------------------
 
@@ -1746,8 +1762,10 @@ INSERT INTO `tbl_company_detail` (`id`, `client_id`, `main_person`, `account_num
 (2, 4, 'Architecto irure adi', '659', 'Nostrud fugiat nesc', 'Brenda Cabrera', 'Molestias et labore ', 'Consequatur Nostrum', 'DQ89Kp'),
 (3, 5, 'Culpa cum labore mol', '15', 'Delectus rem velit ', 'Armando Carpenter', 'Nemo vel ipsum ut ve', 'Necessitatibus perfe', 'Velit quos aperiam '),
 (4, 7, 'Voluptatem anim qui', '966', 'Quaerat ut eaque ani', 'Courtney Keller', 'Voluptates laborum d', 'Quia qui nulla vel e', 'Ducimus facilis fug'),
-(5, 8, 'Sunt dolores consequ', '346', 'Distinctio Alias pr', 'Maya Bray', 'Incidunt officia ve', '25', 'Assumenda reiciendis'),
-(6, 19, 'h', 'hh', 'h', 'hh', 'h', 'h', 'h');
+(5, 14, 'Sunt dolores consequ', '346', 'Distinctio Alias pr', 'Maya Bray', 'Incidunt officia ve', '25', 'Assumenda reiciendis'),
+(6, 19, 'h', 'hh', 'h', 'hh', 'h', 'h', 'h'),
+(7, 20, 'Ea pariatur Duis la', '77', 'Ex illum in sint ac', 'Kiara Mcclain', '12345678', 'Aliquip sunt numqua', '123456789'),
+(8, 21, 'Modi nisi dolor saep', '734', 'Mollit libero quis l', 'Allistair Webster', 'Iure qui modi facere', 'Ipsum enim et unde', 'Dolore consequatur');
 
 -- --------------------------------------------------------
 
@@ -1793,7 +1811,7 @@ CREATE TABLE `tbl_product` (
   `open_stock` int NOT NULL,
   `min_stock` int NOT NULL,
   `max_stock` int NOT NULL,
-  `specification` text NOT NULL,
+  `specification` text CHARACTER SET latin1 COLLATE latin1_swedish_ci,
   `warehouse_id` int NOT NULL,
   `product_qty` int NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -1804,9 +1822,12 @@ CREATE TABLE `tbl_product` (
 --
 
 INSERT INTO `tbl_product` (`product_id`, `item_name`, `is_archive`, `brand_id`, `model_no`, `product_code`, `category_id`, `short_name`, `price`, `unit_id`, `image`, `open_stock`, `min_stock`, `max_stock`, `specification`, `warehouse_id`, `product_qty`, `created_date`) VALUES
-(4, 'Brittany Langley', 0, 5, 'Duis commodo tempore', 'PR385062024', 8, '', 292.00, 14, 'product_img/default.png', 0, 0, 0, '<p>Aut nobis laboriosam.</p>', 0, 0, '2024-06-19 10:14:16'),
+(4, 'Brittany Langley', 0, 34, 'Duis commodo tempore', 'PR385062024', 28, '', 292.00, 30, 'product_img/default.png', 0, 0, 0, '<p>Aut nobis laboriosam.</p>', 0, 0, '2024-06-19 10:14:16'),
 (10, 'Test', 1, 29, 'm1', 'PR972102024', 28, '', 65.00, 30, 'product_img/1729952929.png', 0, 0, 0, '<p>hbh</p>', 0, 0, '2024-10-26 14:28:49'),
-(11, 'Test', 1, 31, 'm2', 'PR1016102024', 32, '', 1232.00, 33, 'product_img/1729953316.png', 0, 0, 0, '<p>terterte</p>', 0, 0, '2024-10-26 14:35:16');
+(11, 'Test', 1, 31, 'm2', 'PR1016102024', 32, '', 1232.00, 33, 'product_img/1729953316.png', 0, 0, 0, '<p>terterte</p>', 0, 0, '2024-10-26 14:35:16'),
+(12, 'Charlotte Slater', 0, 23, 'Architecto soluta do', 'PR1125112024', 28, '', 780.00, 30, 'product_img/1730722277.jpg', 0, 0, 0, '<p>Ducimus, vero neque .</p>', 0, 0, '2024-11-04 12:11:17'),
+(13, 'Tana Walters', 0, 34, 'Quis dolores consequ', 'PR1288112024', 28, '', 6.00, 33, 'product_img/1730790531.jpg', 0, 0, 0, '<p>Voluptate delectus, .</p>', 0, 0, '2024-11-05 07:08:51'),
+(14, 'Abel Kirk', 0, 34, 'Veniam ullamco omni', 'PR1386112024', 32, '', 226.00, 30, 'product_img/1730867966.jpg', 0, 0, 0, '<p>Est, ad occaecat et .</p>', 0, 0, '2024-11-06 04:39:26');
 
 -- --------------------------------------------------------
 
@@ -1835,7 +1856,33 @@ INSERT INTO `tbl_quotation` (`quotation_id`, `quotation_no`, `quotation_date`, `
 (1, 'Q31072024', '2024-07-01', 26, '8985698789', 'jejuvuqu@mailinator.com', '0', '', 'Esse laborum quidem', ''),
 (8, 'Q152102024', '2024-10-31', 26, '08210365137', 'equiconsultings@gmail.com', '0', '', 'Sihodih(Kodambari)', '<p>helloo sir</p>'),
 (9, 'Q821102024', '2024-10-31', 26, '08210365137', 'equiconsultings@gmail.com', '1', '', 'Sihodih(Kodambari)', '<p>Hwlelelel</p>'),
-(10, 'Q821102024', '2024-10-31', 26, '08210365137', 'equiconsultings@gmail.com', '1', '', 'Sihodih(Kodambari)', '<p>Hwlelelel</p>');
+(10, 'Q821102024', '2024-10-31', 26, '08210365137', 'equiconsultings@gmail.com', '1', '', 'Sihodih(Kodambari)', '<p>Hwlelelel</p>'),
+(11, 'Q1037112024', '2003-06-03', 14, '08210365137', 'gftsolution.root@gmail.com', '1', '', 'Sihodih(Kodambari)', '<p>hello</p>'),
+(12, 'Q1144112024', '1977-06-08', 15, '08210365137', 'admin@admin.com', '0', '', 'Sihodih(Kodambari), Ps-Hirodih,PO- Bhandaro', '<p>qq</p>');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_quotation_history`
+--
+
+CREATE TABLE `tbl_quotation_history` (
+  `quotation_history_id` int NOT NULL,
+  `quotation_id` int NOT NULL,
+  `item_name` int NOT NULL,
+  `qty` int NOT NULL,
+  `price` float NOT NULL,
+  `net_amount` float NOT NULL,
+  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_quotation_history`
+--
+
+INSERT INTO `tbl_quotation_history` (`quotation_history_id`, `quotation_id`, `item_name`, `qty`, `price`, `net_amount`, `create_date`) VALUES
+(7, 12, 11, 433, 1232, 533456, '2024-11-05 08:58:19'),
+(8, 11, 11, 99, 1232, 121968, '2024-11-14 08:25:44');
 
 -- --------------------------------------------------------
 
@@ -1848,7 +1895,7 @@ CREATE TABLE `tbl_user` (
   `is_archive` int NOT NULL DEFAULT '0',
   `client_id` varchar(50) NOT NULL,
   `first_name` varchar(100) NOT NULL,
-  `middle_name` varchar(100) NOT NULL,
+  `middle_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `last_name` varchar(100) NOT NULL,
   `company_name` varchar(255) NOT NULL,
   `dob` date NOT NULL,
@@ -1876,18 +1923,12 @@ CREATE TABLE `tbl_user` (
 --
 
 INSERT INTO `tbl_user` (`user_id`, `is_archive`, `client_id`, `first_name`, `middle_name`, `last_name`, `company_name`, `dob`, `gender`, `marital_status`, `address`, `username`, `password`, `city`, `state`, `pincode`, `mobile_no`, `alt_mobile`, `phone`, `email`, `photo`, `role`, `create_date`, `last_send_mail_Date`, `token_code`) VALUES
-(1, 0, 'C430620161', 'admin', '', 'admin', 'dasinfomedia', '2017-06-13', 'Male', 'Unmarried', 'kjdbcjkbd', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'kjdbcjkbd', 'Gujarat', '382350', '9999999999', '9999999999', '9999999999', 'admin@admin.com', 'system_m.png', 'admin', '2017-02-12 18:30:00', '1995-04-24', 'sdere'),
-(2, 0, 'E181042024', 'Farook', '', 'Bepari', '', '2019-04-24', 'Male', '', 'Pendar Galli Circle', '', '25d55ad283aa400af464c76d713c07ad', 'Hubballi', 'Karnataka', '580020', '08971818478', '08971818478', '', 'zengroup707@gmail.com', 'default.png', 'employee', '2024-04-19 09:12:12', '0000-00-00', NULL),
-(5, 1, 'C445062024', 'Igor', 'Sonya Pearson', 'Padilla', 'Fox Roberson Plc', '2016-05-17', 'Male', '', '[\"Molestias duis tempo\"]', '', '25d55ad283aa400af464c76d713c07ad', 'Qui quas consequuntu', 'Quia est aliquip eni', '89878', '8986987878', '9895698788', '', 'gurokif@mailinator.com', 'default.png', 'client', '2024-06-19 04:43:10', '0000-00-00', NULL),
-(6, 0, 'E559062024', 'Brenda', 'Kylie Marsh', 'Ratliff', '', '2010-03-13', 'Male', '', 'Ea quis non aut solu', '', '25d55ad283aa400af464c76d713c07ad', 'Et unde quidem qui a', 'Voluptatum beatae es', 'Eligendi exercitatio', '898569878', 'Explicabo Reiciendi', '+1 (908) 269-4539', 'kysyj@mailinator.com', 'default.png', 'employee', '2024-06-19 04:55:30', '0000-00-00', NULL),
-(9, 0, 'E895072024', 'Prasoon Chia', '', 'Chia', '', '2000-04-13', 'Female', '', 'Irure sit sunt labor', '', '25d55ad283aa400af464c76d713c07ad', 'Et debitis consectet', 'Ipsa sint officiis', 'Molestiae quos quasi', 'Necessitatibus beata', 'Esse reiciendis cupi', '+1 (764) 577-5457', 'lyjotyraq@mailinator.com', 'default.png', 'employee', '2024-07-01 08:09:46', '0000-00-00', NULL),
-(10, 0, 'E930072024', 'Alaknanda ', '', 'Ramachandran', '', '2003-02-04', 'Male', '', 'Aliquip quis molliti', '', '25d55ad283aa400af464c76d713c07ad', 'Deserunt est optio', 'Eveniet ut sunt ab ', 'Et quae elit molest', 'In nisi voluptate ut', 'Sed irure illo moles', '+1 (771) 365-8143', 'tibecad@mailinator.com', 'default.png', 'employee', '2024-07-01 08:10:20', '0000-00-00', NULL),
-(14, 0, 'C1387102024', 'Nitesh', 'Kumar', 'Verma', 'hh', '2024-10-25', 'male', '', '[{\"address\":\"Sihodih(Kodambari)\"}]', '', '123456', 'Giridih', 'Jharkhand', '825412', '08210365137', '08210365137', '', 'gftsolution.root@gmail.com', 'client_img/1729859245.png', 'client', '2024-10-25 06:57:25', '2024-10-25', NULL),
+(14, 0, 'C1387102024', 'Nitesh', 'Kumar', 'Verma', 'hh', '2024-10-25', 'male', '', '[{\"address\":\"Sihodih(Kodambari)\"}]', '', '123456', 'Giridih', 'Jharkhand', '825412', '08210365137', '08210365137', '', 'gftsolution.root@gmail.com', 'client_img/1729859245.png', 'client', '2024-10-25 06:57:25', '2024-11-05', NULL),
 (15, 0, 'C1471102024', 'Nitesh', 'Kumar', 'Verma', 'hh', '2024-10-25', 'female', '', '[{\"address\":\"Sihodih(Kodambari)\"},{\"address\":\"Ps-Hirodih,PO- Bhandaro\"}]', '', '12345', 'Giridih', 'Jharkhand', '825412', '08210365137', '08210365137', '', 'admin@admin.com', 'client_img/1729859375.png', 'client', '2024-10-25 06:59:35', '2024-10-25', NULL),
 (16, 0, 'C1528102024', 'Nitesh', 'Kumar', 'Verma', 'hh', '2024-10-25', 'male', '', '[{\"address\":\"Sihodih(Kodambari)\"}]', '', '123456', 'Giridih', 'Jharkhand', '825412', '08210365137', '08210365137', '', 'niteshsunny73@gmail.com', 'client_img/1729860018.png', 'client', '2024-10-25 07:10:18', '2024-10-25', NULL),
 (17, 0, 'C1647102024', 'Nitesh', 'Kumar', 'Verma', 'hh', '2024-10-25', 'male', '', '[{\"address\":\"Sihodih(Kodambari)\"},{\"address\":\"Ps-Hirodih,PO- Bhandaro\"}]', '', '12345', 'Giridih', 'Jharkhand', '825412', '08210365137', '08210365137', '', 'admin@admin.com', 'client_img/1729861442.png', 'client', '2024-10-25 07:34:02', '2024-10-25', NULL),
-(18, 0, 'C1647102024', 'Nitesh', 'Kumar', 'Verma', 'hh', '2024-10-25', 'male', '', '[{\"address\":\"Sihodih(Kodambari)\"},{\"address\":\"Ps-Hirodih,PO- Bhandaro\"}]', '', '12345', 'Giridih', 'Jharkhand', '825412', '08210365137', '08210365137', '', 'admin@admin.com', 'client_img/1729861465.png', 'client', '2024-10-25 07:34:25', '2024-10-25', NULL),
-(19, 0, 'C1647102024', 'Nitesh', 'Kumar', 'Verma', 'hh', '2024-10-25', 'male', '', '[{\"address\":\"Sihodih(Kodambari)\"},{\"address\":\"Ps-Hirodih,PO- Bhandaro\"}]', '', '12345', 'Giridih', 'Jharkhand', '825412', '08210365137', '08210365137', '', 'admin@admin.com', 'client_img/1729861483.png', 'client', '2024-10-25 07:34:43', '2024-10-25', NULL);
+(23, 0, 'E482112024', 'Sheila', 'Dorothy Phillips', 'Wells', '', '2023-09-13', 'male', '', 'Sapiente dolor omnis', '', 'Aliquam sed id rerum', 'Ad nihil sunt quae v', 'Sequi duis earum vel', '1234567890', '1234567890', '1234567890', '1234567890', 'dymu@mailinator.com', 'Employee_img/1730797450.jpg', 'employee', '2024-11-05 03:34:10', '2024-11-05', NULL),
+(24, 0, 'E538112024', 'April', NULL, 'Page', '', '1983-10-20', 'male', '', 'Quia eiusmod quis qu', '', 'Qui Nam minima moles', 'Et et obcaecati elit', 'Proident minim mole', '1234567890', '1234567890', '1234567890', '1234567890', 'jutybaj@mailinator.com', 'Employee_img/1730797783.jpg', 'employee', '2024-11-05 03:39:43', '2024-11-05', NULL);
 
 -- --------------------------------------------------------
 
@@ -1945,7 +1986,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `type`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Admin', 'admin@admin.com', NULL, '$2y$12$zXuz7X17BSetno0LGtnTnepbZtul6UxAUZNHmKaOoagUDyv3BZRSq', 'vI9ndISqYVmcTkHW6aq7reAL6lDEr6SfUTKxdFvBnUNm00aO2se9tktvY4jL', '2024-07-27 04:37:27', '2024-07-27 04:37:27'),
+(1, 1, 'Admin', 'admin@admin.com', NULL, '$2y$12$zXuz7X17BSetno0LGtnTnepbZtul6UxAUZNHmKaOoagUDyv3BZRSq', 'iPRbIlC79XIMM5WkMIejG0iP3DY8WzP31j4g8WAv4atII7CDw9Jbp73TJTzq', '2024-07-27 04:37:27', '2024-07-27 04:37:27'),
 (44, 2, 'Leah Pacheco', 'piqaxuk@mailinator.com', NULL, '$2y$12$2CaA/l7VFn4bfYwBhAZXWuc/bagb/k1YB8JUcg3PJDJUs0LrgDKVe', NULL, '2024-10-07 01:31:17', '2024-10-07 01:31:17'),
 (45, 2, 'Leah Pacheco', 'pisqaxuk@mailinator.com', NULL, '$2y$12$FQ2.6ltV20.0OvucEYcJSuURy6OmkNH4Rz.h6kaAfKAJvfCqOyGga', NULL, '2024-10-07 01:31:48', '2024-10-07 01:31:48'),
 (46, 2, 'Tyrone Castaneda', 'zecsejaxo@mailinator.com', NULL, '$2y$12$EJVj04sRbpjg3cxm9BlbvOEYWJDGlX8no0BodjbKuR19/IRjkdxDS', NULL, '2024-10-07 01:47:38', '2024-10-07 01:47:38'),
@@ -2268,6 +2309,13 @@ ALTER TABLE `purchases`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `quatation_account_tax`
+--
+ALTER TABLE `quatation_account_tax`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sale_account_tax_ibfk_1` (`quation_id`);
+
+--
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
@@ -2394,6 +2442,12 @@ ALTER TABLE `tbl_quotation`
   ADD PRIMARY KEY (`quotation_id`);
 
 --
+-- Indexes for table `tbl_quotation_history`
+--
+ALTER TABLE `tbl_quotation_history`
+  ADD PRIMARY KEY (`quotation_history_id`);
+
+--
 -- Indexes for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
@@ -2428,13 +2482,13 @@ ALTER TABLE `warranty_extend`
 -- AUTO_INCREMENT for table `amcs`
 --
 ALTER TABLE `amcs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `amc_details`
 --
 ALTER TABLE `amc_details`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `attendances`
@@ -2470,13 +2524,13 @@ ALTER TABLE `call_log`
 -- AUTO_INCREMENT for table `category_master`
 --
 ALTER TABLE `category_master`
-  MODIFY `cat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `cat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `complaints`
 --
 ALTER TABLE `complaints`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `daily_statuses`
@@ -2635,6 +2689,12 @@ ALTER TABLE `purchases`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `quatation_account_tax`
+--
+ALTER TABLE `quatation_account_tax`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
@@ -2650,7 +2710,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `service_centers`
@@ -2674,7 +2734,7 @@ ALTER TABLE `stocks`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `task_assigns`
@@ -2716,13 +2776,13 @@ ALTER TABLE `tbl_account_tax_rates`
 -- AUTO_INCREMENT for table `tbl_client_history`
 --
 ALTER TABLE `tbl_client_history`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `tbl_company_detail`
 --
 ALTER TABLE `tbl_company_detail`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_expenses`
@@ -2734,19 +2794,25 @@ ALTER TABLE `tbl_expenses`
 -- AUTO_INCREMENT for table `tbl_product`
 --
 ALTER TABLE `tbl_product`
-  MODIFY `product_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `product_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tbl_quotation`
 --
 ALTER TABLE `tbl_quotation`
-  MODIFY `quotation_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `quotation_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `tbl_quotation_history`
+--
+ALTER TABLE `tbl_quotation_history`
+  MODIFY `quotation_history_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `timesheets`
@@ -2812,7 +2878,6 @@ ALTER TABLE `role_has_permissions`
 -- Constraints for table `tasks`
 --
 ALTER TABLE `tasks`
-  ADD CONSTRAINT `tasks_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `tasks_task_type_id_foreign` FOREIGN KEY (`task_type_id`) REFERENCES `task_types` (`id`) ON DELETE CASCADE;
 
 --
